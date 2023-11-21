@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import itumulator.world.Location;
@@ -30,29 +29,24 @@ public class Plant extends LivingBeing implements NonBlocking {
     }
 
     public void spread(World world) {
-        try {
-            // Get surrounding tiles
-            Set<Location> neighbors = world.getSurroundingTiles();
-
-            // Remove those with blocking elements
-            for(Location l: neighbors) {
-                if(world.containsNonBlocking(l)) {
-                  neighbors.remove(l);  
-                }
+        // Get surrounding tiles
+        Set<Location> neighbors = world.getSurroundingTiles();
+        List<Location> list = new ArrayList<>();
+        // Remove those with blocking elements
+        for(Location l: neighbors) {
+            if(!world.containsNonBlocking(l)) {
+                list.add(l);  
             }
-            List<Location> list = new ArrayList<>(neighbors);
-
-            // take one random surrounding tile
-            Random r = new Random();
-            int randomLocation = r.nextInt(list.size());
-            Location newLocation = list.get(randomLocation);
-            
-
-            // create a new instance of plant and put it on the world
-            world.setTile(newLocation,CreateNew());
-        } catch (Exception e) {
-            // There are no possible spaces to move to
         }
+        
+        if(list.size()==0) return; // if we dont have any surounding tiles, just give up on spreading
+
+        // take one random surrounding tile
+        int randomLocation = (int) Math.floor(Math.random()*list.size());
+        Location newLocation = list.get(randomLocation);
+        
+        // create a new instance of plant and put it on the world
+        world.setTile(newLocation,CreateNew());
         reproductiveCooldown = trueReproductiveCooldown; // reset the spread timer
     }
 }
