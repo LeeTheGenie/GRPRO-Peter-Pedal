@@ -12,44 +12,44 @@ public class Rabbit implements Actor {
     private int maxAge;
     private int energy;
     private int maxEnergy;
+    private int trueMaxEnergy;
     private RabbitHole hole;
 
     public Rabbit() {
         this.age = 0;
-        this.maxAge = 70;
         this.energy = 10;
+        this.trueMaxEnergy = 10;
         this.maxEnergy = 10;
         this.hole = null;
     }
 
     @Override
     public void act(World world) {
-        maxEnergy = maxEnergy - (age / 5);
-        if (age == maxAge) {
-            try {
-                world.delete(this);
-            } catch (Exception e) {
+        maxEnergy = trueMaxEnergy - (age / 7);
 
-            }
-        }
         if (energy == 0) {
             try {
                 world.delete(this);
+                System.out.println("død");
             } catch (Exception e) {
 
             }
         }
         eat(world);
+        reproduce(world);
         move(world);
         age++;
     }
 
     public void eat(World world) {
         try {
-            if (world.getTile(world.getLocation(this)) instanceof Grass
-                    && world.getTile(world.getLocation(this)) instanceof Rabbit) {
-                world.delete(world.getTile(world.getLocation(this)));
-                System.out.println("hej");
+            Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
+            for (Location l : tiles) {
+                System.out.println("spis");
+                if (world.getTile(l) instanceof Grass) {
+                    world.delete(l);
+                    System.out.println("spis");
+                }
             }
         } catch (Exception e) {
 
@@ -80,23 +80,28 @@ public class Rabbit implements Actor {
     }
 
     public void reproduce(World world) {
-        if (energy > 0 && world.getSurroundingTiles() instanceof Rabbit) {
-            try {
-                // Get surrounding tiles
-                Set<Location> neighbors = world.getEmptySurroundingTiles();
-                List<Location> list = new ArrayList<>(neighbors);
+        if (energy > 9) {
+            Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
+            for (Location l : tiles) {
+                if (world.getTile(l) instanceof Rabbit) {
+                    try {
+                        // Get surrounding tiles
+                        Set<Location> neighbors = world.getEmptySurroundingTiles();
+                        List<Location> list = new ArrayList<>(neighbors);
 
-                // take one random surrounding tile
-                Random r = new Random();
-                int randomLocation = r.nextInt(list.size());
-                Location newLocation = list.get(randomLocation);
+                        // take one random surrounding tile
+                        Random r = new Random();
+                        int randomLocation = r.nextInt(list.size());
+                        Location newLocation = list.get(randomLocation);
 
-                // create a new instance of Rabbit and put it on the world
-                world.setTile(newLocation, new Rabbit());
-                System.out.println("hej2");
-            } catch (Exception e) {
-                // There are no possible spaces to move to
+                        // create a new instance of Rabbit and put it on the world
+                        world.setTile(newLocation, new Rabbit());
+                    } catch (Exception e) {
+                        // There are no possible spaces to move to
+                    }
+                }
             }
+
         }
         energy -= 2;
     }

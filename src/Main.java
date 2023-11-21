@@ -36,7 +36,7 @@ public class Main {
         world.setTile(new Location(3, 2), new Flower());
 
         // set rabbit
-        int amount = 10;
+        int amount = 2;
         Random r = new Random();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);
