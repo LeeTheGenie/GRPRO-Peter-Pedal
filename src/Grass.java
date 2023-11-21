@@ -8,25 +8,21 @@ import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
-public class Grass implements NonBlocking, Actor {
-    private int lifeTime; // hvor lang tid den lever i
-    private int timeToNextSpread; // hvor lang tid det tager for at den spreder sig
+public class Grass extends LivingBeing implements NonBlocking {
+
+    int reproductiveCooldown = 10; // 
 
     public Grass() {
-        this.lifeTime = 30;
-        this.timeToNextSpread = 10;
+        super(0,30);
     }
 
     public void act(World world) {
-        if(timeToNextSpread<=0)
+        reproductiveCooldown--;
+        if(reproductiveCooldown<=0)
             spread(world);
-        if(lifeTime<=0)
-            destroyGrass(world);
-        lifeTime--;
-        timeToNextSpread--;
+        
+        ageUp(world);
     }
-
-
 
     /* This method is used for grass to spread */
     public void spread(World world) {
@@ -45,10 +41,6 @@ public class Grass implements NonBlocking, Actor {
         } catch (Exception e) {
             // There are no possible spaces to move to
         }
-        timeToNextSpread = 10; // reset the spread timer
-    }
-
-    public void destroyGrass(World world) {
-        world.remove(this);
+        reproductiveCooldown = 10; // reset the spread timer
     }
 }

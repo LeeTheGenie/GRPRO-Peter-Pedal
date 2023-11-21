@@ -5,7 +5,6 @@ import itumulator.executable.Program;
 import itumulator.world.World;
 import itumulator.world.Location;
 import java.util.Random;
-import java.awt.Image;
 
 public class Main {
 
@@ -15,8 +14,8 @@ public class Main {
 
     public static void setupAndRunSimulation() {
         // World Setup
-        int size = 5;
-        int delay = 1000;
+        int size = 8;
+        int delay = 100;
         int display_size = 800;
 
         Program p = new Program(size, display_size, delay);
@@ -34,7 +33,7 @@ public class Main {
         world.setTile(new Location(0, 0), new Grass());
         p.show();
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 3000; i++) {
             p.simulate();
         }
     }
