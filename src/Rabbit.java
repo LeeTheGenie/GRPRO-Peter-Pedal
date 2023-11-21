@@ -8,6 +8,9 @@ import java.util.Random;
 
 public class Rabbit implements Actor {
 
+    private int age;
+    private RabbitHole hole;
+
     @Override
     public void act(World world) {
         try {
