@@ -9,22 +9,21 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public class Grass implements NonBlocking, Actor {
-    private int lifeThreshold;
-    private int lifeCount;
-    private int spread;
+    private int lifeTime; // hvor lang tid den lever i
+    private int timeToNextSpread; // hvor lang tid det tager for at den spreder sig
 
     public Grass() {
-        this.lifeThreshold = 30;
-        this.lifeCount = 0;
-        this.spread = 10;
+        this.lifeTime = 30;
+        this.timeToNextSpread = 10;
     }
 
     public void act(World world) {
-        if(lifeCount%spread==0)
+        if(timeToNextSpread<=0)
             spread(world);
-        if(lifeCount==lifeThreshold)
+        if(lifeTime<=0)
             destroyGrass(world);
-        lifeCount++;
+        lifeTime--;
+        timeToNextSpread--;
     }
 
 
@@ -46,17 +45,10 @@ public class Grass implements NonBlocking, Actor {
         } catch (Exception e) {
             // There are no possible spaces to move to
         }
+        timeToNextSpread = 10; // reset the spread timer
     }
 
     public void destroyGrass(World world) {
         world.remove(this);
-    }
-
-    public int getLifeCount() {
-        return lifeCount;
-    }
-
-    public int getLifeThreshhold() {
-        return lifeThreshold;
     }
 }

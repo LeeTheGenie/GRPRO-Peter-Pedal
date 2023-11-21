@@ -21,7 +21,6 @@ public class Main {
 
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
-        Location place = new Location(0, 0);
        
         // Display information
             // Grass
@@ -32,7 +31,7 @@ public class Main {
 
 
         // Tiles + show
-        world.setTile(place, new Grass());
+        world.setTile(new Location(0, 0), new Grass());
         p.show();
 
         for (int i = 0; i < 200; i++) {
