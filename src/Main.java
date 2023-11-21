@@ -20,7 +20,7 @@ public class Main {
 
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
-       
+
         // Display information
             // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green,"grass",true));
@@ -31,8 +31,7 @@ public class Main {
         DisplayInformation di = new DisplayInformation(Color.red);
         p.setDisplayInformation(Rabbit.class, di);
 
-
-        // Tiles + show
+        // Set grass
         world.setTile(new Location(0, 0), new Grass());
         world.setTile(new Location(3, 2), new Flower());
         p.show();
@@ -47,11 +46,7 @@ public class Main {
         int delay = 1000;
         int display_size = 800;
         int amount = 10;
-
         Random r = new Random();
-
-        Program p = new Program(size, display_size, delay);
-        World world = p.getWorld();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);
             int y = r.nextInt(size);
@@ -66,9 +61,7 @@ public class Main {
             world.setTile(l, new Rabbit());
         }
 
-        DisplayInformation di = new DisplayInformation(Color.red);
-        p.setDisplayInformation(Rabbit.class, di);
-
+        // Show
         p.show();
 
         for (int i = 0; i < 200; i++) {
