@@ -18,13 +18,13 @@ public class Rabbit implements Actor {
         this.age = 0;
         this.maxAge = 70;
         this.energy = 10;
-        this.maxEnergy = maxEnergy - (age / 5);
+        this.maxEnergy = 10;
         this.hole = null;
     }
 
     @Override
     public void act(World world) {
-
+        maxEnergy = maxEnergy - (age / 5);
         if (age == maxAge) {
             world.delete(this);
         }
