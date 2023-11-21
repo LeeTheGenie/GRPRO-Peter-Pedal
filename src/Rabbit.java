@@ -27,22 +27,13 @@ public class Rabbit implements Actor {
     @Override
     public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7);
-        if (age > maxAge)
+        if (age == maxAge || energy == 0)
             try {
                 world.delete(this);
-                System.out.println("død");
             } catch (Exception e) {
 
             }
 
-        if (energy == 0) {
-            try {
-                world.delete(this);
-                System.out.println("død");
-            } catch (Exception e) {
-
-            }
-        }
         if (world.isNight()) {
             digHole(world);
             try {
@@ -51,13 +42,13 @@ public class Rabbit implements Actor {
 
             }
         }
-
         eat(world);
         reproduce(world);
         move(world);
         age++;
     }
 
+    // virker ikke
     public void eat(World world) {
         try {
             Set<Location> tiles = world.getSurroundingTiles();
@@ -75,15 +66,15 @@ public class Rabbit implements Actor {
     }
 
     public void move(World world) {
-        if (true) {
-            Set<Location> neighbors = world.getEmptySurroundingTiles();
-            List<Location> list = new ArrayList<>(neighbors);
-            Random r = new Random();
-
-            int randomLocation = r.nextInt(list.size());
-            Location newLocation = list.get(randomLocation);
-
+        if (energy > 0) {
             try {
+                Set<Location> neighbors = world.getEmptySurroundingTiles();
+                List<Location> list = new ArrayList<>(neighbors);
+                Random r = new Random();
+
+                int randomLocation = r.nextInt(list.size());
+                Location newLocation = list.get(randomLocation);
+
                 world.move(this, newLocation);
             } catch (Exception e) {
 
@@ -93,11 +84,13 @@ public class Rabbit implements Actor {
     }
 
     public void reproduce(World world) {
-        if (energy > 5 && age > 10) {
-            Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
-            for (Location l : tiles) {
-                if (world.getTile(l) instanceof Rabbit) {
-                    try {
+
+        if (energy > 7 && age > 8) {
+            try {
+                Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
+                for (Location l : tiles) {
+                    if (world.getTile(l) instanceof Rabbit) {
+
                         // Get surrounding tiles
                         Set<Location> neighbors = world.getEmptySurroundingTiles();
                         List<Location> list = new ArrayList<>(neighbors);
@@ -109,16 +102,16 @@ public class Rabbit implements Actor {
 
                         // create a new instance of Rabbit and put it on the world
                         world.setTile(newLocation, new Rabbit());
-                    } catch (Exception e) {
-                        // There are no possible spaces to move to
                     }
                 }
-            }
+                energy -= 2;
+            } catch (Exception e) {
 
+            }
         }
-        energy -= 2;
     }
 
+    // virker ikke
     public void digHole(World world) {
         // sletter kanin :'(
         world.delete(world.getTile(world.getLocation(this)));
