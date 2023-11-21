@@ -28,8 +28,12 @@ public class Main {
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower", false));
 
         // Rabbit
-        DisplayInformation di = new DisplayInformation(Color.black, "rabbit-small");
-        p.setDisplayInformation(Rabbit.class, di);
+        DisplayInformation rdi = new DisplayInformation(Color.black, "rabbit-small");
+        p.setDisplayInformation(Rabbit.class, rdi);
+
+        // RabbitHole
+        DisplayInformation rhdi = new DisplayInformation(Color.black, "hole");
+        p.setDisplayInformation(RabbitHole.class, rhdi);
 
         // Set grass
         world.setTile(new Location(0, 0), new Grass());

@@ -43,6 +43,15 @@ public class Rabbit implements Actor {
 
             }
         }
+        if (world.isNight()) {
+            digHole(world);
+            try {
+                world.remove(this);
+            } catch (Exception e) {
+
+            }
+        }
+
         eat(world);
         reproduce(world);
         move(world);
@@ -66,7 +75,7 @@ public class Rabbit implements Actor {
     }
 
     public void move(World world) {
-        if (energy > 0) {
+        if (true) {
             Set<Location> neighbors = world.getEmptySurroundingTiles();
             List<Location> list = new ArrayList<>(neighbors);
             Random r = new Random();
@@ -108,5 +117,12 @@ public class Rabbit implements Actor {
 
         }
         energy -= 2;
+    }
+
+    public void digHole(World world) {
+        // sletter kanin :'(
+        world.delete(world.getTile(world.getLocation(this)));
+        hole = new RabbitHole();
+        world.setTile(world.getCurrentLocation(), hole);
     }
 }
