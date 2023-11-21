@@ -1,5 +1,6 @@
 import itumulator.simulator.Actor;
 import itumulator.world.World;
+import java.awt.Color;
 
 public class LivingBeing implements Actor {
 
@@ -13,6 +14,7 @@ public class LivingBeing implements Actor {
     LivingBeing(int age, int maxAge) {
         this.age = age;
         this.maxAge = maxAge;
+        
     }
 
     public void ageUp(World world) {

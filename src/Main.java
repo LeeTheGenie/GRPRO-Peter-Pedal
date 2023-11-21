@@ -24,6 +24,9 @@ public class Main {
         // Display information
             // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green,"grass",true));
+            // Flower
+        p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow,"flower",false));
+
             // Rabbit
         DisplayInformation di = new DisplayInformation(Color.red);
         p.setDisplayInformation(Rabbit.class, di);
@@ -31,6 +34,7 @@ public class Main {
 
         // Tiles + show
         world.setTile(new Location(0, 0), new Grass());
+        world.setTile(new Location(3, 2), new Flower());
         p.show();
 
         for (int i = 0; i < 3000; i++) {
