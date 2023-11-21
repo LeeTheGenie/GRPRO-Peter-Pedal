@@ -19,7 +19,7 @@ public class RabbitHole implements NonBlocking, Actor {
     }
     
     public void act(World world) {
-        
+        System.out.println("bøh");
     }
 
     public void rabbitStay(World world){
