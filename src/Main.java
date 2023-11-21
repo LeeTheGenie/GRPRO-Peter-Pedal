@@ -20,19 +20,19 @@ public class Main {
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
         Location place = new Location(0, 0);
-        Person person = new Person();
+        Rabbit rabbit = new Rabbit();
 
-        world.setTile(place, person);
+        world.setTile(place, rabbit);
 
         DisplayInformation di = new DisplayInformation(Color.red);
-        p.setDisplayInformation(Person.class, di);
+        p.setDisplayInformation(Rabbit.class, di);
 
         p.show();
 
         for (int i = 0; i < 200; i++) {
             try {
                 if (world.isNight()) {
-                    world.remove(person);
+                    world.remove(rabbit);
                 }
             } catch (Exception e) {
 
@@ -62,11 +62,11 @@ public class Main {
                 l = new Location(x, y);
             }
             // og herefter kan vi så anvende den:
-            world.setTile(l, new Person());
+            world.setTile(l, new Rabbit());
         }
 
         DisplayInformation di = new DisplayInformation(Color.red);
-        p.setDisplayInformation(Person.class, di);
+        p.setDisplayInformation(Rabbit.class, di);
 
         p.show();
 

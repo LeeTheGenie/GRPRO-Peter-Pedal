@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Person implements Actor {
+public class Rabbit implements Actor {
 
     @Override
     public void act(World world) {
