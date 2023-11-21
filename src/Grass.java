@@ -18,15 +18,13 @@ public class Grass implements NonBlocking, Actor {
     }
 
     public void act(World world) {
-        if(timeToNextSpread<=0)
+        if (timeToNextSpread <= 0)
             spread(world);
-        if(lifeTime<=0)
+        if (lifeTime <= 0)
             destroyGrass(world);
         lifeTime--;
         timeToNextSpread--;
     }
-
-
 
     /* This method is used for grass to spread */
     public void spread(World world) {

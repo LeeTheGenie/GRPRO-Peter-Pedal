@@ -46,8 +46,10 @@ public class Rabbit implements Actor {
 
     public void eat(World world) {
         try {
-            if (world.getTile(world.getLocation(this)) instanceof Grass) {
-                world.remove(world.getTile(world.getLocation(this)));
+            if (world.getTile(world.getLocation(this)) instanceof Grass
+                    && world.getTile(world.getLocation(this)) instanceof Rabbit) {
+                world.delete(world.getTile(world.getLocation(this)));
+                System.out.println("hej");
             }
         } catch (Exception e) {
 
@@ -78,7 +80,7 @@ public class Rabbit implements Actor {
     }
 
     public void reproduce(World world) {
-        if (energy > 5 && world.getSurroundingTiles() instanceof Rabbit) {
+        if (energy > 0 && world.getSurroundingTiles() instanceof Rabbit) {
             try {
                 // Get surrounding tiles
                 Set<Location> neighbors = world.getEmptySurroundingTiles();
@@ -91,6 +93,7 @@ public class Rabbit implements Actor {
 
                 // create a new instance of Rabbit and put it on the world
                 world.setTile(newLocation, new Rabbit());
+                System.out.println("hej2");
             } catch (Exception e) {
                 // There are no possible spaces to move to
             }
