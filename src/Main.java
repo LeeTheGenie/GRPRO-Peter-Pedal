@@ -15,7 +15,7 @@ public class Main {
     public static void setupAndRunSimulation() {
         // World Setup
         int size = 8;
-        int delay = 100;
+        int delay = 1000;
         int display_size = 800;
 
         Program p = new Program(size, display_size, delay);
@@ -36,7 +36,7 @@ public class Main {
         world.setTile(new Location(3, 2), new Flower());
 
         // set rabbit
-        int amount = 2;
+        int amount = 5;
         Random r = new Random();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);

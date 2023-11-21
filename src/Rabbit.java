@@ -17,6 +17,7 @@ public class Rabbit implements Actor {
 
     public Rabbit() {
         this.age = 0;
+        this.maxAge = 70;
         this.energy = 10;
         this.trueMaxEnergy = 10;
         this.maxEnergy = 10;
@@ -26,6 +27,13 @@ public class Rabbit implements Actor {
     @Override
     public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7);
+        if (age > maxAge)
+            try {
+                world.delete(this);
+                System.out.println("død");
+            } catch (Exception e) {
+
+            }
 
         if (energy == 0) {
             try {
@@ -43,34 +51,30 @@ public class Rabbit implements Actor {
 
     public void eat(World world) {
         try {
-            Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
+            Set<Location> tiles = world.getSurroundingTiles();
             for (Location l : tiles) {
-                System.out.println("spis");
                 if (world.getTile(l) instanceof Grass) {
                     world.delete(l);
-                    System.out.println("spis");
                 }
             }
         } catch (Exception e) {
 
         }
-
         if (energy < maxEnergy) {
             energy++;
         }
-
     }
 
     public void move(World world) {
         if (energy > 0) {
+            Set<Location> neighbors = world.getEmptySurroundingTiles();
+            List<Location> list = new ArrayList<>(neighbors);
+            Random r = new Random();
+
+            int randomLocation = r.nextInt(list.size());
+            Location newLocation = list.get(randomLocation);
+
             try {
-                Set<Location> neighbors = world.getEmptySurroundingTiles();
-                List<Location> list = new ArrayList<>(neighbors);
-                Random r = new Random();
-
-                int randomLocation = r.nextInt(list.size());
-                Location newLocation = list.get(randomLocation);
-
                 world.move(this, newLocation);
             } catch (Exception e) {
 
@@ -80,7 +84,7 @@ public class Rabbit implements Actor {
     }
 
     public void reproduce(World world) {
-        if (energy > 9) {
+        if (energy > 5 && age > 10) {
             Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
             for (Location l : tiles) {
                 if (world.getTile(l) instanceof Rabbit) {
