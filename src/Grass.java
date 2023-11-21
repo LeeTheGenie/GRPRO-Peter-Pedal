@@ -21,8 +21,10 @@ public class Grass implements NonBlocking, Actor {
 
     public void act(World world) {
         lifeCount++;
-        if (lifeCount == spread) {
+        if (lifeCount % spread == 0) {
             try {
+                Location stay = world.getCurrentLocation();
+                world.setTile(stay, this);
                 Set<Location> neighbors = world.getEmptySurroundingTiles();
                 List<Location> list = new ArrayList<>(neighbors);
                 Random r = new Random();
