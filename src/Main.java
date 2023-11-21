@@ -21,34 +21,20 @@ public class Main {
 
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
-       
+
         // Display information
-            // Grass
-        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green,"grass",true));
-            // Rabbit
-        DisplayInformation di = new DisplayInformation(Color.red);
-        p.setDisplayInformation(Rabbit.class, di);
+        // Grass
+        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass", true));
+        // Rabbit
+        DisplayInformation rdi = new DisplayInformation(Color.red, "rabbit-small");
+        p.setDisplayInformation(Rabbit.class, rdi);
 
-
-        // Tiles + show
+        // Set grass
         world.setTile(new Location(0, 0), new Grass());
-        p.show();
 
-        for (int i = 0; i < 200; i++) {
-            p.simulate();
-        }
-    }
-
-    public static void setupAndRunSimulation2() {
-        int size = 15;
-        int delay = 1000;
-        int display_size = 800;
+        // Set rabbits
         int amount = 10;
-
         Random r = new Random();
-
-        Program p = new Program(size, display_size, delay);
-        World world = p.getWorld();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);
             int y = r.nextInt(size);
@@ -63,9 +49,7 @@ public class Main {
             world.setTile(l, new Rabbit());
         }
 
-        DisplayInformation di = new DisplayInformation(Color.red);
-        p.setDisplayInformation(Rabbit.class, di);
-
+        // Show
         p.show();
 
         for (int i = 0; i < 200; i++) {

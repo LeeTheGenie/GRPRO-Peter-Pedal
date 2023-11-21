@@ -26,10 +26,18 @@ public class Rabbit implements Actor {
     public void act(World world) {
         maxEnergy = maxEnergy - (age / 5);
         if (age == maxAge) {
-            world.delete(this);
+            try {
+                world.delete(this);
+            } catch (Exception e) {
+
+            }
         }
         if (energy == 0) {
-            world.delete(this);
+            try {
+                world.delete(this);
+            } catch (Exception e) {
+
+            }
         }
         eat(world);
         move(world);
@@ -37,9 +45,14 @@ public class Rabbit implements Actor {
     }
 
     public void eat(World world) {
-        if (world.getTile(world.getLocation(this)) instanceof Grass) {
-            world.remove(world.getTile(world.getLocation(this)));
+        try {
+            if (world.getTile(world.getLocation(this)) instanceof Grass) {
+                world.remove(world.getTile(world.getLocation(this)));
+            }
+        } catch (Exception e) {
+
         }
+
         if (energy < maxEnergy) {
             energy++;
         }
