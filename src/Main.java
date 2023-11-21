@@ -34,6 +34,23 @@ public class Main {
         // Set grass
         world.setTile(new Location(0, 0), new Grass());
         world.setTile(new Location(3, 2), new Flower());
+
+        // set rabbit
+        int amount = 10;
+        Random r = new Random();
+        for (int i = 0; i < amount; i++) {
+            int x = r.nextInt(size);
+            int y = r.nextInt(size);
+            Location l = new Location(x, y);
+            // Så længe pladsen ikke er tom, forsøger vi med en ny tilfældig plads:
+            while (!world.isTileEmpty(l)) {
+                x = r.nextInt(size);
+                y = r.nextInt(size);
+                l = new Location(x, y);
+            }
+            // og herefter kan vi så anvende den:
+            world.setTile(l, new Rabbit());
+        }
         p.show();
 
         for (int i = 0; i < 3000; i++) {
