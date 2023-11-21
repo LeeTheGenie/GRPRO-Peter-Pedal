@@ -114,8 +114,12 @@ public class Rabbit implements Actor {
     // virker ikke
     public void digHole(World world) {
         // sletter kanin :'(
-        world.delete(world.getTile(world.getLocation(this)));
-        hole = new RabbitHole();
-        world.setTile(world.getCurrentLocation(), hole);
+        try {
+            world.delete(world.getTile(world.getLocation(this)));
+            hole = new RabbitHole();
+            world.setTile(world.getCurrentLocation(), hole);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 }

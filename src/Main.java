@@ -40,21 +40,23 @@ public class Main {
         world.setTile(new Location(3, 2), new Flower());
 
         // set rabbit
-        int amount = 5;
+        int amount = 20;
         Random r = new Random();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);
             int y = r.nextInt(size);
             Location l = new Location(x, y);
-            // Så længe pladsen ikke er tom, forsøger vi med en ny tilfældig plads:
+
             while (!world.isTileEmpty(l)) {
                 x = r.nextInt(size);
                 y = r.nextInt(size);
                 l = new Location(x, y);
             }
-            // og herefter kan vi så anvende den:
+
             world.setTile(l, new Rabbit());
         }
+
+        // show
         p.show();
 
         for (int i = 0; i < 1000; i++) {
