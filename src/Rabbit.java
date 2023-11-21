@@ -113,13 +113,13 @@ public class Rabbit implements Actor {
 
     // virker ikke
     public void digHole(World world) {
-        // sletter kanin :'(
+        // sletter kanin og ikke grass / flower :'(
         try {
             world.delete(world.getTile(world.getLocation(this)));
             hole = new RabbitHole();
             world.setTile(world.getCurrentLocation(), hole);
         } catch (Exception e) {
-            // TODO: handle exception
+
         }
     }
 }
