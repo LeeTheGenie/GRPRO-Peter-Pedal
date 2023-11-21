@@ -5,7 +5,6 @@ import itumulator.executable.Program;
 import itumulator.world.World;
 import itumulator.world.Location;
 import java.util.Random;
-import java.awt.Image;
 
 public class Main {
 
@@ -15,24 +14,37 @@ public class Main {
 
     public static void setupAndRunSimulation() {
         // World Setup
-        int size = 5;
-        int delay = 1000;
+        int size = 8;
+        int delay = 100;
         int display_size = 800;
 
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
 
         // Display information
-        // Grass
-        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass", true));
-        // Rabbit
-        DisplayInformation rdi = new DisplayInformation(Color.red, "rabbit-small");
-        p.setDisplayInformation(Rabbit.class, rdi);
+            // Grass
+        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green,"grass",true));
+            // Flower
+        p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow,"flower",false));
+
+            // Rabbit
+        DisplayInformation di = new DisplayInformation(Color.red);
+        p.setDisplayInformation(Rabbit.class, di);
 
         // Set grass
         world.setTile(new Location(0, 0), new Grass());
+        world.setTile(new Location(3, 2), new Flower());
+        p.show();
 
-        // Set rabbits
+        for (int i = 0; i < 3000; i++) {
+            p.simulate();
+        }
+    }
+
+    public static void setupAndRunSimulation2() {
+        int size = 15;
+        int delay = 1000;
+        int display_size = 800;
         int amount = 10;
         Random r = new Random();
         for (int i = 0; i < amount; i++) {
