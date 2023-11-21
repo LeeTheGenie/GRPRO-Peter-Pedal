@@ -20,23 +20,36 @@ public class Grass implements NonBlocking, Actor {
     }
 
     public void act(World world) {
+        if(lifeCount%spread==0)
+            spread(world);
+        if(lifeCount==lifeThreshold)
+            destroyGrass(world);
         lifeCount++;
-        if (lifeCount % spread == 0) {
-            try {
-                Location stay = world.getCurrentLocation();
-                world.setTile(stay, this);
-                Set<Location> neighbors = world.getEmptySurroundingTiles();
-                List<Location> list = new ArrayList<>(neighbors);
-                Random r = new Random();
+    }
 
-                int randomLocation = r.nextInt(list.size());
-                Location newLocation = list.get(randomLocation);
 
-                world.move(this, newLocation);
-            } catch (Exception e) {
 
-            }
+    /* This method is used for grass to spread */
+    public void spread(World world) {
+        try {
+            // Get surrounding tiles
+            Set<Location> neighbors = world.getEmptySurroundingTiles();
+            List<Location> list = new ArrayList<>(neighbors);
+
+            // take one random surrounding tile
+            Random r = new Random();
+            int randomLocation = r.nextInt(list.size());
+            Location newLocation = list.get(randomLocation);
+
+            // create a new instance of grass and put it on the world
+            world.setTile(newLocation, new Grass());
+        } catch (Exception e) {
+            // There are no possible spaces to move to
         }
+    }
+
+    public void destroyGrass(World world) {
+        world.remove(this);
     }
 
     public int getLifeCount() {
