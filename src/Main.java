@@ -25,14 +25,14 @@ public class Main {
        
         // Display information
             // Grass
-        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green,"/resources/images/grass.png",true));
+        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green,"grass",true));
             // Rabbit
         DisplayInformation di = new DisplayInformation(Color.red);
         p.setDisplayInformation(Rabbit.class, di);
 
 
         // Tiles + show
-        //world.setTile(place, new Grass());
+        world.setTile(place, new Grass());
         p.show();
 
         for (int i = 0; i < 200; i++) {
