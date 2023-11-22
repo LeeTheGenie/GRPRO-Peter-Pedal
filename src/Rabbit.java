@@ -48,6 +48,8 @@ public class Rabbit implements Actor {
         age++;
     }
 
+    // checks if rabbit is standing on grass if it is then it eats it and gains one
+    // energy
     // virker ikke
     public void eat(World world) {
         try {
@@ -65,7 +67,7 @@ public class Rabbit implements Actor {
         }
     }
 
-    // Move to a random free location within radius of 1
+    // Move to a random free location within radius of 1, costs 1 energy
     public void move(World world) {
         if (energy > 0) {
             try {
@@ -84,7 +86,8 @@ public class Rabbit implements Actor {
         energy--;
     }
 
-    // makes another rabbit if another rabbit older than 8 days and ha
+    // makes another rabbit if there is another rabbit within radius of 1 and energy
+    // is greater than 7 and age greater than 8 costs 2 energy
     public void reproduce(World world) {
 
         if (energy > 7 && age > 8) {
@@ -113,6 +116,7 @@ public class Rabbit implements Actor {
         }
     }
 
+    // digs a hole and enters it when it is night
     // virker ikke
     public void digHole(World world) {
         // sletter kanin og ikke grass / flower :'(
