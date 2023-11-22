@@ -20,13 +20,19 @@ public class LivingBeing implements Actor {
     public void ageUp(World world) {
         age++;
         if(age>=maxAge) {
+            if(!(this instanceof Plant))
+                System.out.println("I \""+this.getClass()+"\" died of old age at age: "+age);
             die(world);
         }
     }
 
     public void die(World world) {
         onDeath();
-        world.delete(this);
+        try {
+            world.delete(this);
+        } catch(IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void onDeath() {

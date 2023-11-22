@@ -10,13 +10,13 @@ public class Rabbit extends Animal {
     private RabbitHole hole;
 
     public Rabbit() {
-        super(0,70,10);
+        super(0,70,30);
         this.hole = null;
     }
 
     @Override public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
-
+        /*
         if (world.isNight()) {
             digHole(world);
             try {
@@ -24,7 +24,7 @@ public class Rabbit extends Animal {
             } catch (Exception e) {
 
             }
-        }
+        }*/
 
         eat(world);
         reproduce(world);
@@ -33,7 +33,7 @@ public class Rabbit extends Animal {
     }
 
     public void eat(World world) { // spiser på den tile den står på
-        int energyIncrement = 1; // hvor meget energi man får 
+        int energyIncrement = 8; // hvor meget energi man får 
         if (currentEnergy==maxEnergy) // hvis du ikke gavner af at spise så lad vær
             return;
         try {

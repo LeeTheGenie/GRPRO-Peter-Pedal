@@ -14,13 +14,10 @@ public class Animal extends LivingBeing {
     }
 
     @Override public void act(World world) {
-        if(currentEnergy==0)
+        if(currentEnergy==0) {
+            System.out.println("I \""+this.getClass()+"\" died of energyloss at age: "+age);
             die(world);
+        }
         super.act(world);
     }
-
-    public void checkEnergy() {
-
-    };
-
 }
