@@ -8,7 +8,7 @@ public class LivingBeing implements Actor {
     int maxAge;     // The max Age of a being
 
     @Override public void act(World world) {
-        // This is the ultimate being in the world of ideas - it does not act
+        ageUp(world);
     }
 
     LivingBeing(int age, int maxAge) {

@@ -25,10 +25,10 @@ public class RabbitHole implements NonBlocking, Actor {
     public void rabbitStay(World world){
         Random rand = new Random();
 
-        if(world.isNight()==true){
+        if(world.isNight()==true){/*
             if(){
 
-            }
+            }*/
         }
         else{
             if(rand.nextInt(1)==0){
