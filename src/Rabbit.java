@@ -65,6 +65,7 @@ public class Rabbit implements Actor {
         }
     }
 
+    // Move to a random free location within radius of 1
     public void move(World world) {
         if (energy > 0) {
             try {
@@ -83,6 +84,7 @@ public class Rabbit implements Actor {
         energy--;
     }
 
+    // makes another rabbit if another rabbit older than 8 days and ha
     public void reproduce(World world) {
 
         if (energy > 7 && age > 8) {
