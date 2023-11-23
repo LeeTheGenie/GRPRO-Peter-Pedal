@@ -14,7 +14,7 @@ public class Main {
 
     public static void setupAndRunSimulation() {
         // World Setup
-        int size = 8;
+        int size = 2; //ændre size tilbage
         int delay = 100;
         int display_size = 800;
 
@@ -33,11 +33,17 @@ public class Main {
 
         // Set grass
         world.setTile(new Location(0, 0), new Rabbit());
-        world.setTile(new Location(3, 2), new Flower());
+        world.setTile(new Location(1, 0), new Rabbit());
+        world.setTile(new Location(1,1 ), new RabbitHole());
+        //world.setTile(new Location(3, 2), new Flower()); 
+        /*for(int i=0;i<8;i++){ //husk at fjern test
+            for(int y=0;y<8;y++){
+                world.setTile(new Location(i, y), new RabbitHole());}
+            }*/
         p.show();
 
         // set rabbit
-        int amount = 10;
+       /*   int amount = 10;
         Random r = new Random();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);
@@ -46,8 +52,8 @@ public class Main {
 
             if (!world.containsNonBlocking(l))
                 world.setTile(l, new Grass());
-        }
-
+        }*/
+ 
         // show
         p.show();
 

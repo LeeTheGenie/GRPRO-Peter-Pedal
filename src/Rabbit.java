@@ -29,7 +29,7 @@ public class Rabbit extends Animal {
          */
 
         eat(world);
-        reproduce(world);
+        //reproduce(world);
         move(world);
         super.act(world); // age up & check for if energy == 0
     }

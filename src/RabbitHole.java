@@ -7,36 +7,48 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RabbitHole implements NonBlocking, Actor {
-    private ArrayList<Rabbit> rabbits;
-    private ArrayList<RabbitHole> exits;
+public class RabbitHole extends LivingBeing implements NonBlocking {
     
-    public RabbitHole(){
-        this.rabbits = new ArrayList<Rabbit>(); //Number of rabbits in RabbitHole/tunnel
+    ArrayList<Object> rabbits;
 
-        this.exits = new ArrayList<RabbitHole>();
-        this.exits.add(this);
-    }
-    
-    public void act(World world) {
-        System.out.println("bøh");
+    @Override public void act(World world) {
+        keepRabbit(world);
+        exitRabbit(world);
     }
 
-    public void rabbitStay(World world){
-        Random rand = new Random();
+    RabbitHole(){
+    super(0,0);
+    this.rabbits = new ArrayList<>();
+    }
 
-        if(world.isNight()==true){/*
-            if(){
+    public void keepRabbit(World world){
+        if(world.isNight()==true){
+            if(world.getTile(world.getLocation(this)) instanceof Rabbit){
+                Object rabbit = world.getTile(world.getLocation(this));
+                this.rabbits.add(rabbit);
+                world.remove(rabbit);
 
-            }*/
-        }
-        else{
-            if(rand.nextInt(1)==0){
-                world.getTiles();
-                    System.out.println("bruh");
+                System.out.println("Rabbits resting: "+this.rabbits);
+                System.out.println("In this rabbithole: "+world.getTile(world.getLocation(this)));
             }
+        }
+    }
+
+    public void exitRabbit(World world){
+        try{
+        if(world.isDay()==true){
+            for(Object rabbit:rabbits){
+                
+                
+                
+                System.out.println(rabbit+" left "+this);
+                this.rabbits.remove(rabbit);
+            }
+        }
+        }catch(Exception e){
 
         }
     }
+    
 
 }
