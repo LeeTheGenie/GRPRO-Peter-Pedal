@@ -15,45 +15,37 @@ public class Main {
     public static void setupAndRunSimulation() {
         // World Setup
         int size = 8;
-        int delay = 1000;
+        int delay = 100;
         int display_size = 800;
 
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
 
         // Display information
-        // Grass
+            // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass", true));
-        // Flower
-        p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower", false));
-
-        // Rabbit
-        DisplayInformation rdi = new DisplayInformation(Color.black, "rabbit-small");
-        p.setDisplayInformation(Rabbit.class, rdi);
-
-        // RabbitHole
-        DisplayInformation rhdi = new DisplayInformation(Color.black, "hole");
-        p.setDisplayInformation(RabbitHole.class, rhdi);
+            // Flower
+        p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
+            // Rabbit
+        p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
+            // RabbitHole
+        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black,"hole",false));
 
         // Set grass
-        world.setTile(new Location(0, 0), new Grass());
+        world.setTile(new Location(0, 0), new Rabbit());
         world.setTile(new Location(3, 2), new Flower());
+        p.show();
 
         // set rabbit
-        int amount = 20;
+        int amount = 10;
         Random r = new Random();
         for (int i = 0; i < amount; i++) {
             int x = r.nextInt(size);
             int y = r.nextInt(size);
             Location l = new Location(x, y);
 
-            while (!world.isTileEmpty(l)) {
-                x = r.nextInt(size);
-                y = r.nextInt(size);
-                l = new Location(x, y);
-            }
-
-            world.setTile(l, new Rabbit());
+            if(!world.containsNonBlocking(l))
+                world.setTile(l, new Grass());
         }
 
         // show
