@@ -26,7 +26,9 @@ public class Main {
         }
 
     }
-
+    /* 
+     * Fileloader takes one argument (String fileLocation) and returns a program where in the world of the program, the given file is loaded and objects are put in.
+     */
     static Program FileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
         // Variables
         int size = 1; // will change 
@@ -46,7 +48,7 @@ public class Main {
         
         // Display information
         // Grass
-        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass", true));
+        p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass3", true));
         // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
         // Rabbit
@@ -67,7 +69,7 @@ public class Main {
         // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky
         // for making sure we dont add more objects than there is space for
         int[] addedObjects = {0,0,0}; 
-        final int space = size^2;
+        final int space = size*size;
 
         // scan the file and add the object
         while(sc.hasNextLine()) {
@@ -96,7 +98,7 @@ public class Main {
             int diff = Math.abs(max-min);   // find the difference between the highest and lowest
             int randAmt = r.nextInt(diff);  // create a random number up until the difference
             int finalAmt = randAmt + min;   // add the random amount to the minimum amount to find the final amount
-            System.out.println("d:"+diff+", r:"+randAmt+", f:"+finalAmt);
+            //System.out.println("d:"+diff+", r:"+randAmt+", f:"+finalAmt);
 
             // get which plane its on 
             int zPointer = 1; 
@@ -109,7 +111,8 @@ public class Main {
                 // is there space? 
                 if(addedObjects[zPointer]>=space) {
                     // TODO: ADD ERROR?
-                    System.out.println("NO MORE SPACE ON PLANE ["+zPointer+"] ENDING PLACEMENT OPERATIONS!");
+                    System.out.println("NO MORE SPACE ON PLANE ["+zPointer+"] FOR:\""+sampleCreature+"\" WITH: \""+
+                    addedObjects[zPointer]+"/"+space+"\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
                     break;
                 }
                 
@@ -120,7 +123,6 @@ public class Main {
                     Location l = new Location(x, y);
 
                     // test for the specific plane if it can fit
-                    System.out.println("Adding: "+sampleCreature);
                     switch (zPointer) {
                         case 0:
                             if(!world.containsNonBlocking(l)) {                  

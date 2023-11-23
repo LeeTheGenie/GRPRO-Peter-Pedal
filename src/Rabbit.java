@@ -1,4 +1,3 @@
-import itumulator.simulator.Actor;
 import itumulator.world.World;
 import itumulator.world.Location;
 import java.util.Set;
@@ -45,7 +44,6 @@ public class Rabbit extends Animal {
         try {
             if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
                 world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
-
                 currentEnergy += energyIncrement;
                 if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
                     currentEnergy = maxEnergy;

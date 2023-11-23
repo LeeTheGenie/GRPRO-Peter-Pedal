@@ -1,9 +1,5 @@
 import itumulator.world.NonBlocking;
-import itumulator.simulator.Actor;
 import itumulator.world.World;
-import itumulator.world.Location;
-import java.util.Set;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -24,7 +20,7 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
     }
 
     @Override public void act(World world) {
-        System.out.println("bøh");
+        //System.out.println("bøh");
     }
 
     public void rabbitStay(World world){
