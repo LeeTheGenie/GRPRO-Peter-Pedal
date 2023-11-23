@@ -45,11 +45,11 @@ public class Main {
         Program p = new Program(size, display_size, delay);
         
         // Display information
-            // Grass
+        // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass", true));
-            // Flower
+        // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
-            // Rabbit
+        // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
             // RabbitHole
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black,"hole",false));

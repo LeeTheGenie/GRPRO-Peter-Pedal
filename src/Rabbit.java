@@ -14,46 +14,48 @@ public class Rabbit extends Animal {
     }
 
     public Rabbit() {
-        super(0,70,30);
+        super(0, 70, 30);
         this.hole = null;
     }
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
         /*
-        if (world.isNight()) {
-            digHole(world);
-            try {
-                world.remove(this);
-            } catch (Exception e) {
-
-            }
-        }*/
+         * if (world.isNight()) {
+         * digHole(world);
+         * try {
+         * world.remove(this);
+         * } catch (Exception e) {
+         * 
+         * }
+         * }
+         */
 
         eat(world);
         reproduce(world);
-        move(world);        
+        move(world);
         super.act(world); // age up & check for if energy == 0
     }
 
     public void eat(World world) { // spiser på den tile den står på
-        int energyIncrement = 8; // hvor meget energi man får 
-        if (currentEnergy==maxEnergy) // hvis du ikke gavner af at spise så lad vær
+        int energyIncrement = 8; // hvor meget energi man får
+        if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
             return;
         try {
-            if(world.getNonBlocking(world.getLocation(this)) instanceof Plant ) { // er det en plant
+            if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
                 world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
-                
 
-                currentEnergy+=energyIncrement;
-                if(currentEnergy>maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
-                    currentEnergy=maxEnergy;
+                currentEnergy += energyIncrement;
+                if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
+                    currentEnergy = maxEnergy;
             }
         } catch (IllegalArgumentException e ) { // if the current tile does not have a nonblocking it returns IllegalArgumentException
             //System.out.println(e.getMessage());
         }        
     }
 
+    // Move to a random free location within radius of 1, costs 1 energy
     public void move(World world) {
         if (currentEnergy > 0) {
             try {
@@ -72,6 +74,8 @@ public class Rabbit extends Animal {
         currentEnergy--;
     }
 
+    // makes another rabbit if there is another rabbit within radius of 1 and energy
+    // is greater than 7 and age greater than 8 costs 2 energy
     public void reproduce(World world) {
 
         if (currentEnergy > 7 && age > 8) {
@@ -100,6 +104,7 @@ public class Rabbit extends Animal {
         }
     }
 
+    // digs a hole and enters it when it is night
     // virker ikke
     public void digHole(World world) {
         // sletter kanin og ikke grass / flower :'(
