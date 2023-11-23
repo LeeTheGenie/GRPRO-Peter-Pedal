@@ -1,3 +1,4 @@
+import itumulator.simulator.Actor;
 import itumulator.world.World;
 
 public class Animal extends LivingBeing {
@@ -19,5 +20,9 @@ public class Animal extends LivingBeing {
             die(world);
         }
         super.act(world);
+    }
+
+    @Override public LivingBeing newInstance() {
+        return new Animal(0,maxAge,trueMaxEnergy);
     }
 }

@@ -9,6 +9,10 @@ import java.util.Random;
 public class Rabbit extends Animal {
     private RabbitHole hole;
 
+    @Override public Rabbit newInstance() {
+        return new Rabbit();
+    }
+
     public Rabbit() {
         super(0,70,30);
         this.hole = null;
@@ -46,7 +50,7 @@ public class Rabbit extends Animal {
                     currentEnergy=maxEnergy;
             }
         } catch (IllegalArgumentException e ) { // if the current tile does not have a nonblocking it returns IllegalArgumentException
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }        
     }
 

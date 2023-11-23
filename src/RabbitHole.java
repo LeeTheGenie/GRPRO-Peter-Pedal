@@ -7,18 +7,23 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RabbitHole implements NonBlocking, Actor {
+public class RabbitHole extends LivingBeing implements NonBlocking {
     private ArrayList<Rabbit> rabbits;
     private ArrayList<RabbitHole> exits;
     
     public RabbitHole(){
+        super(0,0);
         this.rabbits = new ArrayList<Rabbit>(); //Number of rabbits in RabbitHole/tunnel
 
         this.exits = new ArrayList<RabbitHole>();
         this.exits.add(this);
     }
-    
-    public void act(World world) {
+
+    @Override public RabbitHole newInstance() {
+        return new RabbitHole();
+    }
+
+    @Override public void act(World world) {
         System.out.println("bøh");
     }
 

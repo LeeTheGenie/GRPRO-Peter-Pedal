@@ -1,6 +1,5 @@
 import itumulator.simulator.Actor;
 import itumulator.world.World;
-import java.awt.Color;
 
 public class LivingBeing implements Actor {
 
@@ -24,6 +23,10 @@ public class LivingBeing implements Actor {
                 System.out.println("I \""+this.getClass()+"\" died of old age at age: "+age);
             die(world);
         }
+    }
+
+    public LivingBeing newInstance() {
+        return new LivingBeing(0,maxAge);
     }
 
     public void die(World world) {
