@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import itumulator.simulator.Actor;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
@@ -10,6 +11,7 @@ public class Plant extends LivingBeing implements NonBlocking {
 
     int reproductiveCooldown;
     int trueReproductiveCooldown;
+    
 
     Plant(int age, int maxAge,int reproductiveCooldown) {
         super(age, maxAge);
@@ -23,9 +25,8 @@ public class Plant extends LivingBeing implements NonBlocking {
             spread(world);
         ageUp(world);
     }
-    
-    public Plant CreateNew(){
-        return new Plant(age, maxAge, reproductiveCooldown);
+    @Override public Plant newInstance() {
+        return new Plant(0,maxAge,trueReproductiveCooldown);
     }
 
     public void spread(World world) {
@@ -46,7 +47,7 @@ public class Plant extends LivingBeing implements NonBlocking {
         Location newLocation = list.get(randomLocation);
         
         // create a new instance of plant and put it on the world
-        world.setTile(newLocation,CreateNew());
+        world.setTile(newLocation,newInstance());
         reproductiveCooldown = trueReproductiveCooldown; // reset the spread timer
     }
 }

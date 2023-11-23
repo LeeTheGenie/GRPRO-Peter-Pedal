@@ -16,6 +16,10 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
         exitRabbit(world);
     }
 
+    @Override public RabbitHole newInstance() {
+        return new RabbitHole();
+    }
+
     RabbitHole(){
     super(0,0);
     this.rabbits = new ArrayList<>();

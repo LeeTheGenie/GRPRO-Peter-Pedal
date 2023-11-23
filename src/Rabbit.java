@@ -9,6 +9,10 @@ import java.util.Random;
 public class Rabbit extends Animal {
     private RabbitHole hole;
 
+    @Override public Rabbit newInstance() {
+        return new Rabbit();
+    }
+
     public Rabbit() {
         super(0, 70, 30);
         this.hole = null;
@@ -46,10 +50,9 @@ public class Rabbit extends Animal {
                 if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
                     currentEnergy = maxEnergy;
             }
-        } catch (IllegalArgumentException e) { // if the current tile does not have a nonblocking it returns
-                                               // IllegalArgumentException
-            System.out.println(e.getMessage());
-        }
+        } catch (IllegalArgumentException e ) { // if the current tile does not have a nonblocking it returns IllegalArgumentException
+            //System.out.println(e.getMessage());
+        }        
     }
 
     // Move to a random free location within radius of 1, costs 1 energy
