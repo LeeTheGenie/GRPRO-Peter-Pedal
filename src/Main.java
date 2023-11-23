@@ -22,14 +22,14 @@ public class Main {
         World world = p.getWorld();
 
         // Display information
-            // Grass
+        // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass", true));
-            // Flower
+        // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
-            // Rabbit
+        // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
-            // RabbitHole
-        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black,"hole",false));
+        // RabbitHole
+        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
 
         // Set grass
         world.setTile(new Location(0, 0), new Rabbit());
@@ -44,7 +44,7 @@ public class Main {
             int y = r.nextInt(size);
             Location l = new Location(x, y);
 
-            if(!world.containsNonBlocking(l))
+            if (!world.containsNonBlocking(l))
                 world.setTile(l, new Grass());
         }
 
