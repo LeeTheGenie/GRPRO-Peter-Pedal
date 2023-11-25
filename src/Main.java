@@ -18,34 +18,35 @@ public class Main {
         try {
             Program p = FileLoader("data\\input-filer 2\\test.txt");
             p.show();
-            for(int i=0;i<300;i++) {
+            for (int i = 0; i < 300; i++) {
                 p.run();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
-    /* 
-     * Fileloader takes one argument (String fileLocation) and returns a program where in the world of the program, the given file is loaded and objects are put in.
+
+    /*
+     * Fileloader takes one argument (String fileLocation) and returns a program
+     * where in the world of the program, the given file is loaded and objects are
+     * put in.
      */
     static Program FileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
         // Variables
-        int size = 1; // will change 
+        int size = 1; // will change
         int delay = 100;
         int display_size = 800;
 
-
         // get file + scanner from file (ERROR LIKELY TO THROW HERE!)
         File f = new File(fileLocation);
-        Scanner sc = new Scanner(f); 
+        Scanner sc = new Scanner(f);
         sc.useDelimiter("[\r\t\f -]");
 
-        
-        // Creating the new program     
+        // Creating the new program
         size = Integer.parseInt(sc.nextLine()); // Get world size from first line
         Program p = new Program(size, display_size, delay);
-        
+
         // Display information
         // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass3", true));
@@ -53,70 +54,73 @@ public class Main {
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
         // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
-            // RabbitHole
-        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black,"hole",false));
-    
-        // Create a hashmap of all the creatures that can be added to the world. (String animalName)->(Instance of animal)
+        // RabbitHole
+        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
+
+        // Create a hashmap of all the creatures that can be added to the world. (String
+        // animalName)->(Instance of animal)
         // Then to create a new fresh animal just do .newInstance();
-        HashMap<String,LivingBeing> allTypes = new HashMap<String,LivingBeing>();
+        HashMap<String, LivingBeing> allTypes = new HashMap<String, LivingBeing>();
         allTypes.put("grass", new Grass());
         allTypes.put("rabbit", new Rabbit());
         allTypes.put("burrow", new RabbitHole());
-       
-       
+
         World world = p.getWorld();
 
         // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky
         // for making sure we dont add more objects than there is space for
-        int[] addedObjects = {0,0,0}; 
-        final int space = size*size;
+        int[] addedObjects = { 0, 0, 0 };
+        final int space = size * size;
 
         // scan the file and add the object
-        while(sc.hasNextLine()) {
+        while (sc.hasNextLine()) {
             // SETUP
             String typeOfCreature = sc.next();
             LivingBeing sampleCreature = allTypes.get(typeOfCreature);
-            if(sampleCreature==null) {
-                System.out.println("GIVEN OBJECT: \""+typeOfCreature+"\" NOT RECOGNIZED ENDING PLACEMENT OPERATIONS!");
+            if (sampleCreature == null) {
+                System.out.println(
+                        "GIVEN OBJECT: \"" + typeOfCreature + "\" NOT RECOGNIZED ENDING PLACEMENT OPERATIONS!");
                 break;
                 // TODO: Add errors
             }
-            if(!sc.hasNextInt()) {
-                // TODO: Add error? 
-                System.out.println("NO AMOUNT SPECIFIER FOR OBJECT: \""+typeOfCreature+"\" ENDING PLACEMENT OPERATIONS!");
-                System.out.println("FOLLOWING LINE: \"" + sc.nextLine()+"\"");
+            if (!sc.hasNextInt()) {
+                // TODO: Add error?
+                System.out.println(
+                        "NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
+                System.out.println("FOLLOWING LINE: \"" + sc.nextLine() + "\"");
                 continue;
             }
             int min = sc.nextInt();
             int max = 0;
-            if(sc.hasNextInt()) {
-                max = sc.nextInt(); 
+            if (sc.hasNextInt()) {
+                max = sc.nextInt();
             }
             Random r = new Random();
 
             // Assert the amount of objects to put
-            int diff = Math.abs(max-min);   // find the difference between the highest and lowest
-            int randAmt = r.nextInt(diff);  // create a random number up until the difference
-            int finalAmt = randAmt + min;   // add the random amount to the minimum amount to find the final amount
-            //System.out.println("d:"+diff+", r:"+randAmt+", f:"+finalAmt);
+            int diff = Math.abs(max - min); // find the difference between the highest and lowest
+            int randAmt = r.nextInt(diff); // create a random number up until the difference
+            int finalAmt = randAmt + min; // add the random amount to the minimum amount to find the final amount
+            // System.out.println("d:"+diff+", r:"+randAmt+", f:"+finalAmt);
 
-            // get which plane its on 
-            int zPointer = 1; 
-            if(sampleCreature instanceof NonBlocking) {
+            // get which plane its on
+            int zPointer = 1;
+            if (sampleCreature instanceof NonBlocking) {
                 zPointer = 0;
             }
 
-            for(int i=0;i<finalAmt;i++) { // create x objects
+            for (int i = 0; i < finalAmt; i++) { // create x objects
                 boolean hasPlaced = false;
-                // is there space? 
-                if(addedObjects[zPointer]>=space) {
+                // is there space?
+                if (addedObjects[zPointer] >= space) {
                     // TODO: ADD ERROR?
-                    System.out.println("NO MORE SPACE ON PLANE ["+zPointer+"] FOR:\""+sampleCreature+"\" WITH: \""+
-                    addedObjects[zPointer]+"/"+space+"\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
+                    System.out.println("NO MORE SPACE ON PLANE [" + zPointer + "] FOR:\"" + sampleCreature
+                            + "\" WITH: \"" +
+                            addedObjects[zPointer] + "/" + space + "\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
                     break;
                 }
-                
-                while(!hasPlaced) {
+
+                while (!hasPlaced) {
                     // FIND RANDOM TILE
                     int x = r.nextInt(size);
                     int y = r.nextInt(size);
@@ -125,7 +129,7 @@ public class Main {
                     // test for the specific plane if it can fit
                     switch (zPointer) {
                         case 0:
-                            if(!world.containsNonBlocking(l)) {                  
+                            if (!world.containsNonBlocking(l)) {
                                 world.setTile(l, sampleCreature.newInstance());
                                 hasPlaced = true;
                                 addedObjects[0]++;
@@ -133,7 +137,7 @@ public class Main {
                             break;
 
                         case 1:
-                            if(world.isTileEmpty(l)) {                  
+                            if (world.isTileEmpty(l)) {
                                 world.setTile(l, sampleCreature.newInstance());
                                 hasPlaced = true;
                                 addedObjects[1]++;
@@ -142,12 +146,12 @@ public class Main {
                             break;
                         default:
 
-                        break;
+                            break;
                     }
                 }
             }
 
-            if(sc.hasNextLine())
+            if (sc.hasNextLine())
                 sc.nextLine();
         }
 
