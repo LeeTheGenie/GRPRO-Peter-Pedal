@@ -31,6 +31,7 @@ public class Main {
      * Fileloader takes one argument (String fileLocation) and returns a program
      * where in the world of the program, the given file is loaded and objects are
      * put in.
+     * Throws FileNotFoundException and NullPointerException
      */
     static Program FileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
         // Variables
@@ -46,26 +47,25 @@ public class Main {
         // Creating the new program
         size = Integer.parseInt(sc.nextLine()); // Get world size from first line
         Program p = new Program(size, display_size, delay);
+        World world = p.getWorld();
 
         // Display information
-        // Grass
+            // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass3", true));
-        // Flower
+            // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
-        // Rabbit
+            // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
-        // RabbitHole
+            // RabbitHole
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
 
-        // Create a hashmap of all the creatures that can be added to the world. (String
-        // animalName)->(Instance of animal)
-        // Then to create a new fresh animal just do .newInstance();
+        // Create a hashmap of all the creatures that can be added to the world. 
+        // (String animalName)->(Instance of animal)
+        // Then to create a new fresh animal - just do .newInstance();
         HashMap<String, LivingBeing> allTypes = new HashMap<String, LivingBeing>();
         allTypes.put("grass", new Grass());
         allTypes.put("rabbit", new Rabbit());
         allTypes.put("burrow", new RabbitHole());
-
-        World world = p.getWorld();
 
         // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky
         // for making sure we dont add more objects than there is space for
@@ -85,9 +85,8 @@ public class Main {
             }
             if (!sc.hasNextInt()) {
                 // TODO: Add error?
-                System.out.println(
-                        "NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
-                System.out.println("FOLLOWING LINE: \"" + sc.nextLine() + "\"");
+                System.out.println("NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
+                System.out.println("\tFOLLOWING LINE: \"" + sc.nextLine() + "\"");
                 continue;
             }
             int min = sc.nextInt();
@@ -109,17 +108,16 @@ public class Main {
                 zPointer = 0;
             }
 
-            for (int i = 0; i < finalAmt; i++) { // create x objects
+            for (int i = 0; i < finalAmt; i++) { // create finalAmt objects
                 boolean hasPlaced = false;
                 // is there space?
                 if (addedObjects[zPointer] >= space) {
                     // TODO: ADD ERROR?
                     System.out.println("NO MORE SPACE ON PLANE [" + zPointer + "] FOR:\"" + sampleCreature
-                            + "\" WITH: \"" +
-                            addedObjects[zPointer] + "/" + space + "\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
+                        + "\" WITH: \"" +addedObjects[zPointer] + "/" + space + "\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
                     break;
                 }
-
+                // TODO: FIRST TRY RANDOM THEN TRY SEARCH METHOD, WHEN IS WHAT BETTER?
                 while (!hasPlaced) {
                     // FIND RANDOM TILE
                     int x = r.nextInt(size);
@@ -143,10 +141,7 @@ public class Main {
                                 addedObjects[1]++;
                             }
 
-                            break;
-                        default:
-
-                            break;
+                        break;
                     }
                 }
             }
@@ -156,7 +151,7 @@ public class Main {
         }
 
         // Return
-        sc.close();
+        sc.close(); 
         return p;
     }
 }

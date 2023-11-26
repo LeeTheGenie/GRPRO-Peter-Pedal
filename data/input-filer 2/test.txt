@@ -1,3 +1,4 @@
 4
+grass 20
 rabbit 1
 burrow 1

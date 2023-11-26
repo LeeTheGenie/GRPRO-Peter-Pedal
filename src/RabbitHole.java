@@ -1,7 +1,6 @@
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class RabbitHole extends LivingBeing implements NonBlocking {
 
