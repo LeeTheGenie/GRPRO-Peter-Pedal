@@ -111,13 +111,13 @@ public class Rabbit extends Animal {
 
     public void digHole(World world) {
         try {
-            Location rabbitLoation = world.getLocation(this);
+            Location rabbitLocation = world.getLocation(this);
             if (world.isNight() && rabbithole == null) {
-                if (world.isNight() == true && rabbitLoation != null && this.dig == false) {
+                if (world.isNight() == true && rabbitLocation != null && this.dig == false) {
                     this.dig = true;
                     eat(world);
-                    world.setTile(rabbitLoation, new RabbitHole());
-                    rabbithole = rabbitLoation;
+                    world.setTile(rabbitLocation, new RabbitHole());
+                    rabbithole = rabbitLocation;
                 }
             } else
                 this.dig = false;
