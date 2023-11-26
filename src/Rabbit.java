@@ -27,10 +27,11 @@ public class Rabbit extends Animal {
     @Override
     public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
-        // findHole(world);
+        findHole(world);
         digHole(world);
+        gotoHole(world);
 
-        if (world.isNight() == false) {
+        if (world.isDay()) {
             eat(world);
             reproduce(world);
             move(world);
@@ -110,12 +111,13 @@ public class Rabbit extends Animal {
 
     public void digHole(World world) {
         try {
+            Location rabbitLoation = world.getLocation(this);
             if (world.isNight() && rabbithole == null) {
-                if (world.isNight() == true && world.getLocation(this) != null && this.dig == false) {
+                if (world.isNight() == true && rabbitLoation != null && this.dig == false) {
                     this.dig = true;
                     eat(world);
-                    world.setTile(world.getLocation(this), new RabbitHole());
-                    // rabbithole = world.getLocation(this);
+                    world.setTile(rabbitLoation, new RabbitHole());
+                    rabbithole = rabbitLoation;
                 }
             } else
                 this.dig = false;
@@ -125,23 +127,36 @@ public class Rabbit extends Animal {
 
     public void findHole(World world) {
         try {
-            Set<Location> tiles = world.getSurroundingTiles(3);
-            for (Location l : tiles) {
-                try {
-                    if (world.getNonBlocking(l) instanceof RabbitHole) {
-                        rabbithole = l;
-                        this.dig = false;
-                        break;
-                    } else {
-                        this.dig = true;
+            if (rabbithole == null) {
+                Set<Location> tiles = world.getSurroundingTiles(1);
+                for (Location l : tiles) {
+                    try {
+                        if (world.getNonBlocking(l) instanceof RabbitHole) {
+                            rabbithole = l;
+                            this.dig = false;
+                            break;
+                        } else {
+                            this.dig = true;
+                        }
+                    } catch (Exception e) {
+                        // TODO: handle exception
                     }
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
 
+                }
             }
+
         } catch (Exception e) {
             // TODO: handle exception
+        }
+    }
+
+    public void gotoHole(World world) {
+        if (rabbithole != null) {
+            try {
+                world.move(this, rabbithole);
+            } catch (Exception e) {
+
+            }
         }
     }
 

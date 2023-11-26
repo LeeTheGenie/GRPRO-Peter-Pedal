@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = FileLoader("data/input-filer 2/t1-3b.txt");
+            Program p = FileLoader("data/input-filer 2/t1-2a.txt");
             p.show();
             for (int i = 0; i < 300; i++) {
                 p.run();
@@ -36,7 +36,7 @@ public class Main {
     static Program FileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
         // Variables
         int size = 1; // will change
-        int delay = 100;
+        int delay = 1000;
         int display_size = 800;
 
         // get file + scanner from file (ERROR LIKELY TO THROW HERE!)
@@ -50,16 +50,16 @@ public class Main {
         World world = p.getWorld();
 
         // Display information
-            // Grass
+        // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass3", true));
-            // Flower
+        // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
-            // Rabbit
+        // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
-            // RabbitHole
+        // RabbitHole
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
 
-        // Create a hashmap of all the creatures that can be added to the world. 
+        // Create a hashmap of all the creatures that can be added to the world.
         // (String animalName)->(Instance of animal)
         // Then to create a new fresh animal - just do .newInstance();
         HashMap<String, LivingBeing> allTypes = new HashMap<String, LivingBeing>();
@@ -85,7 +85,8 @@ public class Main {
             }
             if (!sc.hasNextInt()) {
                 // TODO: Add error?
-                System.out.println("NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
+                System.out.println(
+                        "NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
                 System.out.println("\tFOLLOWING LINE: \"" + sc.nextLine() + "\"");
                 continue;
             }
@@ -114,7 +115,8 @@ public class Main {
                 if (addedObjects[zPointer] >= space) {
                     // TODO: ADD ERROR?
                     System.out.println("NO MORE SPACE ON PLANE [" + zPointer + "] FOR:\"" + sampleCreature
-                        + "\" WITH: \"" +addedObjects[zPointer] + "/" + space + "\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
+                            + "\" WITH: \"" + addedObjects[zPointer] + "/" + space
+                            + "\" ADDED OBJECTS, ENDING PLACEMENT OPERATIONS!");
                     break;
                 }
                 // TODO: FIRST TRY RANDOM THEN TRY SEARCH METHOD, WHEN IS WHAT BETTER?
@@ -141,7 +143,7 @@ public class Main {
                                 addedObjects[1]++;
                             }
 
-                        break;
+                            break;
                     }
                 }
             }
@@ -151,7 +153,7 @@ public class Main {
         }
 
         // Return
-        sc.close(); 
+        sc.close();
         return p;
     }
 }
