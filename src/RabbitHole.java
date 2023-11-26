@@ -1,6 +1,13 @@
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
+import itumulator.world.Location;
+import java.util.Set;
+
+import javax.naming.event.ObjectChangeListener;
+
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class RabbitHole extends LivingBeing implements NonBlocking {
 
@@ -24,29 +31,51 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
 
     public void keepRabbit(World world) {
         if (world.isNight() == true) {
-            if (world.getTile(world.getLocation(this)) instanceof Rabbit) {
-                Object rabbit = world.getTile(world.getLocation(this));
-                this.rabbits.add(rabbit);
-                world.remove(rabbit);
+            try {
+                if (world.getTile(world.getLocation(this)) instanceof Rabbit) {
 
-                System.out.println("Rabbits resting: " + this.rabbits);
-                System.out.println("In this rabbithole: " + world.getTile(world.getLocation(this)));
+                    Object rabbit = world.getTile(world.getLocation(this));
+
+                    this.rabbits.add(rabbit);
+                    world.remove(rabbit);
+
+                    System.out.println("Rabbit(s) resting: " + this.rabbits);
+                    System.out.println(" -In " + world.getTile(world.getLocation(this)));
+                }
+            } catch (Exception e) {
+                // TODO: handle exception
             }
+
         }
     }
 
     public void exitRabbit(World world) {
-        try {
-            if (world.isDay() == true) {
-                for (Object rabbit : rabbits) {
 
-                    System.out.println(rabbit + " left " + this);
-                    this.rabbits.remove(rabbit);
+        if (world.isDay() == true) {
+            try {
+                if (this.rabbits.size() > 0) {
+                    for (Object rabbit : rabbits) {
+
+                        Set<Location> neighbors = world.getEmptySurroundingTiles();
+                        List<Location> list = new ArrayList<>(neighbors);
+                        Random r = new Random();
+                        int randomLocation = r.nextInt(list.size());
+
+                        System.out.println(rabbit + " left " + this + "\n -Located at: " + world.getCurrentLocation());
+                        this.rabbits.remove(rabbit);
+
+                        Location newLocation = list.get(randomLocation);
+
+                        world.setCurrentLocation(newLocation);
+                        System.out.println(" -Go to tile:" + world.getCurrentLocation());
+                        world.setTile(newLocation, rabbit);
+
+                    }
+
                 }
-            }
-        } catch (Exception e) {
+            } catch (java.util.ConcurrentModificationException e) {
 
+            }
         }
     }
-
 }
