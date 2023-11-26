@@ -124,7 +124,11 @@ public class Rabbit extends Animal {
     }
 
     public void findHole(World world) {
+        try {
 
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
 
     // goes to assigned hole if rabbit doesnt have a assigned hole it checks if
