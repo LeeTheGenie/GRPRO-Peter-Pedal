@@ -27,9 +27,12 @@ public class Rabbit extends Animal {
     @Override
     public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
-        findHole(world);
-        digHole(world);
-        gotoHole(world);
+
+        if (world.isNight()) {
+            findHole(world);
+            digHole(world);
+            gotoHole(world);
+        }
 
         if (world.isDay()) {
             eat(world);
@@ -74,8 +77,9 @@ public class Rabbit extends Animal {
             } catch (Exception e) {
 
             }
+            currentEnergy--;
         }
-        currentEnergy--;
+
     }
 
     // makes another rabbit if there is another rabbit within radius of 1 and energy
@@ -113,7 +117,9 @@ public class Rabbit extends Animal {
         try {
             Location rabbitLocation = world.getLocation(this);
             if (world.isNight() && rabbithole == null) {
-                if (world.isNight() == true && rabbitLocation != null && this.dig == false) {
+                System.out.println("pass 1");
+                if (world.isNight() && rabbitLocation != null) {
+                    System.out.println("pass 2");
                     this.dig = true;
                     eat(world);
                     world.setTile(rabbitLocation, new RabbitHole());

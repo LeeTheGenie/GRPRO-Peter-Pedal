@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = FileLoader("data/input-filer 2/t1-2a.txt");
+            Program p = FileLoader("data/input-filer 2/t1-1d.txt");
             p.show();
             for (int i = 0; i < 300; i++) {
                 p.run();
@@ -36,7 +36,7 @@ public class Main {
     static Program FileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
         // Variables
         int size = 1; // will change
-        int delay = 1000;
+        int delay = 100;
         int display_size = 800;
 
         // get file + scanner from file (ERROR LIKELY TO THROW HERE!)
