@@ -10,22 +10,24 @@ public class Plant extends LivingBeing implements NonBlocking {
 
     int reproductiveCooldown;
     int trueReproductiveCooldown;
-    
 
-    Plant(int age, int maxAge,int reproductiveCooldown) {
+    Plant(int age, int maxAge, int reproductiveCooldown) {
         super(age, maxAge);
         this.reproductiveCooldown = reproductiveCooldown;
         this.trueReproductiveCooldown = reproductiveCooldown;
     }
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         reproductiveCooldown--;
-        if(reproductiveCooldown<=0)
+        if (reproductiveCooldown <= 0)
             spread(world);
         ageUp(world);
     }
-    @Override public Plant newInstance() {
-        return new Plant(0,maxAge,trueReproductiveCooldown);
+
+    @Override
+    public Plant newInstance() {
+        return new Plant(0, maxAge, trueReproductiveCooldown);
     }
 
     public void spread(World world) {
@@ -33,20 +35,21 @@ public class Plant extends LivingBeing implements NonBlocking {
         Set<Location> neighbors = world.getSurroundingTiles();
         List<Location> list = new ArrayList<>();
         // Remove those with blocking elements
-        for(Location l: neighbors) {
-            if(!world.containsNonBlocking(l)) {
-                list.add(l);  
+        for (Location l : neighbors) {
+            if (!world.containsNonBlocking(l)) {
+                list.add(l);
             }
         }
-        
-        if(list.size()==0) return; // if we dont have any surounding tiles, just give up on spreading
+
+        if (list.size() == 0)
+            return; // if we dont have any surounding tiles, just give up on spreading
 
         // take one random surrounding tile
-        int randomLocation = (int) Math.floor(Math.random()*list.size());
+        int randomLocation = (int) Math.floor(Math.random() * list.size());
         Location newLocation = list.get(randomLocation);
-        
+
         // create a new instance of plant and put it on the world
-        world.setTile(newLocation,newInstance());
+        world.setTile(newLocation, newInstance());
         reproductiveCooldown = trueReproductiveCooldown; // reset the spread timer
     }
 }
