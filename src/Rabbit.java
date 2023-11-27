@@ -117,9 +117,7 @@ public class Rabbit extends Animal {
         try {
             Location rabbitLocation = world.getLocation(this);
             if (world.isNight() && rabbithole == null) {
-                System.out.println("pass 1");
                 if (world.isNight() && rabbitLocation != null) {
-                    System.out.println("pass 2");
                     this.dig = true;
                     eat(world);
                     world.setTile(rabbitLocation, new RabbitHole());
@@ -134,7 +132,7 @@ public class Rabbit extends Animal {
     public void findHole(World world) {
         try {
             if (rabbithole == null) {
-                Set<Location> tiles = world.getSurroundingTiles(1);
+                Set<Location> tiles = world.getSurroundingTiles(2);
                 for (Location l : tiles) {
                     try {
                         if (world.getNonBlocking(l) instanceof RabbitHole) {
