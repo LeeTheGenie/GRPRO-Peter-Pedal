@@ -119,13 +119,13 @@ public class Rabbit extends Animal {
             Location rabbitLocation = world.getLocation(this);
             if (world.isNight() && rabbithole == null) {
                 if (world.isNight() && rabbitLocation != null) {
-                    this.dig = true;
+                    dig = true;
                     eat(world);
                     world.setTile(rabbitLocation, new RabbitHole());
                     rabbithole = rabbitLocation;
                 }
             } else
-                this.dig = false;
+                dig = false;
         } catch (Exception e) {
         }
     }
@@ -138,10 +138,10 @@ public class Rabbit extends Animal {
                     try {
                         if (world.getNonBlocking(l) instanceof RabbitHole) {
                             rabbithole = l;
-                            this.dig = false;
+                            dig = false;
                             break;
                         } else {
-                            this.dig = true;
+                            dig = true;
                         }
                     } catch (Exception e) {
                         // TODO: handle exception

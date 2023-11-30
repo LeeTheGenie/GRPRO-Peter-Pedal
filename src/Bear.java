@@ -1,6 +1,8 @@
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 
 import itumulator.world.Location;
@@ -24,7 +26,7 @@ public class Bear extends Animal {
     }
 
     public void act(World world) {
-        if (spawnLocation == null) {
+        if (this.spawnLocation == null) {
             this.spawnLocation = world.getLocation(this);
             getTerritory(world);
         }
@@ -45,11 +47,15 @@ public class Bear extends Animal {
     }
 
     public void moveInTerritory(World world) {
+        List<Location> tiles = new ArrayList(getTerritory(world));
+
         Random r = new Random();
-        int x = r.nextInt(territory.size());
-        int y = r.nextInt(territory.size());
-        Location moveTo = new Location(x, y);
-        world.move(this, moveTo);
+
+        int randomLocation = r.nextInt(tiles.size());
+        Location newLocation = tiles.get(randomLocation);
+        System.out.println(newLocation);
+        world.move(this, newLocation);
+
     }
 
     public void huntInTerritory(World world) {
