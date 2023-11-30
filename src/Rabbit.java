@@ -32,12 +32,12 @@ public class Rabbit extends Animal {
         if (world.isNight()) {
             findHole(world);
             digHole(world);
-            gotoHole(world);
+            goToHole(world);
         }
 
         if (world.isDay()) {
             eat(world);
-            reproduce(world);
+            //reproduce(world);
             move(world);
         }
 
@@ -155,10 +155,10 @@ public class Rabbit extends Animal {
         }
     }
 
-    public void gotoHole(World world) {
+    public void goToHole(World world) {
         if (rabbithole != null) {
             try {
-                world.move(this, rabbithole);
+                this.toAndFrom(world, rabbithole, world.getLocation(this));
             } catch (Exception e) {
 
             }

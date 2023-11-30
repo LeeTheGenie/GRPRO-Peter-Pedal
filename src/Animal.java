@@ -1,5 +1,6 @@
 
 import itumulator.simulator.Actor;
+import itumulator.world.Location;
 import itumulator.world.World;
 
 public class Animal extends LivingBeing {
@@ -27,5 +28,36 @@ public class Animal extends LivingBeing {
     @Override
     public LivingBeing newInstance() {
         return new Animal(0, maxAge, trueMaxEnergy);
+    }
+
+    public void toAndFrom(World world, Location to, Location from){
+        int x=from.getX(); 
+        int y=from.getY(); 
+
+        if(to.getX()!=from.getX()){
+            if(to.getX()>from.getX()){
+                        x=from.getX()+1;
+                    }
+
+            if(to.getX()<from.getX()){
+                        x=from.getX()-1;
+                    }
+        }
+        
+        if(to.getY()!=from.getY()){
+            if(to.getY()>from.getY()){
+                        y=from.getY()+1;
+                    }
+
+            if(to.getY()<from.getY()){
+                        y=from.getY()-1;
+                    }
+        }
+
+        Location newLocation = new Location(x, y);
+        System.out.println("going to "+newLocation);
+
+        world.move(this, newLocation);
+        
     }
 }
