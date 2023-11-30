@@ -4,8 +4,6 @@ import itumulator.world.World;
 import itumulator.world.Location;
 import java.util.Set;
 
-import javax.naming.event.ObjectChangeListener;
-
 import abstracts.LivingBeing;
 
 import java.util.List;

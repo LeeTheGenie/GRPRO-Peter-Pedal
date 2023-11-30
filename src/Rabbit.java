@@ -10,29 +10,31 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
+import abstracts.Animal;
+
 public class Rabbit extends Animal {
 
     private Location rabbithole;
-    private boolean dig = false;
+    //private boolean dig = false;
 
-    @Override
-    public Rabbit newInstance() {
-        return new Rabbit();
-    }
+   
 
     public Rabbit() {
-        super(0, 70, 30);
+        super(0, 70, 30,10,1,10,30);
         this.rabbithole = null;
     }
 
-    @Override
-    public void act(World world) {
+    @Override public Rabbit newInstance() {
+        return new Rabbit();
+    }
+
+    @Override public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
 
         if (world.isNight()) {
             findHole(world);
             digHole(world);
-            gotoHole(world);
+            //gotoHole(world);
         }
 
         if (world.isDay()) {
@@ -42,7 +44,6 @@ public class Rabbit extends Animal {
         }
 
         super.act(world); // age up & check for if energy == 0
-
     }
 
     public void eat(World world) { // spiser på den tile den står på
@@ -63,7 +64,10 @@ public class Rabbit extends Animal {
         }
     }
 
-    // Move to a random free location within radius of 1, costs 1 energy
+    /**
+     * Move to a random free location within radius of 1, costs 1 energy
+     * @param world
+     */
     public void move(World world) {
         if (currentEnergy > 0) {
             try {
@@ -83,34 +87,43 @@ public class Rabbit extends Animal {
 
     }
 
-    // makes another rabbit if there is another rabbit within radius of 1 and energy
-    // is greater than 7 and age greater than 8 costs 2 energy
+
+    /**
+     * Births another rabbit if there is another rabbit within radius of 1 and energy
+     * @param world
+     */
+    // 
     public void reproduce(World world) {
+        // Failstates
+        if(matureAge>age) 
+            return;
+        if(!canAfford(reproductionCost))
+            return;
 
-        if (currentEnergy > 20 && age > 18) {
-            try {
-                Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
-                for (Location l : tiles) {
-                    if (world.getTile(l) instanceof Rabbit) {
 
-                        // Get surrounding tiles
-                        Set<Location> neighbors = world.getEmptySurroundingTiles();
-                        List<Location> list = new ArrayList<>(neighbors);
+        try {
+            Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
+            
+            for (Location l : tiles) {
+                if (world.getTile(l) instanceof Rabbit) {
 
-                        // take one random surrounding tile
-                        Random r = new Random();
-                        int randomLocation = r.nextInt(list.size());
-                        Location newLocation = list.get(randomLocation);
+                    // Get surrounding tiles
+                    Set<Location> neighbors = world.getEmptySurroundingTiles();
+                    List<Location> list = new ArrayList<>(neighbors);
 
-                        // create a new instance of Rabbit and put it on the world
-                        world.setTile(newLocation, new Rabbit());
-                        System.out.println("Baby");
-                    }
+                    // take one random surrounding tile
+                    Random r = new Random();
+                    int randomLocation = r.nextInt(list.size());
+                    Location newLocation = list.get(randomLocation);
+
+                    // create a new instance of Rabbit and put it on the world
+                    world.setTile(newLocation, new Rabbit());
+                    System.out.println("Baby");
                 }
-                currentEnergy -= 2;
-            } catch (Exception e) {
-
             }
+            currentEnergy -= 2;
+        } catch (Exception e) {
+
         }
     }
 
@@ -155,7 +168,14 @@ public class Rabbit extends Animal {
         }
     }
 
-    public void gotoHole(World world) {
+
+    /**
+     * MOVE INSTANTLY TO A HOLE :(
+     * 
+     * 
+     * @param world
+     */
+    public void goInHole(World world) {
         if (rabbithole != null) {
             try {
                 world.move(this, rabbithole);
