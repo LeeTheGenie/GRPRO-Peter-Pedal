@@ -4,7 +4,7 @@ import itumulator.world.World;
 import itumulator.world.Location;
 import java.util.Set;
 
-import javax.naming.event.ObjectChangeListener;
+import abstracts.LivingBeing;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -14,22 +14,25 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
 
     ArrayList<Object> rabbits;
 
-    @Override
-    public void act(World world) {
-        keepRabbit(world);
-        exitRabbit(world);
-    }
-
-    @Override
-    public RabbitHole newInstance() {
-        return new RabbitHole();
-    }
-
     RabbitHole() {
         super(0, 0);
         this.rabbits = new ArrayList<>();
     }
 
+    @Override public RabbitHole newInstance() {
+        return new RabbitHole();
+    }
+
+    @Override
+    public void act(World world) {
+        //keepRabbit(world);
+        //exitRabbit(world);
+    }
+
+   
+
+   
+    /*
     public void keepRabbit(World world) {
         if (world.isNight() == true) {
             try {
@@ -79,4 +82,5 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
             }
         }
     }
+    */
 }

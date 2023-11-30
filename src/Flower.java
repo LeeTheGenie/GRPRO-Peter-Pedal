@@ -1,3 +1,4 @@
+import abstracts.Plant;
 
 public class Flower extends Plant {
     public Flower() {

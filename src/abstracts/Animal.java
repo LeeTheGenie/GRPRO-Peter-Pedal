@@ -1,23 +1,30 @@
-
-import itumulator.simulator.Actor;
+package abstracts;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public class Animal extends LivingBeing {
+public abstract class Animal extends LivingBeing {
 
-    protected int currentEnergy;
-    protected int maxEnergy;
-    protected int trueMaxEnergy;
+    // Energy
+    protected int currentEnergy, maxEnergy, trueMaxEnergy;
 
-    Animal(int age, int maxAge, int maxEnergy) {
+    // Movement 
+    protected int movementCost;
+    
+    // Reproduction
+    protected int reproductionCost, matureAge, inheritedEnergy;
+
+    protected Animal(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,int reproductionCost,int inheritedEnergy) {
         super(age, maxAge);
         this.currentEnergy = maxEnergy;
         this.maxEnergy = maxEnergy;
         this.trueMaxEnergy = maxEnergy;
+        this.matureAge = matureAge;
+        this.movementCost = movementCost;
+        this.reproductionCost = reproductionCost;
+        this.inheritedEnergy = inheritedEnergy;
     }
 
-    @Override
-    public void act(World world) {
+    @Override public void act(World world) {
         if (currentEnergy == 0) {
             System.out.println("I \"" + this.getClass() + "\" died of energyloss at age: " + age);
             die(world);
@@ -25,9 +32,13 @@ public class Animal extends LivingBeing {
         super.act(world);
     }
 
-    @Override
-    public LivingBeing newInstance() {
-        return new Animal(0, maxAge, trueMaxEnergy);
+    /**
+     * Returns true if (currentEnergy - cost != 0)
+     */
+    public boolean canAfford(int cost) {
+        if(currentEnergy-cost!=0)
+            return true; 
+        return false;
     }
 
     /**
@@ -67,5 +78,13 @@ public class Animal extends LivingBeing {
 
         world.move(this, newLocation);
         
+    }
+
+
+
+
+    @Override
+    public LivingBeing newInstance() {
+        return null;//new Animal(0, maxAge, trueMaxEnergy);
     }
 }

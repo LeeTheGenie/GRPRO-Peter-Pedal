@@ -1,38 +1,39 @@
-
 import itumulator.world.World;
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 
 import java.util.Set;
+
+import abstracts.Animal;
+import abstracts.Plant;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.HashMap;
 
 public class Rabbit extends Animal {
 
     private Location rabbithole;
-    private boolean dig;
+    private boolean dig = false;
 
-    @Override
-    public Rabbit newInstance() {
-        return new Rabbit();
-    }
+   
 
     public Rabbit() {
-        super(0, 70, 30);
+        super(0, 70, 30,10,1,10,30);
         this.rabbithole = null;
         this.dig=false;
     }
 
-    @Override
-    public void act(World world) {
+    @Override public Rabbit newInstance() {
+        return new Rabbit();
+    }
+
+    @Override public void act(World world) {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
 
         if (world.isNight()) {
             findHole(world);
             digHole(world);
-            goToHole(world);
+            //gotoHole(world);
         }
 
         if (world.isDay()) {
@@ -42,7 +43,6 @@ public class Rabbit extends Animal {
         }
 
         super.act(world); // age up & check for if energy == 0
-
     }
 
     public void eat(World world) { // spiser på den tile den står på
@@ -63,7 +63,10 @@ public class Rabbit extends Animal {
         }
     }
 
-    // Move to a random free location within radius of 1, costs 1 energy
+    /**
+     * Move to a random free location within radius of 1, costs 1 energy
+     * @param world
+     */
     public void move(World world) {
         if (currentEnergy > 0) {
             try {
@@ -83,35 +86,40 @@ public class Rabbit extends Animal {
 
     }
 
-    // makes another rabbit if there is another rabbit within radius of 1 and energy
-    // is greater than 7 and age greater than 8 costs 2 energy
+
+    /**
+     * Births another rabbit if there is another rabbit within radius of 1 and energy
+     * @param world
+     */
+    // 
     public void reproduce(World world) {
+        // Failstates
+        if(matureAge>age) 
+            return;
+        if(!canAfford(reproductionCost))
+            return;
+        if(!world.isOnTile(this))
+            return;
 
-        if (currentEnergy > 20 && age > 18) {
-            try {
-                Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
-                for (Location l : tiles) {
-                    if (world.getTile(l) instanceof Rabbit) {
-
-                        // Get surrounding tiles
-                        Set<Location> neighbors = world.getEmptySurroundingTiles();
-                        List<Location> list = new ArrayList<>(neighbors);
-
-                        // take one random surrounding tile
-                        Random r = new Random();
-                        int randomLocation = r.nextInt(list.size());
-                        Location newLocation = list.get(randomLocation);
-
-                        // create a new instance of Rabbit and put it on the world
-                        world.setTile(newLocation, new Rabbit());
-                        System.out.println("Baby");
-                    }
-                }
-                currentEnergy -= 2;
-            } catch (Exception e) {
-
-            }
+        // Main
+        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
+        Boolean foundMate = false;
+        for (Location l : surroundingTiles) {
+            if (!(world.getTile(l) instanceof Rabbit)) continue;
         }
+    
+        if(!foundMate)
+            return; 
+
+        // Get surrounding tiles
+        List<Location> list = new ArrayList<>(world.getEmptySurroundingTiles());
+        Location newLocation = list.get(new Random().nextInt(list.size()));
+
+        // create a new instance of Rabbit and put it on the world
+        world.setTile(newLocation, new Rabbit());
+        //System.out.println("Baby");
+
+        currentEnergy -= reproductionCost;
     }
 
     public void digHole(World world) {
@@ -155,7 +163,14 @@ public class Rabbit extends Animal {
         }
     }
 
-    public void goToHole(World world) {
+
+    /**
+     * MOVE INSTANTLY TO A HOLE :(
+     * 
+     * 
+     * @param world
+     */
+    public void goInHole(World world) {
         if (rabbithole != null) {
             try {
                 this.toAndFrom(world, rabbithole, world.getLocation(this));
