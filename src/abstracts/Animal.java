@@ -1,14 +1,13 @@
-
-import itumulator.simulator.Actor;
+package abstracts;
 import itumulator.world.World;
 
-public class Animal extends LivingBeing {
+public abstract class Animal extends LivingBeing {
 
     protected int currentEnergy;
     protected int maxEnergy;
     protected int trueMaxEnergy;
 
-    Animal(int age, int maxAge, int maxEnergy) {
+    protected Animal(int age, int maxAge, int maxEnergy) {
         super(age, maxAge);
         this.currentEnergy = maxEnergy;
         this.maxEnergy = maxEnergy;
@@ -26,6 +25,6 @@ public class Animal extends LivingBeing {
 
     @Override
     public LivingBeing newInstance() {
-        return new Animal(0, maxAge, trueMaxEnergy);
+        return null;//new Animal(0, maxAge, trueMaxEnergy);
     }
 }

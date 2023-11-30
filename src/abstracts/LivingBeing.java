@@ -1,18 +1,19 @@
+package abstracts;
 
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 
-public class LivingBeing implements Actor {
+public abstract class LivingBeing implements Actor {
 
-    int age; // The age a of a being
-    int maxAge; // The max Age of a being
+    protected int age; // The age a of a being
+    protected int maxAge; // The max Age of a being
 
     @Override
     public void act(World world) {
         ageUp(world);
     }
 
-    LivingBeing(int age, int maxAge) {
+    protected LivingBeing(int age, int maxAge) {
         this.age = age;
         this.maxAge = maxAge;
 
@@ -26,9 +27,9 @@ public class LivingBeing implements Actor {
             die(world);
         }
     }
-
+    
     public LivingBeing newInstance() {
-        return new LivingBeing(0, maxAge);
+        return null;//return new LivingBeing(0, maxAge);
     }
 
     public void die(World world) {

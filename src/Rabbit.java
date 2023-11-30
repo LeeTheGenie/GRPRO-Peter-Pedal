@@ -4,6 +4,10 @@ import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
 import java.util.Set;
+
+import abstracts.Animal;
+import abstracts.Plant;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
