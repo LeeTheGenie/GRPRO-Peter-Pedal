@@ -98,35 +98,28 @@ public class Rabbit extends Animal {
             return;
         if(!canAfford(reproductionCost))
             return;
+        if(!world.isOnTile(this))
+            return;
 
-        if(world.isOnTile(this)) {
-            
+        // Main
+        Set<Location> surroundingTiles = world.getSurroundingTiles(world.getLocation(this));
+        Boolean foundMate = false;
+        for (Location l : surroundingTiles) {
+            if (!(world.getTile(l) instanceof Rabbit)) continue;
         }
+    
+        if(!foundMate)
+            return; 
 
-        try {
-            Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
-            
-            for (Location l : tiles) {
-                if (!(world.getTile(l) instanceof Rabbit))
-                    continue;
+        // Get surrounding tiles
+        List<Location> list = new ArrayList<>(world.getEmptySurroundingTiles());
+        Location newLocation = list.get(new Random().nextInt(list.size()));
 
-                // Get surrounding tiles
-                Set<Location> neighbors = world.getEmptySurroundingTiles();
-                List<Location> list = new ArrayList<>(neighbors);
+        // create a new instance of Rabbit and put it on the world
+        world.setTile(newLocation, new Rabbit());
+        //System.out.println("Baby");
 
-                // take one random surrounding tile
-                Random r = new Random();
-                int randomLocation = r.nextInt(list.size());
-                Location newLocation = list.get(randomLocation);
-
-                // create a new instance of Rabbit and put it on the world
-                world.setTile(newLocation, new Rabbit());
-                System.out.println("Baby");
-            }
-            currentEnergy -= 2;
-        } catch (Exception e) {
-
-        }
+        currentEnergy -= reproductionCost;
     }
 
     public void digHole(World world) {
