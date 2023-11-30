@@ -99,6 +99,10 @@ public class Rabbit extends Animal {
         if(!canAfford(reproductionCost))
             return;
 
+        if(world.isOnTile(this)) {
+            
+        }
+
         try {
             Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
             
