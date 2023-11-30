@@ -156,25 +156,19 @@ public class Main {
      * @throws FileNotFoundException and NullPointerException
      **/
     static Program fileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
-        // Variables
-        int size = 1; // will change
-        int delay = 100;
-        int display_size = 800;
 
-        // get file + scanner from file (ERROR LIKELY TO THROW HERE!)
+        // Setup Scanner (ERROR LIKELY TO THROW HERE!)
         Scanner sc = new Scanner(new File(fileLocation));
-        //sc.useDelimiter("[\r\t\f -]");
 
-        // Creating the new program
-        size = Integer.parseInt(sc.nextLine()); // Get world size from first line ERROR LIKELY HERE TOO
+        // Setup variables (ERROR LIKELY TO THROW HERE!)
+        int size = Integer.parseInt(sc.nextLine()), delay = 100, display_size = 800;;
+
+        // Creating the new program and world
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
-
         getDisplayInformation(p);
-        HashMap<String, LivingBeing> allTypes = getClassReferenceMap();
 
-        // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky
-        // for making sure we dont add more objects than there is space for
+        // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky, for making sure we dont add more objects than there is space for
         int[] addedObjects = { 0, 0, 0 };
 
         // scan the file and add the object
