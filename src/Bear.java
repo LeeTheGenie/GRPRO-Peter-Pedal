@@ -20,10 +20,14 @@ public class Bear extends Animal {
     public Bear() {
         super(0, 100, 40);
         this.territory = new HashSet<>();
+
     }
 
     public void act(World world) {
-
+        if (spawnLocation == null) {
+            this.spawnLocation = world.getLocation(this);
+            getTerritory(world);
+        }
         if (preyInTerritory(world)) {
             huntInTerritory(world);
         } else {
