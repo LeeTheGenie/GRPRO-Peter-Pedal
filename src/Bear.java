@@ -9,7 +9,6 @@ import abstracts.Animal;
 
 public class Bear extends Animal {
     private List<Location> territory;
-    private Location centerPoint;
 
     @Override
     public Bear newInstance() {
@@ -19,7 +18,6 @@ public class Bear extends Animal {
     public Bear() {
         super(0, 100, 40);
         this.territory = new ArrayList<>();
-        this.centerPoint = new Location(0, 0);
     }
 
     public void act(World world) {
@@ -28,7 +26,7 @@ public class Bear extends Animal {
     }
 
     public List<Location> getTerritory(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(centerPoint, 3);
+        Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this), 3);
         for (Location l : tiles) {
             territory.add(l);
         }
