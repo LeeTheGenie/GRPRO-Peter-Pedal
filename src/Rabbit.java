@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-import abstracts.Animal;
-
 public class Rabbit extends Animal {
 
     private Location rabbithole;
@@ -100,26 +98,25 @@ public class Rabbit extends Animal {
         if(!canAfford(reproductionCost))
             return;
 
-
         try {
             Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this));
             
             for (Location l : tiles) {
-                if (world.getTile(l) instanceof Rabbit) {
+                if (!(world.getTile(l) instanceof Rabbit))
+                    continue;
 
-                    // Get surrounding tiles
-                    Set<Location> neighbors = world.getEmptySurroundingTiles();
-                    List<Location> list = new ArrayList<>(neighbors);
+                // Get surrounding tiles
+                Set<Location> neighbors = world.getEmptySurroundingTiles();
+                List<Location> list = new ArrayList<>(neighbors);
 
-                    // take one random surrounding tile
-                    Random r = new Random();
-                    int randomLocation = r.nextInt(list.size());
-                    Location newLocation = list.get(randomLocation);
+                // take one random surrounding tile
+                Random r = new Random();
+                int randomLocation = r.nextInt(list.size());
+                Location newLocation = list.get(randomLocation);
 
-                    // create a new instance of Rabbit and put it on the world
-                    world.setTile(newLocation, new Rabbit());
-                    System.out.println("Baby");
-                }
+                // create a new instance of Rabbit and put it on the world
+                world.setTile(newLocation, new Rabbit());
+                System.out.println("Baby");
             }
             currentEnergy -= 2;
         } catch (Exception e) {
