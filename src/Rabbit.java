@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class Rabbit extends Animal {
 
     private Location rabbithole;
-    private boolean dig = false;
+    private boolean dig;
 
     @Override
     public Rabbit newInstance() {
@@ -22,6 +22,7 @@ public class Rabbit extends Animal {
     public Rabbit() {
         super(0, 70, 30);
         this.rabbithole = null;
+        this.dig=false;
     }
 
     @Override
