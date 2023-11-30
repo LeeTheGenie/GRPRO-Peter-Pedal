@@ -22,7 +22,7 @@ public class Bear extends Animal {
 
     public void act(World world) {
         getTerritory(world);
-        moveInTerritory(world);
+        huntInTerritory(world);
     }
 
     public List<Location> getTerritory(World world) {
@@ -33,12 +33,24 @@ public class Bear extends Animal {
         return territory;
     }
 
-    public void moveInTerritory(World world) {
+    public void huntInTerritory(World world) {
+        if (preyInTerritroy(world)) {
+
+        }
         Random r = new Random();
         int x = r.nextInt(territory.size());
         int y = r.nextInt(territory.size());
         Location moveTo = new Location(x, y);
         world.move(this, moveTo);
 
+    }
+
+    public boolean preyInTerritroy(World world) {
+        for (Location l : getTerritory(world)) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
+                return true;
+            }
+        }
+        return false;
     }
 }
