@@ -38,9 +38,11 @@ public class Main {
         // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
         // Rabbit
-        p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
+        p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.red, "rabbit-small"));
         // RabbitHole
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
+        // Bear
+        p.setDisplayInformation(Bear.class, new DisplayInformation(Color.blue, "bear", false));
     }
 
     public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
@@ -57,6 +59,7 @@ public class Main {
         classReferenceMap.put("grass", new Grass());
         classReferenceMap.put("rabbit", new Rabbit());
         classReferenceMap.put("burrow", new RabbitHole());
+        classReferenceMap.put("bear", new Bear());
         return classReferenceMap;
     }
 

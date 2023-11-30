@@ -12,14 +12,14 @@ public class Bear extends Animal {
     private Location centerPoint;
 
     @Override
-    public Rabbit newInstance() {
-        return new Rabbit();
+    public Bear newInstance() {
+        return new Bear();
     }
 
-    public Bear(int age, int maxAge, int maxEnergy, Location centerPoint) {
-        super(age, maxAge, maxEnergy);
+    public Bear() {
+        super(0, 100, 40);
         this.territory = new ArrayList<>();
-        this.centerPoint = centerPoint;
+        this.centerPoint = new Location(0, 0);
     }
 
     public void act(World world) {
