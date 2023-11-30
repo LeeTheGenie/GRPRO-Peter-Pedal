@@ -33,22 +33,24 @@ public class Main {
 
     static void getDisplayInformation(Program p) {
         // Display information
-            // Grass
+        // Grass
         p.setDisplayInformation(Grass.class, new DisplayInformation(Color.green, "grass3", true));
-            // Flower
+        // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
-            // Rabbit
+        // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
-            // RabbitHole
+        // RabbitHole
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
     }
-    
-    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance every time
+
+    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
+                                                                  // every time
+
     static HashMap<String, LivingBeing> getClassReferenceMap() {
         // Create a hashmap of all the creatures that can be added to the world.
         // (String animalName)->(Instance of animal)
         // Then to create a new fresh animal - just do .newInstance();
-        if(classReferenceMap!=null)
+        if (classReferenceMap != null)
             return classReferenceMap;
 
         classReferenceMap = new HashMap<String, LivingBeing>();
@@ -58,31 +60,32 @@ public class Main {
         return classReferenceMap;
     }
 
-    static int[] parseLine(String line, int size,int[] addedObjects,World world) {
+    static int[] parseLine(String line, int size, int[] addedObjects, World world) {
         // Error check
-        if(addedObjects.length>3)
+        if (addedObjects.length > 3)
             throw new IllegalArgumentException();
 
-        // Method 
+        // Method
         String[] splitLine = line.split("[\r\t\f -]");
         String typeOfCreature;
-        int min = 0, max = 0, space = size*size;
+        int min = 0, max = 0, space = size * size;
 
-        if(splitLine.length>=1) {
+        if (splitLine.length >= 1) {
             typeOfCreature = splitLine[0];
         } else {
             System.out.println("ERROR (main): emptystring given as argument");
             return addedObjects;
         }
 
-        if(splitLine.length>=2) {
+        if (splitLine.length >= 2) {
             min = Integer.parseInt(splitLine[1]);
         } else {
-            System.out.println("ERROR: NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
+            System.out.println(
+                    "ERROR: NO AMOUNT SPECIFIER FOR OBJECT: \"" + typeOfCreature + "\" ENDING PLACEMENT OPERATIONS!");
             return addedObjects;
         }
 
-        if(splitLine.length>=3) {
+        if (splitLine.length >= 3) {
             max = Integer.parseInt(splitLine[2]);
         }
 
@@ -141,11 +144,11 @@ public class Main {
                             addedObjects[1]++;
                         }
 
-                    break;
+                        break;
                 }
             }
         }
-    
+
         return addedObjects;
     }
 
@@ -153,6 +156,7 @@ public class Main {
      * Fileloader takes one argument (String fileLocation) and returns a program
      * where in the world of the program, the given file is loaded and objects are
      * put in.
+     * 
      * @throws FileNotFoundException and NullPointerException
      **/
     static Program fileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
@@ -161,14 +165,16 @@ public class Main {
         Scanner sc = new Scanner(new File(fileLocation));
 
         // Setup variables (ERROR LIKELY TO THROW HERE!)
-        int size = Integer.parseInt(sc.nextLine()), delay = 100, display_size = 800;;
+        int size = Integer.parseInt(sc.nextLine()), delay = 100, display_size = 800;
+        ;
 
         // Creating the new program and world
         Program p = new Program(size, display_size, delay);
         World world = p.getWorld();
         getDisplayInformation(p);
 
-        // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky, for making sure we dont add more objects than there is space for
+        // how many objects we have added: 0 in the ground, 0 in the land, 0 in the sky,
+        // for making sure we dont add more objects than there is space for
         int[] addedObjects = { 0, 0, 0 };
 
         // scan the file and add the object
@@ -180,7 +186,5 @@ public class Main {
         sc.close();
         return p;
     }
-
-    
 
 }
