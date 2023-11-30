@@ -1,7 +1,6 @@
 
 import itumulator.world.World;
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 
 import java.util.Set;
 
@@ -11,7 +10,6 @@ import abstracts.Plant;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.HashMap;
 
 public class Rabbit extends Animal {
 

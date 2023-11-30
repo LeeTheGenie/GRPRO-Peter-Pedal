@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.naming.event.ObjectChangeListener;
 
+import abstracts.LivingBeing;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
