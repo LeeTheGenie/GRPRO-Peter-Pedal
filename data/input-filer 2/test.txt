@@ -1,3 +1,4 @@
 15
-rabbit 1
+bear 1
+rabbit 30
 burrow 225

@@ -46,6 +46,8 @@ public class Bear extends Animal {
         return territory;
     }
 
+    // fix bjørn teleporterer med world.getEmptySurroundingTiles
+    // crasher hvis der tile ikke er empty
     public void moveInTerritory(World world) {
         List<Location> tiles = new ArrayList(getTerritory(world));
 
