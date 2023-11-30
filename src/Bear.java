@@ -43,25 +43,30 @@ public class Bear extends Animal {
         for (Location l : tiles) {
             territory.add(l);
         }
+        territory.add(world.getLocation(this));
         return territory;
     }
 
-    // fix bjørn teleporterer med world.getEmptySurroundingTiles
-    // crasher hvis der tile ikke er empty
     public void moveInTerritory(World world) {
-        List<Location> tiles = new ArrayList(getTerritory(world));
+        Set<Location> emptyTiles = world.getEmptySurroundingTiles();
+        List<Location> list = new ArrayList<>(emptyTiles);
 
         Random r = new Random();
 
-        int randomLocation = r.nextInt(tiles.size());
-        Location newLocation = tiles.get(randomLocation);
-        System.out.println(newLocation);
-        world.move(this, newLocation);
+        int randomLocation = r.nextInt(emptyTiles.size());
+        Location newLocation = list.get(randomLocation);
 
+        if (territory.contains(newLocation)) {
+            world.move(this, newLocation);
+        } else {
+            return;
+        }
     }
 
     public void huntInTerritory(World world) {
         toAndFrom(world, world.getLocation(this), findPrey(world));
+        // eat prey
+        // if bear doesnt benefit from eating just kill and spawn corpse?
     }
 
     public boolean preyInTerritory(World world) {
