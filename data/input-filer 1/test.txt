@@ -1,2 +1,2 @@
 8
-rabbit 5
+berry 2

@@ -7,7 +7,7 @@ import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
-public abstract class Plant extends LivingBeing implements NonBlocking {
+public abstract class Plant extends LivingBeing  {
 
     protected int reproductiveCooldown;
     protected int trueReproductiveCooldown;
