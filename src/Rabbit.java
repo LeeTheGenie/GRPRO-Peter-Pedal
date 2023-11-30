@@ -13,13 +13,14 @@ import java.util.Random;
 public class Rabbit extends Animal {
 
     private Location rabbithole;
-    //private boolean dig = false;
+    private boolean dig = false;
 
    
 
     public Rabbit() {
         super(0, 70, 30,10,1,10,30);
         this.rabbithole = null;
+        this.dig=false;
     }
 
     @Override public Rabbit newInstance() {
@@ -37,7 +38,7 @@ public class Rabbit extends Animal {
 
         if (world.isDay()) {
             eat(world);
-            reproduce(world);
+            //reproduce(world);
             move(world);
         }
 
@@ -175,7 +176,7 @@ public class Rabbit extends Animal {
     public void goInHole(World world) {
         if (rabbithole != null) {
             try {
-                world.move(this, rabbithole);
+                this.toAndFrom(world, rabbithole, world.getLocation(this));
             } catch (Exception e) {
 
             }
