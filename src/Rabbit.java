@@ -1,3 +1,4 @@
+
 import itumulator.world.World;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
@@ -21,7 +22,6 @@ public class Rabbit extends Animal {
     public Rabbit() {
         super(0, 70, 30);
         this.rabbithole = null;
-
     }
 
     @Override

@@ -16,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = FileLoader("data\\input-filer 2\\t1-2cde.txt");
+            Program p = FileLoader("data/input-filer 1/t1-2cde.txt");
             p.show();
             for (int i = 0; i < 300; i++) {
                 p.run();
