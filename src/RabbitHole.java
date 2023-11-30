@@ -30,8 +30,6 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
     }
 
    
-
-   
     /*
     public void keepRabbit(World world) {
         if (world.isNight() == true) {

@@ -13,14 +13,10 @@ import java.util.Random;
 public class Rabbit extends Animal {
 
     private Location rabbithole;
-    private boolean dig = false;
-
-   
 
     public Rabbit() {
-        super(0, 70, 30,10,1,10,30);
+        super(0, 70, 40,10,1,15,0,2);
         this.rabbithole = null;
-        this.dig=false;
     }
 
     @Override public Rabbit newInstance() {
@@ -38,7 +34,7 @@ public class Rabbit extends Animal {
 
         if (world.isDay()) {
             eat(world);
-            //reproduce(world);
+            reproduce(world);
             move(world);
         }
 
@@ -47,19 +43,16 @@ public class Rabbit extends Animal {
 
     public void eat(World world) { // spiser på den tile den står på
         int energyIncrement = 8; // hvor meget energi man får
-        if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
-            return;
-        try {
-            if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
-                world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
 
-                currentEnergy += energyIncrement;
-                if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
-                    currentEnergy = maxEnergy;
-            }
-        } catch (IllegalArgumentException e) { // if the current tile does not have a nonblocking it returns
-                                               // IllegalArgumentException
-            // System.out.println(e.getMessage());
+        // Failstates
+        if (currentEnergy == maxEnergy)
+            return;
+        if(!world.isOnTile(this))
+            return;
+        
+        if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
+            world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
+            changeEnergy(energyIncrement, world);
         }
     }
 
@@ -106,18 +99,24 @@ public class Rabbit extends Animal {
         Boolean foundMate = false;
         for (Location l : surroundingTiles) {
             if (!(world.getTile(l) instanceof Rabbit)) continue;
+            foundMate = true;
         }
-    
+        
         if(!foundMate)
             return; 
 
         // Get surrounding tiles
         List<Location> list = new ArrayList<>(world.getEmptySurroundingTiles());
+
+        if(list.size()==0)
+            return;
+
         Location newLocation = list.get(new Random().nextInt(list.size()));
 
         // create a new instance of Rabbit and put it on the world
-        world.setTile(newLocation, new Rabbit());
-        //System.out.println("Baby");
+        Rabbit baby = new Rabbit();
+        baby.setBaby();
+        world.setTile(newLocation, baby);
 
         currentEnergy -= reproductionCost;
     }

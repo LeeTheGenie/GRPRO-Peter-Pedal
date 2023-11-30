@@ -22,7 +22,7 @@ public class Main {
         try {
             Program p = fileLoader("data/input-filer 1/test.txt");
             p.show();
-            for (int i = 0; i < 300; i++) {
+            for (int i = 0; i < 3000; i++) {
                 p.run();
             }
         } catch (Exception e) {
@@ -165,7 +165,7 @@ public class Main {
         Scanner sc = new Scanner(new File(fileLocation));
 
         // Setup variables (ERROR LIKELY TO THROW HERE!)
-        int size = Integer.parseInt(sc.nextLine()), delay = 100, display_size = 800;
+        int size = Integer.parseInt(sc.nextLine()), delay = 50, display_size = 800;
         ;
 
         // Creating the new program and world

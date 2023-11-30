@@ -5,7 +5,7 @@ import itumulator.world.World;
 public abstract class Animal extends LivingBeing {
 
     // Energy
-    protected int currentEnergy, maxEnergy, trueMaxEnergy;
+    protected int currentEnergy, maxEnergy, trueMaxEnergy, metabloicRate;
 
     // Movement 
     protected int movementCost;
@@ -13,7 +13,7 @@ public abstract class Animal extends LivingBeing {
     // Reproduction
     protected int reproductionCost, matureAge, inheritedEnergy;
 
-    protected Animal(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,int reproductionCost,int inheritedEnergy) {
+    protected Animal(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,int reproductionCost,int inheritedEnergy,int metabloicRate) {
         super(age, maxAge);
         this.currentEnergy = maxEnergy;
         this.maxEnergy = maxEnergy;
@@ -25,12 +25,12 @@ public abstract class Animal extends LivingBeing {
     }
 
     @Override public void act(World world) {
-        if (currentEnergy == 0) {
-            System.out.println("I \"" + this.getClass() + "\" died of energyloss at age: " + age);
-            die(world);
-        }
+        changeEnergy(-metabloicRate,world);
+        
         super.act(world);
     }
+
+    
 
     /**
      * Returns true if (currentEnergy - cost != 0)
@@ -40,6 +40,24 @@ public abstract class Animal extends LivingBeing {
             return true; 
         return false;
     }
+
+    public void changeEnergy(int change,World world) {
+        currentEnergy += change;
+
+        if (currentEnergy > maxEnergy) { // hvis den er større end max, bare set den til max fordi det er max duh
+            currentEnergy = maxEnergy;
+            return; 
+        }
+
+        if (currentEnergy == 0 &&matureAge<age) {  // grace period when below mature age
+            System.out.println("I \"" + this.getClass() + "\" died of energyloss at age: " + age);
+            die(world);
+        }
+    }
+
+    public void setBaby() {
+        currentEnergy = inheritedEnergy;
+    } 
 
     public void toAndFrom(World world, Location to, Location from){
         int x=from.getX(); 
