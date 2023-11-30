@@ -1,15 +1,16 @@
-import java.util.List;
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Random;
+
 import itumulator.world.Location;
 import itumulator.world.World;
-import java.util.Random;
 
 import abstracts.Animal;
 
 public class Bear extends Animal {
     private Set<Location> territory;
+    private Location spawnLocation;
 
     @Override
     public Bear newInstance() {
@@ -32,7 +33,7 @@ public class Bear extends Animal {
     }
 
     public Set<Location> getTerritory(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(world.getLocation(this), 3);
+        Set<Location> tiles = world.getSurroundingTiles(spawnLocation, 3);
         for (Location l : tiles) {
             territory.add(l);
         }
