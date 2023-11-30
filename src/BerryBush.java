@@ -7,14 +7,12 @@ public class BerryBush extends Plant {
 
    protected Boolean berries;
    protected Location spawnpoint;
-   protected int berryCD;
 
 
     public BerryBush() {
         super(0, 100, 200);
         this.berries=true;
         this.spawnpoint=null;
-        this.berryCD=0;
     }
 
     @Override
@@ -25,9 +23,10 @@ public class BerryBush extends Plant {
     @Override
     public void act(World world){
         setSpawnpoint(world);
-
+        if (world.isNight()) {
+            this.berries=false;
+        }
         noBerries(world);
-        newBerries(world);
 
     }
 
@@ -39,24 +38,14 @@ public class BerryBush extends Plant {
         }
     }
     
-    public void noBerries(World world){
-        
-        if(this.berries==false&&this.berryCD==0){
-            world.remove(this);
+    public void noBerries(World world){ //migrate noBerries to animal class and rename to pickBerries
+      
+        if(this.berries==false){
+            world.delete(this);
             world.setTile(spawnpoint, new Bush());
-            this.berryCD=10;
-        }
-    }
-
-    public void newBerries(World world){
-        if (this.berryCD>0) {
-            this.berryCD=this.berryCD-1;
         }
         
-        if (this.berryCD==0) {
-            world.setTile(spawnpoint, this);
-        }
-
     }
+
 
 }
