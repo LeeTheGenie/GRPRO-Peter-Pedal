@@ -13,6 +13,7 @@ import abstracts.Animal;
 public class Bear extends Animal {
     private Set<Location> territory;
     private Location spawnLocation;
+    private Location preyLocation;
 
     @Override
     public Bear newInstance() {
@@ -22,6 +23,7 @@ public class Bear extends Animal {
     public Bear() {
         super(0, 100, 40);
         this.territory = new HashSet<>();
+        this.preyLocation = null;
 
     }
 
@@ -58,15 +60,18 @@ public class Bear extends Animal {
 
         if (territory.contains(newLocation)) {
             world.move(this, newLocation);
+            // currentEnergy -= 1;
         } else {
             return;
         }
     }
 
     public void huntInTerritory(World world) {
-        toAndFrom(world, world.getLocation(this), findPrey(world));
-        // eat prey
-        // if bear doesnt benefit from eating just kill and spawn corpse?
+        findPrey(world);
+        toAndFrom(world, world.getLocation(this), preyLocation);
+        attackPrey(world);
+        eatPrey(world);
+
     }
 
     public boolean preyInTerritory(World world) {
@@ -78,14 +83,33 @@ public class Bear extends Animal {
         return false;
     }
 
-    public Location findPrey(World world) {
-        Location preyLocation = null;
+    public void findPrey(World world) {
         for (Location l : getTerritory(world)) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
                 preyLocation = l;
             }
         }
-        return preyLocation;
     }
 
+    public void attackPrey(World world) {
+        world.delete(world.getTile(preyLocation));
+        System.out.println("dræbt");
+        if (world.containsNonBlocking(preyLocation)) {
+            world.delete(world.getNonBlocking(preyLocation));
+        }
+        world.setTile(preyLocation, new SmallCarcass());
+        System.out.println("sat carcass");
+        currentEnergy -= 3;
+    }
+
+    public void eatPrey(World world) {
+        int energyIncrement = 5;
+        if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
+            return;
+        currentEnergy += energyIncrement;
+        if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
+            currentEnergy = maxEnergy;
+        world.delete(world.getTile(preyLocation));
+        System.out.println("spist");
+    }
 }

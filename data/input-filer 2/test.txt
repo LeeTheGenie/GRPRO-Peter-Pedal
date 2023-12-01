@@ -1,3 +1,4 @@
 15
 bear 1
-rabbit 224
+rabbit 20
+grass 30
