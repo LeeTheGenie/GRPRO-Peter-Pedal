@@ -60,7 +60,7 @@ public class Bear extends Animal {
 
         if (territory.contains(newLocation)) {
             world.move(this, newLocation);
-            // currentEnergy -= 1;
+            currentEnergy -= 1;
         } else {
             return;
         }
@@ -110,6 +110,5 @@ public class Bear extends Animal {
         if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
             currentEnergy = maxEnergy;
         world.delete(world.getTile(preyLocation));
-        System.out.println("spist");
     }
 }
