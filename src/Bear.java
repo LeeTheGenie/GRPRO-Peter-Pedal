@@ -104,9 +104,9 @@ public class Bear extends Animal {
      */
     public void forage(World world) {
         toAndFrom(world, world.getLocation(this), targetLocation);
-        world.delete(targetLocation);
+        world.delete(world.getTile(targetLocation));
         world.setTile(targetLocation, new Bush());
-        currentEnergy += 5;
+        currentEnergy += 4;
     }
 
     /**
@@ -127,7 +127,7 @@ public class Bear extends Animal {
     }
 
     /**
-     * Finds the location of a prey in a territory.
+     * Finds the location of food in a territory.
      * 
      * @param world
      */
