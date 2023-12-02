@@ -32,12 +32,13 @@ public class Bear extends Animal {
             this.spawnLocation = world.getLocation(this);
             getTerritory(world);
         }
-        if (preyInTerritory(world) || foodInTerritory(world)) {
+        if (preyInTerritory(world)) {
             hunt(world);
+        } else if (foodInTerritory(world)) {
+            forage(world);
         } else {
             moveInTerritory(world);
         }
-
     }
 
     /**
@@ -84,7 +85,6 @@ public class Bear extends Animal {
      * @param world
      */
     public void hunt(World world) {
-
         findPrey(world);
         try {
             toAndFrom(world, world.getLocation(this), preyLocation);
@@ -93,7 +93,10 @@ public class Bear extends Animal {
         }
         attackPrey(world);
         eatPrey(world);
+    }
 
+    public void forage(World world) {
+        findPrey(world);
     }
 
     /**
@@ -128,7 +131,8 @@ public class Bear extends Animal {
      */
     public void findPrey(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
+                    || world.getTile(l) instanceof BerryBush) {
                 preyLocation = l;
             }
         }
