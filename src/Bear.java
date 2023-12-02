@@ -13,7 +13,7 @@ import abstracts.Animal;
 public class Bear extends Animal {
     private Set<Location> territory;
     private Location spawnLocation;
-    private Location preyLocation;
+    private Location targetLocation;
 
     @Override
     public Bear newInstance() {
@@ -23,32 +23,35 @@ public class Bear extends Animal {
     public Bear() {
         super(0, 100, 40);
         this.territory = new HashSet<>();
-        this.preyLocation = null;
+        this.targetLocation = null;
 
     }
 
     public void act(World world) {
         if (this.spawnLocation == null) {
             this.spawnLocation = world.getLocation(this);
-            getTerritory(world);
+            setTerritory(world);
         }
-        if (preyInTerritory(world)) {
-            hunt(world);
-        } else if (foodInTerritory(world)) {
-            forage(world);
+        if (foodInTerritory(world)) {
+            findTarget(world);
+            if (world.getTile(targetLocation) instanceof BerryBush) {
+                forage(world);
+            } else {
+                hunt(world);
+            }
         } else {
             moveInTerritory(world);
         }
     }
 
     /**
-     * Gets a territory from the spawnpoint of the object. The size of the territory
+     * Sets a territory from the spawnpoint of the object. The size of the territory
      * depends on the radius.
      * 
      * @param world
      * @return A set of locations surrounding a point.
      */
-    public Set<Location> getTerritory(World world) {
+    public Set<Location> setTerritory(World world) {
         Set<Location> tiles = world.getSurroundingTiles(spawnLocation, 3);
         for (Location l : tiles) {
             territory.add(l);
@@ -85,9 +88,8 @@ public class Bear extends Animal {
      * @param world
      */
     public void hunt(World world) {
-        findPrey(world);
         try {
-            toAndFrom(world, world.getLocation(this), preyLocation);
+            toAndFrom(world, world.getLocation(this), targetLocation);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -95,8 +97,16 @@ public class Bear extends Animal {
         eatPrey(world);
     }
 
+    /**
+     * Goes to berrybush and eats all the berries on the bush.
+     * 
+     * @param world
+     */
     public void forage(World world) {
-        findPrey(world);
+        toAndFrom(world, world.getLocation(this), targetLocation);
+        world.delete(targetLocation);
+        world.setTile(targetLocation, new Bush());
+        currentEnergy += 5;
     }
 
     /**
@@ -106,18 +116,10 @@ public class Bear extends Animal {
      * @return True if there is a prey in the territory.
      *         False if there is not a prey in the territory.
      */
-    public boolean preyInTerritory(World world) {
-        for (Location l : territory) {
-            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean foodInTerritory(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof BerryBush) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
+                    || world.getTile(l) instanceof BerryBush) {
                 return true;
             }
         }
@@ -129,11 +131,11 @@ public class Bear extends Animal {
      * 
      * @param world
      */
-    public void findPrey(World world) {
+    public void findTarget(World world) {
         for (Location l : territory) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
                     || world.getTile(l) instanceof BerryBush) {
-                preyLocation = l;
+                targetLocation = l;
             }
         }
     }
@@ -145,12 +147,12 @@ public class Bear extends Animal {
      * @param world
      */
     public void attackPrey(World world) {
-        world.delete(world.getTile(preyLocation));
+        world.delete(world.getTile(targetLocation));
 
-        if (world.containsNonBlocking(preyLocation)) {
-            world.delete(world.getNonBlocking(preyLocation));
+        if (world.containsNonBlocking(targetLocation)) {
+            world.delete(world.getNonBlocking(targetLocation));
         }
-        world.setTile(preyLocation, new SmallCarcass());
+        world.setTile(targetLocation, new SmallCarcass());
 
         currentEnergy -= 3;
     }
@@ -168,6 +170,6 @@ public class Bear extends Animal {
         currentEnergy += energyIncrement;
         if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
             currentEnergy = maxEnergy;
-        world.delete(world.getTile(preyLocation));
+        world.delete(world.getTile(targetLocation));
     }
 }

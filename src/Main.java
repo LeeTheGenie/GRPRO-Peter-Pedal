@@ -20,7 +20,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 2/test.txt");
+            Program p = fileLoader("data/input-filer 2/t2-7a.txt");
             p.show();
             for (int i = 0; i < 300; i++) {
                 p.run();
@@ -47,6 +47,10 @@ public class Main {
         p.setDisplayInformation(SmallCarcass.class, new DisplayInformation(Color.black, "carcass-small", false));
         // BerryBush
         p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
+        // Bush
+        p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
+        // Wolf
+        p.setDisplayInformation(Wolf.class, new DisplayInformation(Color.green, "wolf", false));
     }
 
     public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
@@ -64,6 +68,8 @@ public class Main {
         classReferenceMap.put("rabbit", new Rabbit());
         classReferenceMap.put("burrow", new RabbitHole());
         classReferenceMap.put("bear", new Bear());
+        classReferenceMap.put("wolf", new Wolf());
+        classReferenceMap.put("berry", new BerryBush());
         return classReferenceMap;
     }
 

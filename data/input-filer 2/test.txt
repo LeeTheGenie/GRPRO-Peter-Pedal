@@ -1,4 +1,0 @@
-15
-bear 1
-rabbit 10
-grass 30
