@@ -84,8 +84,13 @@ public class Bear extends Animal {
      * @param world
      */
     public void hunt(World world) {
+
         findPrey(world);
-        toAndFrom(world, world.getLocation(this), preyLocation);
+        try {
+            toAndFrom(world, world.getLocation(this), preyLocation);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
         attackPrey(world);
         eatPrey(world);
 
@@ -99,8 +104,17 @@ public class Bear extends Animal {
      *         False if there is not a prey in the territory.
      */
     public boolean preyInTerritory(World world) {
-        for (Location l : getTerritory(world)) {
+        for (Location l : territory) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean foodInTerritory(World world) {
+        for (Location l : territory) {
+            if (world.getTile(l) instanceof BerryBush {
                 return true;
             }
         }
@@ -113,7 +127,7 @@ public class Bear extends Animal {
      * @param world
      */
     public void findPrey(World world) {
-        for (Location l : getTerritory(world)) {
+        for (Location l : territory) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
                 preyLocation = l;
             }
@@ -128,12 +142,12 @@ public class Bear extends Animal {
      */
     public void attackPrey(World world) {
         world.delete(world.getTile(preyLocation));
-        System.out.println("dræbt");
+
         if (world.containsNonBlocking(preyLocation)) {
             world.delete(world.getNonBlocking(preyLocation));
         }
         world.setTile(preyLocation, new SmallCarcass());
-        System.out.println("sat carcass");
+
         currentEnergy -= 3;
     }
 
@@ -151,37 +165,5 @@ public class Bear extends Animal {
         if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
             currentEnergy = maxEnergy;
         world.delete(world.getTile(preyLocation));
-    }
-
-    @Override
-    public void toAndFrom(World world, Location to, Location from) {
-        int x = from.getX();
-        int y = from.getY();
-
-        if (to.getX() != from.getX()) {
-            if (to.getX() > from.getX()) {
-                x = from.getX() + 1;
-            }
-
-            if (to.getX() < from.getX()) {
-                x = from.getX() - 1;
-            }
-        }
-
-        if (to.getY() != from.getY()) {
-            if (to.getY() > from.getY()) {
-                y = from.getY() + 1;
-            }
-
-            if (to.getY() < from.getY()) {
-                y = from.getY() - 1;
-            }
-        }
-
-        Location newLocation = new Location(x, y);
-        System.out.println("going to " + newLocation);
-
-        world.move(this, newLocation);
-
     }
 }
