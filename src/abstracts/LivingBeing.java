@@ -27,9 +27,9 @@ public abstract class LivingBeing implements Actor {
             die(world);
         }
     }
-    
+
     public LivingBeing newInstance() {
-        return null;//return new LivingBeing(0, maxAge);
+        return null;// return new LivingBeing(0, maxAge);
     }
 
     public void die(World world) {

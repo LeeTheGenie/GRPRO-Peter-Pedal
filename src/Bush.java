@@ -1,20 +1,12 @@
+import abstracts.Plant;
 
-import abstracts.LivingBeing;
-import itumulator.world.NonBlocking;
-import itumulator.world.World;
-
-public class Bush extends LivingBeing implements NonBlocking {
-
-    @Override
-    public void act(World world) {
+public class Bush extends Plant {
+    public Bush() {
+        super(0, 50, 20);
     }
 
     @Override
     public Bush newInstance() {
         return new Bush();
-    }
-
-    public Bush() {
-        super(0, 0);
     }
 }
