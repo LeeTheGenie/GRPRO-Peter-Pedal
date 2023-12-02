@@ -32,7 +32,7 @@ public class Bear extends Animal {
             this.spawnLocation = world.getLocation(this);
             getTerritory(world);
         }
-        if (preyInTerritory(world)) {
+        if (preyInTerritory(world) || foodInTerritory(world)) {
             hunt(world);
         } else {
             moveInTerritory(world);
@@ -114,7 +114,7 @@ public class Bear extends Animal {
 
     public boolean foodInTerritory(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof BerryBush {
+            if (world.getTile(l) instanceof BerryBush) {
                 return true;
             }
         }

@@ -45,6 +45,8 @@ public class Main {
         p.setDisplayInformation(Bear.class, new DisplayInformation(Color.blue, "bear", false));
         // SmallCarcass
         p.setDisplayInformation(SmallCarcass.class, new DisplayInformation(Color.black, "carcass-small", false));
+        // BerryBush
+        p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
     }
 
     public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
