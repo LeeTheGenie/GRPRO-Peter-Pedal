@@ -16,14 +16,11 @@ public abstract class LivingBeing implements Actor {
     protected LivingBeing(int age, int maxAge) {
         this.age = age;
         this.maxAge = maxAge;
-
     }
 
     public void ageUp(World world) {
         age++;
         if (age >= maxAge) {
-            if (!(this instanceof Plant))
-                System.out.println("I \"" + this.getClass() + "\" died of old age at age: " + age);
             die(world);
         }
     }
@@ -39,6 +36,12 @@ public abstract class LivingBeing implements Actor {
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+    }
+    public void die(World world, String reason) {
+        die(world);
+        if (!(this instanceof Plant))
+            System.out.println("I \"" + this.getClass() + "\" died of "+reason+" at age: " + age);
+        
     }
 
     public void onDeath() {

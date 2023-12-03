@@ -12,11 +12,13 @@ import java.util.Random;
 
 public class Rabbit extends Animal {
 
-    private Location rabbithole;
+    private RabbitHole rabbithole;
+    int holeDigCost;
 
     public Rabbit() {
         super(0, 70, 40,10,1,15,0,2);
         this.rabbithole = null;
+        holeDigCost = 10; 
     }
 
     @Override public Rabbit newInstance() {
@@ -27,21 +29,30 @@ public class Rabbit extends Animal {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
 
         if (world.isNight()) {
-            findHole(world);
-            digHole(world);
-            //gotoHole(world);
-        }
-
-        if (world.isDay()) {
+            if(rabbithole==null) {
+                digHole(world); 
+            } else {
+                locateHole(world);
+            }
+            if(!resting) 
+                enterHole(world);
+            
+        } else {
+            // exit hole
             eat(world);
             reproduce(world);
-            move(world);
+            move(world,null);
+            if(resting)
+                exitHole(world);
         }
 
-        super.act(world); // age up & check for if energy == 0
+        super.act(world);
     }
-
-    public void eat(World world) { // spiser på den tile den står på
+    /**
+     * Eats plants underneath it
+     * @param world
+     */
+    public void eat(World world) {
         int energyIncrement = 8; // hvor meget energi man får
 
         // Failstates
@@ -49,34 +60,35 @@ public class Rabbit extends Animal {
             return;
         if(!world.isOnTile(this))
             return;
-        
+        if(!world.containsNonBlocking(world.getLocation(this)))
+            return; 
+
         if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
             world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
             changeEnergy(energyIncrement, world);
         }
     }
 
+    @Override public void onDeath() {
+        if(this.rabbithole!=null)
+            rabbithole.clearOwner();
+        super.onDeath();
+    }
+
     /**
-     * Move to a random free location within radius of 1, costs 1 energy
+     * locateHole() moves 1 step to the rabbits hole.
      * @param world
      */
-    public void move(World world) {
-        if (currentEnergy > 0) {
-            try {
-                Set<Location> neighbors = world.getEmptySurroundingTiles();
-                List<Location> list = new ArrayList<>(neighbors);
-                Random r = new Random();
+    public void locateHole(World world) {
+        if(rabbithole==null)
+            return;
+        if(!world.isOnTile(this))
+            return;
 
-                int randomLocation = r.nextInt(list.size());
-                Location newLocation = list.get(randomLocation);
+        Location rabbitLocation = world.getLocation(this);
+        Location holeLocation = world.getLocation(rabbithole);
 
-                world.move(this, newLocation);
-            } catch (Exception e) {
-
-            }
-            currentEnergy--;
-        }
-
+        move(world,toAndFrom(world,holeLocation,rabbitLocation));
     }
 
 
@@ -84,7 +96,6 @@ public class Rabbit extends Animal {
      * Births another rabbit if there is another rabbit within radius of 1 and energy
      * @param world
      */
-    // 
     public void reproduce(World world) {
         // Failstates
         if(matureAge>age) 
@@ -121,61 +132,82 @@ public class Rabbit extends Animal {
         currentEnergy -= reproductionCost;
     }
 
-    public void digHole(World world) {
-        try {
-            Location rabbitLocation = world.getLocation(this);
-            if (world.isNight() && rabbithole == null) {
-                if (world.isNight() && rabbitLocation != null) {
-                    this.dig = true;
-                    eat(world);
-                    world.setTile(rabbitLocation, new RabbitHole());
-                    rabbithole = rabbitLocation;
-                }
-            } else
-                this.dig = false;
-        } catch (Exception e) {
-        }
-    }
-
-    public void findHole(World world) {
-        try {
-            if (rabbithole == null) {
-                Set<Location> tiles = world.getSurroundingTiles(2);
-                for (Location l : tiles) {
-                    try {
-                        if (world.getNonBlocking(l) instanceof RabbitHole) {
-                            rabbithole = l;
-                            this.dig = false;
-                            break;
-                        } else {
-                            this.dig = true;
-                        }
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                    }
-
-                }
-            }
-
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-    }
-
-
     /**
-     * MOVE INSTANTLY TO A HOLE :(
-     * 
-     * 
+     * Digs a hole at current location
      * @param world
      */
-    public void goInHole(World world) {
-        if (rabbithole != null) {
-            try {
-                this.toAndFrom(world, rabbithole, world.getLocation(this));
-            } catch (Exception e) {
+    public void digHole(World world) {
+        if(!canAfford(holeDigCost))
+            return;
+        if(!world.isOnTile(this))
+            return;
 
+        Location rabbitLocation = world.getLocation(this);
+        
+        eat(world);
+        if(world.containsNonBlocking(rabbitLocation)) 
+            return; 
+        rabbithole = new RabbitHole(this);
+        changeEnergy(holeDigCost, world);
+        
+        world.setTile(rabbitLocation, rabbithole);
+    }
+    /**
+     * Tries to enter a hole underneath it.
+     * Claims a hole if it encounters a empty hole 
+     * @param world
+     */
+    public void enterHole(World world) {
+        if(!world.isOnTile(this))
+            return;
+        if(!world.containsNonBlocking(world.getLocation(this)))
+            return; 
+
+        Object objectUnderneath =  world.getNonBlocking(world.getLocation(this));
+
+        if (!(objectUnderneath instanceof RabbitHole))
+            return;
+        // Sucess 
+        RabbitHole rabbitHoleUnderneath = (RabbitHole) objectUnderneath;
+        
+        if(!rabbitHoleUnderneath.isClaimed()) {
+            //System.out.println(this+" trying to claim: "+rabbitHoleUnderneath+" with owner: "+rabbitHoleUnderneath.getOwner());
+            try {
+                rabbitHoleUnderneath.setOwner(this);
+                rabbithole=rabbitHoleUnderneath; 
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
             }
         }
+
+        if(objectUnderneath.equals(rabbithole)) {
+            world.remove(this);
+            resting = true; 
+            
+            //System.out.println("Rabbit(s) resting: " + this.rabbits);
+            //System.out.println(" -In " + world.getTile(world.getLocation(this)));
+        }
+    }
+
+    /**
+     * Atempts to exit the hole the rabbit is in;
+     * @param world
+     * 
+     */
+    public void exitHole(World world) {
+        if(world.isOnTile(this))
+            return;
+        if(rabbithole==null)
+            return;
+        if(!world.isOnTile(rabbithole))
+            return;
+        
+        Location exitLocation = world.getLocation(rabbithole); 
+        if(!world.isTileEmpty(exitLocation))
+            return;
+
+        //System.out.println("Go to tile:" + exitLocation);
+        world.setTile(exitLocation, this);
+        resting = false; 
     }
 }

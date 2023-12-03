@@ -43,9 +43,7 @@ public class Main {
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
     }
 
-    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
-                                                                  // every time
-
+    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance every time
     static HashMap<String, LivingBeing> getClassReferenceMap() {
         // Create a hashmap of all the creatures that can be added to the world.
         // (String animalName)->(Instance of animal)
@@ -56,7 +54,7 @@ public class Main {
         classReferenceMap = new HashMap<String, LivingBeing>();
         classReferenceMap.put("grass", new Grass());
         classReferenceMap.put("rabbit", new Rabbit());
-        classReferenceMap.put("burrow", new RabbitHole());
+        classReferenceMap.put("burrow", new RabbitHole(null));
         return classReferenceMap;
     }
 

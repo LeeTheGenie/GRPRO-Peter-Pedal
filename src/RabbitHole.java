@@ -1,55 +1,58 @@
 
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
-import itumulator.world.Location;
-import java.util.Set;
 
 import abstracts.LivingBeing;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Random;
-
 public class RabbitHole extends LivingBeing implements NonBlocking {
 
-    ArrayList<Object> rabbits;
+    Rabbit owner;
 
-    RabbitHole() {
-        super(0, 0);
-        this.rabbits = new ArrayList<>();
+    RabbitHole(Rabbit owner) {
+        super(0, 10);
+        this.owner = owner;
+    }
+
+    public boolean isClaimed() {
+        if(this.owner==null)
+            return false; 
+        return true;
+    }
+
+    public void setOwner(Rabbit owner) {
+       // System.out.println();
+        if(!isClaimed()) {
+            this.owner = owner;
+            this.age = 0;
+        } else {
+            throw new Error("Cannot asign a new owner to a hole with an already existing owner."); 
+        }
+    }
+
+    public void clearOwner(){
+        this.owner = null;
+    }
+
+    public Rabbit getOwner() {
+        return owner;
     }
 
     @Override public RabbitHole newInstance() {
-        return new RabbitHole();
+        return new RabbitHole(null);
     }
 
     @Override
     public void act(World world) {
+        if(!isClaimed())
+            super.act(world);
+
         //keepRabbit(world);
         //exitRabbit(world);
     }
 
    
     /*
-    public void keepRabbit(World world) {
-        if (world.isNight() == true) {
-            try {
-                if (world.getTile(world.getLocation(this)) instanceof Rabbit) {
-
-                    Object rabbit = world.getTile(world.getLocation(this));
-
-                    this.rabbits.add(rabbit);
-                    world.remove(rabbit);
-
-                    System.out.println("Rabbit(s) resting: " + this.rabbits);
-                    System.out.println(" -In " + world.getTile(world.getLocation(this)));
-                }
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-
-        }
-    }
+    
 
     public void exitRabbit(World world) {
 
