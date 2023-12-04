@@ -59,12 +59,13 @@ public abstract class Predator extends Animal {
      */
     public void hunt(World world) {
 
-        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear prøver at
-                                                                                     // stille sig på samme tile som
-                                                                                     // rabbit, men der kan kun være en
-                                                                                     // blocking, toAndFrom skal gøre
-                                                                                     // så objekt stiller sig ved
-                                                                                     // siden af og ikke ovenpå
+        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear
+                                                                                     // prøver at
+        // stille sig på samme tile som
+        // rabbit, men der kan kun være en
+        // blocking, toAndFrom skal gøre
+        // så objekt stiller sig ved
+        // siden af og ikke ovenpå
         attackPrey(world);
         eatPrey(world);
     }
