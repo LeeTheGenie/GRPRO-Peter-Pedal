@@ -91,7 +91,7 @@ public class Bear extends Animal {
         try {
             toAndFrom(world, world.getLocation(this), targetLocation);
         } catch (Exception e) {
-            // TODO: handle exception
+            // TODO: handle exception.
         }
         attackPrey(world);
         eatPrey(world);
