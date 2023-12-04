@@ -90,11 +90,12 @@ public class Bear extends Predator {
      * @param world
      */
     public void hunt(World world) {
-        try {
-            toAndFrom(world, world.getLocation(this), targetLocation);
-        } catch (Exception e) {
-            System.out.println("øh?");
-        }
+        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear prøver at
+                                                                                     // stille sig på samme tile som
+                                                                                     // rabbit, men der kan kun være en
+                                                                                     // blocking, toAndFrom skal gøre så
+                                                                                     // objekt stiller sig ved siden af
+                                                                                     // og ikke ovenpå
         attackPrey(world);
         eatPrey(world);
     }
@@ -106,7 +107,12 @@ public class Bear extends Predator {
      * @param world
      */
     public void forage(World world) {
-        toAndFrom(world, world.getLocation(this), targetLocation);
+        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear prøver at
+                                                                                     // stille sig på samme tile som
+                                                                                     // bush, men der kan kun være en
+                                                                                     // blocking, toAndFrom skal gøre så
+                                                                                     // objekt stiller sig ved siden af
+                                                                                     // og ikke ovenpå
         world.delete(world.getTile(targetLocation));
         world.setTile(targetLocation, new Bush());
         currentEnergy += 4;
