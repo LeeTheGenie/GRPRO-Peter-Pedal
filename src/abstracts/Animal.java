@@ -93,6 +93,15 @@ public abstract class Animal extends LivingBeing {
     }
 
     public Location toAndFrom(World world, Location to, Location from){
+    /**
+     * Moves the object one tile per step. 
+     * @param world
+     * @param to
+     * The Location the object is going towards.
+     * @param from
+     * The current location of the object. "world.getLocation(this)"
+     */
+    public void toAndFrom(World world, Location to, Location from){
         int x=from.getX(); 
         int y=from.getY(); 
 
