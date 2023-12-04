@@ -8,16 +8,15 @@ import itumulator.world.Location;
 import itumulator.world.World;
 import plants.BerryBush;
 import plants.Bush;
-import abstracts.Animal;
+import abstracts.Predator;
 import abstracts.LivingBeing;
 
-public class Bear extends Animal {
+public class Bear extends Predator {
     private Set<Location> territory;
     private Location spawnLocation;
     private Location targetLocation;
 
-    @Override
-    public Bear newInstance() {
+    @Override public Bear newInstance() {
         return new Bear();
     }
 

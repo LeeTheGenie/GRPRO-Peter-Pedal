@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import itumulator.world.Location;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 public abstract class Plant extends LivingBeing  {

@@ -1,3 +1,5 @@
+package abstracts; 
+
 public abstract class Predator extends Animal {
     protected Predator(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,
     int reproductionCost,int inheritedEnergy,int metabloicRate) {
@@ -7,6 +9,4 @@ public abstract class Predator extends Animal {
     @Override public void act() {
         super.act();
     }
-
-    
 }
