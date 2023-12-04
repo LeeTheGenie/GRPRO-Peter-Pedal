@@ -20,7 +20,7 @@ public class Bear extends Animal {
     }
 
     public Bear() {
-        super(0, 100, 40);
+        super(0, 100, 40, 0, 0, 0, 0, 0);
         this.territory = new HashSet<>();
         this.targetLocation = null;
 

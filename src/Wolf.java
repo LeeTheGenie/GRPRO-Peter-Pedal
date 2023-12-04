@@ -8,6 +8,6 @@ public class Wolf extends Animal {
     }
 
     public Wolf() {
-        super(0, 0, 0);
+        super(0, 0, 0, 0, 0, 0, 0, 0);
     }
 }
