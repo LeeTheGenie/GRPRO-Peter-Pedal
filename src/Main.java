@@ -38,9 +38,19 @@ public class Main {
         // Flower
         p.setDisplayInformation(Flower.class, new DisplayInformation(Color.yellow, "flower2", false));
         // Rabbit
-        p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.black, "rabbit-small"));
+        p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.red, "rabbit-small"));
         // RabbitHole
         p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
+        // Bear
+        p.setDisplayInformation(Bear.class, new DisplayInformation(Color.blue, "bear", false));
+        // SmallCarcass
+        p.setDisplayInformation(SmallCarcass.class, new DisplayInformation(Color.black, "carcass-small", false));
+        // BerryBush
+        p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
+        // Bush
+        p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
+        // Wolf
+        p.setDisplayInformation(Wolf.class, new DisplayInformation(Color.green, "wolf", false));
         // BerryBush/bush
         p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
         p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
@@ -60,7 +70,8 @@ public class Main {
         classReferenceMap.put("grass", new Grass());
         classReferenceMap.put("rabbit", new Rabbit());
         classReferenceMap.put("burrow", new RabbitHole(null));
-        classReferenceMap.put("burrow", new RabbitHole(null));
+        classReferenceMap.put("bear", new Bear());
+        classReferenceMap.put("wolf", new Wolf());
         classReferenceMap.put("berry", new BerryBush());
         return classReferenceMap;
     }
