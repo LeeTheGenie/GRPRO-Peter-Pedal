@@ -19,9 +19,10 @@ public class Wolf extends Animal {
 
 
         // har wolfpack
-            // størrelse 6
+            // størrelse 6?
             // hvis de møder en pakkeløs ulv adopterer de den hvis der er plads 
-            // former sig hver 3. dag?
+            // former sig hver 3. dag? 
+            // formerer sig ikke hvis pakken er fuldt
         // har et ulvehul
         // 
 

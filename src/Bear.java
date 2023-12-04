@@ -21,11 +21,11 @@ public class Bear extends Predator {
     }
 
     public Bear() {
-        super(0, 100, 40, 0, 0, 0, 0, 0);
+        super(0, 100, 120, 0, 0, 0, 0, 2,0.80);
         this.territory = new HashSet<>();
         this.targetLocation = null;
-
     }
+    
 
     @Override public void act(World world) {
         if (this.spawnLocation == null) {
