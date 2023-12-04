@@ -32,7 +32,7 @@ public class Bear extends Animal {
             this.spawnLocation = world.getLocation(this);
             setTerritory(world);
         }
-        if (foodInTerritory(world)) {
+        if (foodInRange(world)) {
             findTarget(world);
             if (world.getTile(targetLocation) instanceof BerryBush) {
                 forage(world);
@@ -116,7 +116,7 @@ public class Bear extends Animal {
      * @return True if there is a prey in the territory.
      *         False if there is not a prey in the territory.
      */
-    public boolean foodInTerritory(World world) {
+    public boolean foodInRange(World world) {
         for (Location l : territory) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
                     || world.getTile(l) instanceof BerryBush) {
