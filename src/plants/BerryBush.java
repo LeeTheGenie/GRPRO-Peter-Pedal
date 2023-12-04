@@ -22,9 +22,11 @@ public class BerryBush extends Plant {
     @Override
     public void act(World world) {
         setSpawnpoint(world);
-        if (world.isNight()) {
-            this.berries = false;
-        }
+        /*
+         * if (world.isNight()) {
+         * this.berries = false;
+         * }
+         */
         noBerries(world);
 
     }
@@ -42,5 +44,9 @@ public class BerryBush extends Plant {
             world.delete(this);
             world.setTile(spawnpoint, new Bush());
         }
+    }
+
+    public void setNoBerries(World world) {
+        berries = false;
     }
 }

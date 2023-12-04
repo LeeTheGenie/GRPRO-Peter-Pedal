@@ -67,7 +67,9 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    public void moveInTerritory(World world) {
+    public void moveInTerritory(World world) { // there is a bug where the bear is removed somehow and not deleted so
+                                               // the program crashes. Might be caused by rabbits reproduced method or
+                                               // rabbithole.
         Set<Location> emptyTiles = world.getEmptySurroundingTiles();
         List<Location> list = new ArrayList<>(emptyTiles);
 
@@ -90,12 +92,13 @@ public class Bear extends Predator {
      * @param world
      */
     public void hunt(World world) {
+
         world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear prøver at
                                                                                      // stille sig på samme tile som
                                                                                      // rabbit, men der kan kun være en
-                                                                                     // blocking, toAndFrom skal gøre så
-                                                                                     // objekt stiller sig ved siden af
-                                                                                     // og ikke ovenpå
+                                                                                     // blocking, toAndFrom skal gøre
+                                                                                     // så objekt stiller sig ved
+                                                                                     // siden af og ikke ovenpå
         attackPrey(world);
         eatPrey(world);
     }
@@ -107,14 +110,15 @@ public class Bear extends Predator {
      * @param world
      */
     public void forage(World world) {
+
         world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear prøver at
                                                                                      // stille sig på samme tile som
                                                                                      // bush, men der kan kun være en
-                                                                                     // blocking, toAndFrom skal gøre så
-                                                                                     // objekt stiller sig ved siden af
-                                                                                     // og ikke ovenpå
-        world.delete(world.getTile(targetLocation));
-        world.setTile(targetLocation, new Bush());
+                                                                                     // blocking, toAndFrom skal gøre
+                                                                                     // så objekt stiller sig ved
+                                                                                     // siden af og ikke ovenpå
+        BerryBush BerryBush = (BerryBush) world.getTile(targetLocation);
+        BerryBush.setNoBerries(world);
         currentEnergy += 4;
     }
 
@@ -156,10 +160,10 @@ public class Bear extends Predator {
      * @param world
      */
     public void attackPrey(World world) {
-        world.delete(world.getTile(targetLocation));
+        ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
 
         if (world.containsNonBlocking(targetLocation)) {
-            ((LivingBeing) world.getNonBlocking(targetLocation)).die(world);
+            world.delete(world.getNonBlocking(targetLocation));
         }
         world.setTile(targetLocation, new SmallCarcass());
 
