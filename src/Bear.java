@@ -1,4 +1,6 @@
+
 import java.util.Set;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,18 +18,19 @@ public class Bear extends Predator {
     private Location spawnLocation;
     private Location targetLocation;
 
-    @Override public Bear newInstance() {
+    @Override
+    public Bear newInstance() {
         return new Bear();
     }
 
     public Bear() {
-        super(0, 100, 120, 0, 0, 0, 0, 2,0.80);
+        super(0, 100, 120, 0, 0, 0, 0, 2, 0.80);
         this.territory = new HashSet<>();
         this.targetLocation = null;
     }
-    
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         if (this.spawnLocation == null) {
             this.spawnLocation = world.getLocation(this);
             setTerritory(world);
@@ -51,7 +54,7 @@ public class Bear extends Predator {
      * @return A set of locations surrounding a point.
      */
     public Set<Location> setTerritory(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(spawnLocation, 3);
+        Set<Location> tiles = world.getSurroundingTiles(spawnLocation, 2);
         for (Location l : tiles) {
             territory.add(l);
         }
@@ -90,7 +93,7 @@ public class Bear extends Predator {
         try {
             toAndFrom(world, world.getLocation(this), targetLocation);
         } catch (Exception e) {
-            // TODO: handle exception.
+            System.out.println("øh?");
         }
         attackPrey(world);
         eatPrey(world);
@@ -155,6 +158,7 @@ public class Bear extends Predator {
         world.setTile(targetLocation, new SmallCarcass());
 
         currentEnergy -= 3;
+        System.out.println("dræbt");
     }
 
     /**

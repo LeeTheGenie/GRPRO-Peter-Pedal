@@ -60,7 +60,9 @@ public class Main {
         p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
     }
 
-    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance every time
+    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
+                                                                  // every time
+
     static HashMap<String, LivingBeing> getClassReferenceMap() {
         // Create a hashmap of all the creatures that can be added to the world.
         // (String animalName)->(Instance of animal)
@@ -183,7 +185,7 @@ public class Main {
         Scanner sc = new Scanner(new File(fileLocation));
 
         // Setup variables (ERROR LIKELY TO THROW HERE!)
-        int size = Integer.parseInt(sc.nextLine()), delay = 50, display_size = 800;
+        int size = Integer.parseInt(sc.nextLine()), delay = 100, display_size = 800;
         ;
 
         // Creating the new program and world
