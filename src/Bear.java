@@ -6,8 +6,10 @@ import java.util.Random;
 
 import itumulator.world.Location;
 import itumulator.world.World;
-
+import plants.BerryBush;
+import plants.Bush;
 import abstracts.Animal;
+import abstracts.LivingBeing;
 
 public class Bear extends Animal {
     private Set<Location> territory;
@@ -26,7 +28,7 @@ public class Bear extends Animal {
 
     }
 
-    public void act(World world) {
+    @Override public void act(World world) {
         if (this.spawnLocation == null) {
             this.spawnLocation = world.getLocation(this);
             setTerritory(world);
@@ -149,7 +151,7 @@ public class Bear extends Animal {
         world.delete(world.getTile(targetLocation));
 
         if (world.containsNonBlocking(targetLocation)) {
-            world.delete(world.getNonBlocking(targetLocation));
+            ((LivingBeing) world.getNonBlocking(targetLocation)).die(world);
         }
         world.setTile(targetLocation, new SmallCarcass());
 

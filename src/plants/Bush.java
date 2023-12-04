@@ -1,3 +1,4 @@
+package plants;
 import abstracts.Plant;
 import itumulator.world.Location;
 import itumulator.world.World;

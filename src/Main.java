@@ -3,6 +3,10 @@ import java.awt.Color;
 import itumulator.executable.DisplayInformation;
 import itumulator.executable.Program;
 import itumulator.world.World;
+import plants.BerryBush;
+import plants.Bush;
+import plants.Flower;
+import plants.Grass;
 import itumulator.world.Location;
 import itumulator.world.NonBlocking;
 
@@ -56,9 +60,7 @@ public class Main {
         p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
     }
 
-    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance
-                                                                  // every time
-
+    public static HashMap<String, LivingBeing> classReferenceMap; // i want this public so we dont create a new instance every time
     static HashMap<String, LivingBeing> getClassReferenceMap() {
         // Create a hashmap of all the creatures that can be added to the world.
         // (String animalName)->(Instance of animal)

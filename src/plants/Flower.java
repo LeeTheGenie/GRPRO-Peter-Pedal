@@ -1,3 +1,4 @@
+package plants;
 import abstracts.Plant;
 
 public class Flower extends Plant {

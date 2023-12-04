@@ -1,0 +1,12 @@
+public abstract class Predator extends Animal {
+    protected Predator(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,
+    int reproductionCost,int inheritedEnergy,int metabloicRate) {
+        super(age,maxAge,maxEnergy,matureAge,movementCost,reproductionCost,inheritedEnergy,metabloicRate);
+    }
+
+    @Override public void act() {
+        super.act();
+    }
+
+    
+}

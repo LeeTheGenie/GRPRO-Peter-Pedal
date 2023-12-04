@@ -58,9 +58,8 @@ public abstract class Animal extends LivingBeing {
             return; 
         }
 
-        if (currentEnergy == 0 &&matureAge<age) {  // grace period when below mature age
-            System.out.println("I \"" + this.getClass() + "\" died of energyloss at age: " + age);
-            die(world);
+        if (currentEnergy <= 0 && matureAge<age) {  // grace period when below mature age
+            die(world,"energyloss");
         }
     }
 
@@ -91,17 +90,17 @@ public abstract class Animal extends LivingBeing {
         world.move(this, target);
         changeEnergy(-movementCost, world);
     }
-
-    public Location toAndFrom(World world, Location to, Location from){
     /**
-     * Moves the object one tile per step. 
+     * Returns a location one step closer to the 'to' location.
      * @param world
      * @param to
      * The Location the object is going towards.
      * @param from
      * The current location of the object. "world.getLocation(this)"
      */
-    public void toAndFrom(World world, Location to, Location from){
+
+    public Location toAndFrom(World world, Location to, Location from){
+    
         int x=from.getX(); 
         int y=from.getY(); 
 
@@ -131,9 +130,6 @@ public abstract class Animal extends LivingBeing {
         //world.move(this, newLocation);
         return newLocation;
     }
-
-
-
 
     @Override
     public LivingBeing newInstance() {

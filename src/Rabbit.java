@@ -40,8 +40,8 @@ public class Rabbit extends Animal {
         } else {
             // exit hole
             eat(world);
-            reproduce(world);
             move(world,null);
+            reproduce(world);
             if(resting)
                 exitHole(world);
         }
