@@ -44,8 +44,7 @@ public class Bear extends Animal {
     }
 
     /**
-     * Sets a territory from the spawnpoint of the object. The size of the territory
-     * depends on the radius.
+     * Sets a territory with the radius 3 from the spawnpoint of the object.
      * 
      * @param world
      * @return A set of locations surrounding a point.
@@ -97,7 +96,8 @@ public class Bear extends Animal {
     }
 
     /**
-     * Goes to berrybush and eats all the berries on the bush.
+     * Goes to berrybush and eats all the berries on the bush. Then replaces the
+     * berrybush with a regular bush.
      * 
      * @param world
      */
@@ -109,7 +109,7 @@ public class Bear extends Animal {
     }
 
     /**
-     * Scans the territory and checks if there is a prey in it.
+     * Scans the territory and checks if there is anything edible in it.
      * 
      * @param world
      * @return True if there is a prey in the territory.
@@ -126,7 +126,7 @@ public class Bear extends Animal {
     }
 
     /**
-     * Finds the location of food in a territory.
+     * Finds the location of anything edible in the territory.
      * 
      * @param world
      */
