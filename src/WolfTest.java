@@ -12,10 +12,11 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 public class WolfTest {
+    World w;
 
     @Before
     public void setUp() {
-
+        w = new World(2);
     }
 
     @After
@@ -25,6 +26,11 @@ public class WolfTest {
 
     @Test
     public void testMoveCloser() {
+        // Arrange
+
+        // Act
+
+        // Assert
 
     }
 }
