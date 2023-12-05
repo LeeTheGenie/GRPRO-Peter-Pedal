@@ -24,9 +24,9 @@ public abstract class LivingBeing implements Actor {
             die(world);
         }
     }
-    
+
     public LivingBeing newInstance() {
-        return null;//return new LivingBeing(0, maxAge);
+        return null;// return new LivingBeing(0, maxAge);
     }
 
     public void die(World world) {
@@ -37,11 +37,12 @@ public abstract class LivingBeing implements Actor {
             System.out.println(e.getMessage());
         }
     }
+
     public void die(World world, String reason) {
         die(world);
         if (!(this instanceof Plant))
-            System.out.println("I \"" + this.getClass() + "\" died of "+reason+" at age: " + age);
-        
+            System.out.println("I \"" + this.getClass() + "\" died of " + reason + " at age: " + age);
+
     }
 
     public void onDeath() {

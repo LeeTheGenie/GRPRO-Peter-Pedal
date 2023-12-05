@@ -1,4 +1,6 @@
 
+import java.util.Set;
+
 import abstracts.Animal;
 import abstracts.LivingBeing;
 import itumulator.world.Location;
@@ -17,6 +19,16 @@ public class Wolf extends Animal {
 
     @Override
     public void act(World world) {
+
+        if (lonely(world)) {
+            System.out.println("1");
+            moveCloser(world);
+            System.out.println("2");
+        } else {
+            move(world, null);
+            System.out.println("3");
+        }
+
         // hunt animals hvis den er sulten
 
         // har wolfpack
@@ -38,6 +50,49 @@ public class Wolf extends Animal {
          */
 
         super.act(world);
+    }
+
+    public void moveCloser(World world) {
+        Set<Location> tiles = world.getSurroundingTiles(6);
+        Location wolfLocation = world.getLocation(this);
+        int x = wolfLocation.getX();
+        int y = wolfLocation.getY();
+        for (Location l : tiles) {
+            if (world.getTile(l) instanceof Wolf) {
+                if (l.getX() != wolfLocation.getX()) {
+                    if (l.getX() > wolfLocation.getX()) {
+                        x = wolfLocation.getX() + 1;
+                    }
+
+                    if (l.getX() < wolfLocation.getX()) {
+                        x = wolfLocation.getX() - 1;
+                    }
+                }
+
+                if (l.getY() != wolfLocation.getY()) {
+                    if (l.getY() > wolfLocation.getY()) {
+                        y = wolfLocation.getY() + 1;
+                    }
+
+                    if (l.getY() < wolfLocation.getY()) {
+                        y = wolfLocation.getY() - 1;
+                    }
+                }
+            }
+
+        }
+        world.move(this, new Location(x, y));
+    }
+
+    public boolean lonely(World world) {
+        Set<Location> tiles = world.getSurroundingTiles(1);
+        for (Location l : tiles) {
+            if (world.getTile(l) instanceof Wolf) {
+                return false;
+            }
+
+        }
+        return true;
     }
 
 }

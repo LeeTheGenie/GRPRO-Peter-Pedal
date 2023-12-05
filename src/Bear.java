@@ -91,20 +91,19 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    /*
-     * public void hunt(World world) {
-     * 
-     * world.move(this, toAndFrom(world, world.getLocation(this), targetLocation));
-     * // crasher fordi bear prøver at
-     * // stille sig på samme tile som
-     * // rabbit, men der kan kun være en
-     * // blocking, toAndFrom skal gøre
-     * // så objekt stiller sig ved
-     * // siden af og ikke ovenpå
-     * attackPrey(world);
-     * eatPrey(world);
-     * }
-     */
+
+    public void hunt(World world) {
+
+        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation));
+        // crasher fordi bear prøver at
+        // stille sig på samme tile som
+        // rabbit, men der kan kun være en
+        // blocking, toAndFrom skal gøre
+        // så objekt stiller sig ved
+        // siden af og ikke ovenpå
+        attackPrey(world);
+        eatPrey(world);
+    }
 
     /**
      * Goes to berrybush and eats all the berries on the bush. Then replaces the
@@ -162,19 +161,18 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    /*
-     * public void attackPrey(World world) {
-     * ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
-     * 
-     * if (world.containsNonBlocking(targetLocation)) {
-     * world.delete(world.getNonBlocking(targetLocation));
-     * }
-     * world.setTile(targetLocation, new SmallCarcass());
-     * 
-     * currentEnergy -= 3;
-     * System.out.println("dræbt");
-     * }
-     */
+
+    public void attackPrey(World world) {
+        ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
+
+        if (world.containsNonBlocking(targetLocation)) {
+            world.delete(world.getNonBlocking(targetLocation));
+        }
+        world.setTile(targetLocation, new SmallCarcass());
+
+        currentEnergy -= 3;
+        System.out.println("dræbt");
+    }
 
     /**
      * Eats the prey and increases currentenergy. But if energy is already max then
@@ -182,16 +180,15 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    /*
-     * public void eatPrey(World world) {
-     * int energyIncrement = 5;
-     * if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
-     * return;
-     * currentEnergy += energyIncrement;
-     * if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den
-     * til max fordi det er max duh
-     * currentEnergy = maxEnergy;
-     * world.delete(world.getTile(targetLocation));
-     * }
-     */
+
+    public void eatPrey(World world) {
+        int energyIncrement = 5;
+        if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
+            return;
+        currentEnergy += energyIncrement;
+        if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
+            currentEnergy = maxEnergy;
+        world.delete(world.getTile(targetLocation));
+    }
+
 }

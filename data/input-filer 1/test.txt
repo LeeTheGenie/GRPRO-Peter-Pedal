@@ -1,6 +1,2 @@
 14
-rabbit 5
-wolf 1
-bear 1
-berry 7
-grass 50
+wolf 2
