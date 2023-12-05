@@ -10,6 +10,8 @@ import java.util.MissingResourceException;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 
+import executable.DisplayInformation;
+import executable.DynamicDisplayInformationProvider;
 import itumulator.display.animation.components.Animation;
 import itumulator.display.animation.components.AnimationSet;
 import itumulator.display.animation.components.AppearAnimation;
@@ -17,8 +19,6 @@ import itumulator.display.animation.components.DayNightAnimation;
 import itumulator.display.animation.components.HideAnimation;
 import itumulator.display.animation.components.MoveAnimation;
 import itumulator.display.animation.components.StillAnimation;
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
 

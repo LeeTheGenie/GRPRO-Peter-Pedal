@@ -1,4 +1,4 @@
-package itumulator.executable;
+package executable;
 
 import java.awt.Color;
 

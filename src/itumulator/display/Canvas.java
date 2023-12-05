@@ -12,14 +12,14 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.*;
 
+import executable.DisplayInformation;
+import executable.DynamicDisplayInformationProvider;
 import itumulator.display.animation.AnimationFactory;
 import itumulator.display.utility.ImageResourceCache;
 import itumulator.display.utility.ImageUtility;
 import itumulator.display.utility.IsomorphicCoordinateFactory;
 import itumulator.display.utility.IsomorphicUtility;
 import itumulator.display.utility.Point2DInt;
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
 

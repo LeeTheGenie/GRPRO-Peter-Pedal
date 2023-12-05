@@ -3,10 +3,13 @@ import java.util.Set;
 
 import abstracts.Animal;
 import abstracts.LivingBeing;
+import abstracts.Predator;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public class Wolf extends Animal {
+public class Wolf extends Predator {
+
+    LivingBeing target;
 
     @Override
     public Wolf newInstance() {
@@ -14,11 +17,21 @@ public class Wolf extends Animal {
     }
 
     public Wolf() {
-        super(0, 500, 500, 0, 0, 0, 0, 0);
+        super(0, 500, 400, 20, 3, 20, 30, 3, 0.80d);
+        target = null;
     }
 
     @Override
     public void act(World world) {
+
+        if (target == null)
+            target = locateTarget(world, 3);
+
+        if (target == null) {
+            move(world, null);
+        } else if (!world.isOnTile(this) && !world.isOnTile(target)) {
+            move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
+        }
 
         if (lonely(world)) {
             moveCloser(world);
