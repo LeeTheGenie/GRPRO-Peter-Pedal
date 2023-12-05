@@ -4,6 +4,7 @@ import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Predator;
+import abstracts.Animal;
 import itumulator.world.Location;
 import itumulator.world.World;
 
@@ -91,5 +92,9 @@ public class Wolf extends Predator {
 
     public void killTarget(World world) {
         ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
+    }
+
+    public void eatTarget(World world, Animal target) {
+
     }
 }
