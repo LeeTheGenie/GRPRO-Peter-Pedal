@@ -53,7 +53,7 @@ public class Wolf extends Animal {
     }
 
     public void moveCloser(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(6);
+        Set<Location> tiles = world.getSurroundingTiles(10);
         Location wolfLocation = world.getLocation(this);
         int x = wolfLocation.getX();
         int y = wolfLocation.getY();
@@ -79,7 +79,6 @@ public class Wolf extends Animal {
                     }
                 }
             }
-
         }
         world.move(this, new Location(x, y));
     }

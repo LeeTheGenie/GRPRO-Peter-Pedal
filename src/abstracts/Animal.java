@@ -134,6 +134,38 @@ public abstract class Animal extends LivingBeing {
         return newLocation;
     }
 
+    public void toAndFromBesides(World world, Location to, Location from) {
+
+        int x = from.getX();
+        int y = from.getY();
+
+        if (to.getX() != from.getX()) {
+            if (to.getX() > from.getX()) {
+                x = from.getX() + 1;
+            }
+
+            if (to.getX() < from.getX()) {
+                x = from.getX() - 1;
+            }
+        }
+
+        if (to.getY() != from.getY()) {
+            if (to.getY() > from.getY()) {
+                y = from.getY() + 1;
+            }
+
+            if (to.getY() < from.getY()) {
+                y = from.getY() - 1;
+            }
+        }
+
+        Location newLocation = new Location(x, y);
+        // System.out.println("going to "+newLocation);
+
+        world.move(this, newLocation);
+
+    }
+
     @Override
     public LivingBeing newInstance() {
         return null;// new Animal(0, maxAge, trueMaxEnergy);

@@ -48,7 +48,7 @@ public class Bear extends Predator {
     }
 
     /**
-     * Sets a territory with the radius 3 from the spawnpoint of the object.
+     * Sets a territory with the radius 2 from the spawnpoint of the object.
      * 
      * @param world
      * @return A set of locations surrounding a point.
@@ -93,14 +93,7 @@ public class Bear extends Predator {
      */
 
     public void hunt(World world) {
-
-        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation));
-        // crasher fordi bear prøver at
-        // stille sig på samme tile som
-        // rabbit, men der kan kun være en
-        // blocking, toAndFrom skal gøre
-        // så objekt stiller sig ved
-        // siden af og ikke ovenpå
+        move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
         attackPrey(world);
         eatPrey(world);
     }
@@ -113,12 +106,7 @@ public class Bear extends Predator {
      */
     public void forage(World world) {
 
-        world.move(this, toAndFrom(world, world.getLocation(this), targetLocation)); // crasher fordi bear prøver at
-                                                                                     // stille sig på samme tile som
-                                                                                     // bush, men der kan kun være en
-                                                                                     // blocking, toAndFrom skal gøre
-                                                                                     // så objekt stiller sig ved
-                                                                                     // siden af og ikke ovenpå
+        move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
         BerryBush BerryBush = (BerryBush) world.getTile(targetLocation);
         BerryBush.setNoBerries(world);
         currentEnergy += 4;
