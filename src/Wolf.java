@@ -57,30 +57,13 @@ public class Wolf extends Animal {
         Location wolfLocation = world.getLocation(this);
         int x = wolfLocation.getX();
         int y = wolfLocation.getY();
+        Location newLocation = null;
         for (Location l : tiles) {
             if (world.getTile(l) instanceof Wolf) {
-                if (l.getX() != wolfLocation.getX()) {
-                    if (l.getX() > wolfLocation.getX()) {
-                        x = wolfLocation.getX() + 1;
-                    }
-
-                    if (l.getX() < wolfLocation.getX()) {
-                        x = wolfLocation.getX() - 1;
-                    }
-                }
-
-                if (l.getY() != wolfLocation.getY()) {
-                    if (l.getY() > wolfLocation.getY()) {
-                        y = wolfLocation.getY() + 1;
-                    }
-
-                    if (l.getY() < wolfLocation.getY()) {
-                        y = wolfLocation.getY() - 1;
-                    }
-                }
+                newLocation = toAndFrom(world, l, wolfLocation);
             }
         }
-        world.move(this, new Location(x, y));
+        world.move(this, newLocation);
     }
 
     public boolean lonely(World world) {
