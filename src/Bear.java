@@ -36,7 +36,7 @@ public class Bear extends Predator {
             setTerritory(world);
         }
         if (foodInTerritory(world)) {
-            findTarget(world);
+            findTargetInTerritory(world);
             if (world.getTile(targetLocation) instanceof BerryBush) {
                 forage(world);
             } else {
@@ -79,8 +79,7 @@ public class Bear extends Predator {
         Location newLocation = list.get(randomLocation);
 
         if (territory.contains(newLocation)) {
-            world.move(this, newLocation);
-            currentEnergy -= 1;
+            move(world, newLocation);
         } else {
             return;
         }
@@ -134,7 +133,7 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    public void findTarget(World world) {
+    public void findTargetInTerritory(World world) {
         for (Location l : territory) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
                     || world.getTile(l) instanceof BerryBush) {

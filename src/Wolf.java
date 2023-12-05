@@ -21,12 +21,9 @@ public class Wolf extends Animal {
     public void act(World world) {
 
         if (lonely(world)) {
-            System.out.println("1");
             moveCloser(world);
-            System.out.println("2");
         } else {
             move(world, null);
-            System.out.println("3");
         }
 
         // hunt animals hvis den er sulten
