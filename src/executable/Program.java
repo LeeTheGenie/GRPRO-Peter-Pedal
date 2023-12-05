@@ -1,4 +1,4 @@
-package itumulator.executable;
+package executable;
 
 import itumulator.display.Canvas;
 import itumulator.display.Frame;

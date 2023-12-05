@@ -14,7 +14,7 @@ public abstract class Predator extends Animal {
     /**
      * At what pct energy does the predator feel hungry at.
      * Ex: hunger = 0.80d
-     */
+     */ 
     protected double hungerFactor; 
 
     protected Predator(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,

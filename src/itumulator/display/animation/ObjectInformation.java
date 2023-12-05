@@ -4,12 +4,14 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.nio.Buffer;
 import java.util.Random;
+
+import executable.DisplayInformation;
+import executable.DynamicDisplayInformationProvider;
+
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
 
 import itumulator.display.utility.ImageResourceCache;
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.DynamicDisplayInformationProvider;
 import itumulator.world.NonBlocking;
 
 /**

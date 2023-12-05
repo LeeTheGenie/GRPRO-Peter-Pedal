@@ -1,4 +1,4 @@
-package itumulator.executable;
+package executable;
 
 /**
  * By implementing this interface, an object can dynamically control a objects display information at runtime. 

@@ -1,7 +1,5 @@
 import java.awt.Color;
 
-import itumulator.executable.DisplayInformation;
-import itumulator.executable.Program;
 import itumulator.world.World;
 import plants.BerryBush;
 import plants.Bush;
@@ -17,6 +15,8 @@ import java.util.Scanner;
 import java.lang.IllegalArgumentException;
 
 import abstracts.LivingBeing;
+import executable.DisplayInformation;
+import executable.Program;
 
 import java.util.HashMap;
 
