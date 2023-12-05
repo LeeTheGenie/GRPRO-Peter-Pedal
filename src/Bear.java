@@ -1,4 +1,6 @@
+
 import java.util.Set;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,18 +18,19 @@ public class Bear extends Predator {
     private Location spawnLocation;
     private Location targetLocation;
 
-    @Override public Bear newInstance() {
+    @Override
+    public Bear newInstance() {
         return new Bear();
     }
 
     public Bear() {
-        super(0, 100, 120, 0, 0, 0, 0, 2,0.80);
+        super(0, 100, 120, 0, 0, 0, 0, 2, 0.80);
         this.territory = new HashSet<>();
         this.targetLocation = null;
     }
-    
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         if (this.spawnLocation == null) {
             this.spawnLocation = world.getLocation(this);
             setTerritory(world);
@@ -45,13 +48,13 @@ public class Bear extends Predator {
     }
 
     /**
-     * Sets a territory with the radius 3 from the spawnpoint of the object.
+     * Sets a territory with the radius 2 from the spawnpoint of the object.
      * 
      * @param world
      * @return A set of locations surrounding a point.
      */
     public Set<Location> setTerritory(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(spawnLocation, 3);
+        Set<Location> tiles = world.getSurroundingTiles(spawnLocation, 2);
         for (Location l : tiles) {
             territory.add(l);
         }
@@ -64,7 +67,9 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    public void moveInTerritory(World world) {
+    public void moveInTerritory(World world) { // there is a bug where the bear is removed somehow and not deleted so
+                                               // the program crashes. Might be caused by rabbits reproduced method or
+                                               // rabbithole.
         Set<Location> emptyTiles = world.getEmptySurroundingTiles();
         List<Location> list = new ArrayList<>(emptyTiles);
 
@@ -86,12 +91,9 @@ public class Bear extends Predator {
      * 
      * @param world
      */
+
     public void hunt(World world) {
-        try {
-            toAndFrom(world, world.getLocation(this), targetLocation);
-        } catch (Exception e) {
-            // TODO: handle exception.
-        }
+        move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
         attackPrey(world);
         eatPrey(world);
     }
@@ -103,9 +105,10 @@ public class Bear extends Predator {
      * @param world
      */
     public void forage(World world) {
-        toAndFrom(world, world.getLocation(this), targetLocation);
-        world.delete(world.getTile(targetLocation));
-        world.setTile(targetLocation, new Bush());
+
+        move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
+        BerryBush BerryBush = (BerryBush) world.getTile(targetLocation);
+        BerryBush.setNoBerries(world);
         currentEnergy += 4;
     }
 
@@ -146,15 +149,17 @@ public class Bear extends Predator {
      * 
      * @param world
      */
+
     public void attackPrey(World world) {
-        world.delete(world.getTile(targetLocation));
+        ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
 
         if (world.containsNonBlocking(targetLocation)) {
-            ((LivingBeing) world.getNonBlocking(targetLocation)).die(world);
+            world.delete(world.getNonBlocking(targetLocation));
         }
         world.setTile(targetLocation, new SmallCarcass());
 
         currentEnergy -= 3;
+        System.out.println("dræbt");
     }
 
     /**
@@ -163,6 +168,7 @@ public class Bear extends Predator {
      * 
      * @param world
      */
+
     public void eatPrey(World world) {
         int energyIncrement = 5;
         if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
@@ -172,4 +178,5 @@ public class Bear extends Predator {
             currentEnergy = maxEnergy;
         world.delete(world.getTile(targetLocation));
     }
+
 }

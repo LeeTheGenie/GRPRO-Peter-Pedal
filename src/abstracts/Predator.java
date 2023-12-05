@@ -23,7 +23,8 @@ public abstract class Predator extends Animal {
         this.hungerFactor = hungerFactor;
     }
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         super.act(world);
     }
 
@@ -35,8 +36,8 @@ public abstract class Predator extends Animal {
      * @return true/false
      * 
      */
-    protected boolean canEat(LivingBeing b){
-        return false; 
+    protected boolean canEat(LivingBeing b) {
+        return false;
     }
 
     /** 

@@ -1,4 +1,5 @@
 package abstracts;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,13 +14,14 @@ public abstract class Animal extends LivingBeing {
     protected int currentEnergy, maxEnergy, trueMaxEnergy, metabloicRate;
     protected boolean resting;
 
-    // Movement 
+    // Movement
     protected int movementCost;
-    
+
     // Reproduction
     protected int reproductionCost, matureAge, inheritedEnergy;
 
-    protected Animal(int age, int maxAge, int maxEnergy,int matureAge,int movementCost,int reproductionCost,int inheritedEnergy,int metabloicRate) {
+    protected Animal(int age, int maxAge, int maxEnergy, int matureAge, int movementCost, int reproductionCost,
+            int inheritedEnergy, int metabloicRate) {
         super(age, maxAge);
         this.currentEnergy = maxEnergy;
         this.maxEnergy = maxEnergy;
@@ -28,14 +30,15 @@ public abstract class Animal extends LivingBeing {
         this.movementCost = movementCost;
         this.reproductionCost = reproductionCost;
         this.inheritedEnergy = inheritedEnergy;
-        resting = false; 
+        resting = false;
         this.movementCost = movementCost;
     }
 
-    @Override public void act(World world) {
-        if(!resting)
-            changeEnergy(-metabloicRate,world);
-        
+    @Override
+    public void act(World world) {
+        if (!resting)
+            changeEnergy(-metabloicRate, world);
+
         super.act(world);
     }
 
@@ -43,21 +46,21 @@ public abstract class Animal extends LivingBeing {
      * Returns true if (currentEnergy - cost != 0)
      */
     public boolean canAfford(int cost) {
-        if(currentEnergy-cost!=0)
-            return true; 
+        if (currentEnergy - cost != 0)
+            return true;
         return false;
     }
 
-    public void changeEnergy(int change,World world) {
+    public void changeEnergy(int change, World world) {
         currentEnergy += change;
 
         if (currentEnergy > maxEnergy) { // hvis den er større end max, bare set den til max fordi det er max duh
             currentEnergy = maxEnergy;
-            return; 
+            return;
         }
 
-        if (currentEnergy <= 0 && matureAge<age) {  // grace period when below mature age
-            die(world,"energyloss");
+        if (currentEnergy <= 0 && matureAge < age) { // grace period when below mature age
+            die(world, "energyloss");
         }
     }
 
@@ -65,72 +68,106 @@ public abstract class Animal extends LivingBeing {
         currentEnergy = inheritedEnergy;
     }
 
-    /** 
+    /**
      * Moves to a certain location, if target is null move to a random location
-    */
+     */
 
     public void move(World world, Location target) {
-        if(!canAfford(movementCost))
+        if (!canAfford(movementCost))
             return;
-        if(!world.isOnTile(this))
+        if (!world.isOnTile(this))
             return;
 
-        if(target==null) { // random
+        if (target == null) { // random
             Set<Location> neighbors = world.getEmptySurroundingTiles();
             List<Location> list = new ArrayList<>(neighbors);
-            if(list.size()==0)
+            if (list.size() == 0)
                 return;
             target = list.get(new Random().nextInt(list.size()));
         }
-        if(!world.isTileEmpty(target))
-            return; 
+        if (!world.isTileEmpty(target))
+            return;
 
         world.move(this, target);
         changeEnergy(-movementCost, world);
     }
+
     /**
      * Returns a location one step closer to the 'to' location.
+     * 
      * @param world
      * @param to
-     * The Location the object is going towards.
+     *              The Location the object is going towards.
      * @param from
-     * The current location of the object. "world.getLocation(this)"
+     *              The current location of the object. "world.getLocation(this)"
      */
 
-    public Location toAndFrom(World world, Location to, Location from){
-    
-        int x=from.getX(); 
-        int y=from.getY(); 
+    public Location toAndFrom(World world, Location to, Location from) {
 
-        if(to.getX()!=from.getX()){
-            if(to.getX()>from.getX()){
-                        x=from.getX()+1;
-                    }
+        int x = from.getX();
+        int y = from.getY();
 
-            if(to.getX()<from.getX()){
-                        x=from.getX()-1;
-                    }
+        if (to.getX() != from.getX()) {
+            if (to.getX() > from.getX()) {
+                x = from.getX() + 1;
+            }
+
+            if (to.getX() < from.getX()) {
+                x = from.getX() - 1;
+            }
         }
-        
-        if(to.getY()!=from.getY()){
-            if(to.getY()>from.getY()){
-                        y=from.getY()+1;
-                    }
 
-            if(to.getY()<from.getY()){
-                        y=from.getY()-1;
-                    }
+        if (to.getY() != from.getY()) {
+            if (to.getY() > from.getY()) {
+                y = from.getY() + 1;
+            }
+
+            if (to.getY() < from.getY()) {
+                y = from.getY() - 1;
+            }
         }
 
         Location newLocation = new Location(x, y);
-        //System.out.println("going to "+newLocation);
+        // System.out.println("going to "+newLocation);
 
-        //world.move(this, newLocation);
+        // world.move(this, newLocation);
         return newLocation;
+    }
+
+    public void toAndFromBesides(World world, Location to, Location from) {
+
+        int x = from.getX();
+        int y = from.getY();
+
+        if (to.getX() != from.getX()) {
+            if (to.getX() > from.getX()) {
+                x = from.getX() + 1;
+            }
+
+            if (to.getX() < from.getX()) {
+                x = from.getX() - 1;
+            }
+        }
+
+        if (to.getY() != from.getY()) {
+            if (to.getY() > from.getY()) {
+                y = from.getY() + 1;
+            }
+
+            if (to.getY() < from.getY()) {
+                y = from.getY() - 1;
+            }
+        }
+
+        Location newLocation = new Location(x, y);
+        // System.out.println("going to "+newLocation);
+
+        world.move(this, newLocation);
+
     }
 
     @Override
     public LivingBeing newInstance() {
-        return null;//new Animal(0, maxAge, trueMaxEnergy);
+        return null;// new Animal(0, maxAge, trueMaxEnergy);
     }
 }
