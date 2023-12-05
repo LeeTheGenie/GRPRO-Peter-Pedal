@@ -158,7 +158,6 @@ public class Bear extends Predator {
         if (world.containsNonBlocking(targetLocation)) {
             world.delete(world.getNonBlocking(targetLocation));
         }
-        world.setTile(targetLocation, new SmallCarcass());
 
         currentEnergy -= 3;
         System.out.println("dræbt");

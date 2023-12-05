@@ -2,6 +2,8 @@ package abstracts;
 
 import itumulator.simulator.Actor;
 import itumulator.world.World;
+import itumulator.world.Location;
+import misc.SmallCarcass;
 
 public abstract class LivingBeing implements Actor {
 
@@ -30,12 +32,28 @@ public abstract class LivingBeing implements Actor {
     }
 
     public void die(World world) {
-        onDeath();
+        onDeath(world);
+
         try {
+            
+            Location deathLocation = world.getLocation(this); 
+            Boolean isAnimal= false;
+            
+            if(this instanceof Animal){
+                isAnimal=true;
+            }
+
             world.delete(this);
+
+            if(isAnimal)
+                world.setTile(deathLocation, new SmallCarcass());
+
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
+        
+        
+
     }
 
     public void die(World world, String reason) {
@@ -45,8 +63,8 @@ public abstract class LivingBeing implements Actor {
 
     }
 
-    public void onDeath() {
-        // If a being does something when they die
-        // Perhaps create a corpse on the tile they stand?
+    public void onDeath(World world) {
+        
+        
     }
 }

@@ -190,7 +190,7 @@ public class Main {
         Scanner sc = new Scanner(new File(fileLocation));
 
         // Setup variables (ERROR LIKELY TO THROW HERE!)
-        int size = Integer.parseInt(sc.nextLine()), delay = 100, display_size = 800;
+        int size = Integer.parseInt(sc.nextLine()), delay = 10, display_size = 800;
         ;
 
         // Creating the new program and world

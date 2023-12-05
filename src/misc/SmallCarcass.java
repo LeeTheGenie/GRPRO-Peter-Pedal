@@ -1,10 +1,9 @@
 package misc;
 
 import abstracts.LivingBeing;
-import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
-public class SmallCarcass extends LivingBeing implements NonBlocking {
+public class SmallCarcass extends LivingBeing {
 
     @Override
     public void act(World world) {
