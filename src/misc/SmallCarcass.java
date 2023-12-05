@@ -1,3 +1,4 @@
+package misc;
 
 import abstracts.LivingBeing;
 import itumulator.world.NonBlocking;

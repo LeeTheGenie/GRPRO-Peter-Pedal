@@ -1,5 +1,7 @@
+package animal;
 
 import itumulator.world.World;
+import misc.RabbitHole;
 import itumulator.world.Location;
 
 import java.util.Set;
