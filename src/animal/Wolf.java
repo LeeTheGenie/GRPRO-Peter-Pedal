@@ -2,7 +2,6 @@ package animal;
 
 import java.util.Set;
 
-import abstracts.Animal;
 import abstracts.LivingBeing;
 import abstracts.Predator;
 import itumulator.world.Location;
@@ -66,8 +65,6 @@ public class Wolf extends Predator {
     public void moveCloser(World world) {
         Set<Location> tiles = world.getSurroundingTiles(10);
         Location wolfLocation = world.getLocation(this);
-        int x = wolfLocation.getX();
-        int y = wolfLocation.getY();
         Location newLocation = null;
         for (Location l : tiles) {
             if (world.getTile(l) instanceof Wolf) {

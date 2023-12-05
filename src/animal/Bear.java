@@ -2,7 +2,6 @@ package animal;
 
 import java.util.Set;
 
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.Random;
 import itumulator.world.Location;
 import itumulator.world.World;
 import plants.BerryBush;
-import plants.Bush;
 import misc.SmallCarcass;
 import abstracts.Predator;
 import abstracts.LivingBeing;
