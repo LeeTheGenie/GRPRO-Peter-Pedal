@@ -4,6 +4,7 @@ import java.util.Set;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import misc.SmallCarcass;
 
 public abstract class Predator extends Animal {
 
@@ -32,9 +33,7 @@ public abstract class Predator extends Animal {
      * @return true/false
      * 
      */
-    protected boolean canEat(LivingBeing b) {
-        return false;
-    }
+    abstract boolean canEat(LivingBeing b);
 
     /**
      * @return true if hungry,
@@ -66,7 +65,7 @@ public abstract class Predator extends Animal {
 
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
-            if (!(target instanceof Animal)) // hvis ikke animal
+            if (!(target instanceof Animal)) // hvis ikke animal eller carcass
                 continue;
             if (!canEat((Animal) target)) // hvis ikke kan spise
                 continue;
