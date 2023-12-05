@@ -39,8 +39,6 @@ public abstract class Animal extends LivingBeing {
         super.act(world);
     }
 
-    
-
     /**
      * Returns true if (currentEnergy - cost != 0)
      */
