@@ -33,7 +33,7 @@ public abstract class Predator extends Animal {
      * @return true/false
      * 
      */
-    abstract boolean canEat(LivingBeing b);
+    //abstract boolean canEat(LivingBeing b);
 
     /**
      * @return true if hungry,

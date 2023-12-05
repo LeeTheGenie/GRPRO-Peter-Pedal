@@ -1,5 +1,6 @@
 package abstracts;
 
+import animal.Rabbit;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -37,16 +38,25 @@ public abstract class LivingBeing implements Actor {
         try {
             
             Location deathLocation = world.getLocation(this); 
-            Boolean isAnimal= false;
+            Boolean rabbit=false;
+            boolean isAnimal=false;
+
             
+            if(this instanceof Rabbit){
+                 rabbit=true;
+            }
             if(this instanceof Animal){
-                isAnimal=true;
+                 isAnimal=true;
             }
 
             world.delete(this);
 
-            if(isAnimal)
+            if(rabbit)
                 world.setTile(deathLocation, new SmallCarcass());
+            
+            if (!rabbit && isAnimal) {
+                //world.setTile(deathLocation, new LargeCarcass());
+                }
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
