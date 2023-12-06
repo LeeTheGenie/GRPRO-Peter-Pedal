@@ -62,6 +62,10 @@ public class Bear extends Predator {
         return territory;
     }
 
+    public void setSpawnLocation(Location location) {
+        spawnLocation = location;
+    }
+
     /**
      * Moves the object to a random tile inside its territory.
      * 
