@@ -27,7 +27,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 1/test.txt");
+            Program p = fileLoader("data/input-filer 2/test.txt");
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();

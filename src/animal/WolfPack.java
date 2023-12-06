@@ -24,4 +24,10 @@ public class WolfPack {
     public List<Wolf> getWolfPack() {
         return wolfpack;
     }
+
+    public void display() {
+        for (Wolf w : wolfpack) {
+            System.out.println("- " + w);
+        }
+    }
 }
