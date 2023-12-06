@@ -34,9 +34,9 @@ public abstract class Predator extends Animal {
      * 
      */
     protected boolean canEat(LivingBeing livingBeing) {
-        return false; 
+        return false;
     }
-    
+
     /**
      * @return true if hungry,
      *         false if not hungry
@@ -67,7 +67,7 @@ public abstract class Predator extends Animal {
 
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
-            if (!(target instanceof Animal)) // hvis ikke animal eller carcass
+            if (!(target instanceof Animal) || !(target instanceof SmallCarcass)) // hvis ikke animal eller carcass
                 continue;
             if (!canEat((Animal) target)) // hvis ikke kan spise
                 continue;
