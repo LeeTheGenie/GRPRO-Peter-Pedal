@@ -25,6 +25,10 @@ public class WolfPack {
         return wolfpack;
     }
 
+    public int getWolfPackSize() {
+        return wolfpack.size();
+    }
+
     public void display() {
         for (Wolf w : wolfpack) {
             System.out.println("- " + w);

@@ -34,7 +34,7 @@ public class Wolf extends Predator {
                 if (!hasPack(world, getNearbyWolfs(world, 1))) {
                     createPack(world);
                     System.out.println("created pack");
-                } else if (this.getPack().getWolfPack().size() < 6) { // virker nok ikke
+                } else if (!packFull(world)) {
                     joinPack();
                 }
 
@@ -72,9 +72,9 @@ public class Wolf extends Predator {
 
         // hunt animals hvis den er sulten
 
-        // har pack
-        // størrelse 6?
-        // hvis de møder en pakkeløs ulv adopterer de den hvis der er plads
+        // har pack yes
+        // størrelse 6? yes
+        // hvis de møder en pakkeløs ulv adopterer de den hvis der er plads yes
         // former sig hver 3. dag?
         // formerer sig ikke hvis pakken er fuldt
         // har et ulvehul
@@ -83,7 +83,7 @@ public class Wolf extends Predator {
         /*
          * Skal søge aktivt mod andre dyr som de kan spise
          * Spiser animals for at få mad
-         * Flokke
+         * Flokke yes
          * Har et ulvehul hvor de formerer sig
          * Hostile mod andre flokke
          * Undgår andre ulveflokke
@@ -162,5 +162,16 @@ public class Wolf extends Predator {
             }
         }
         return false;
+    }
+
+    public boolean packFull(World world) {
+        List<Location> wolfs = getNearbyWolfs(world, 1);
+        for (Location l : wolfs) {
+            Wolf wolf = (Wolf) world.getTile(l);
+            if (wolf.getPack().getWolfPackSize() < 6) {
+                return false;
+            }
+        }
+        return true;
     }
 }

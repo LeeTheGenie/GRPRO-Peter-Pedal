@@ -3,7 +3,6 @@ package misc;
 import java.awt.Color;
 import java.util.Set;
 
-import abstracts.Animal;
 import abstracts.LivingBeing;
 import executable.DisplayInformation;
 import executable.DynamicDisplayInformationProvider;
