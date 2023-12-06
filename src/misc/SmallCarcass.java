@@ -12,8 +12,8 @@ public class SmallCarcass extends LivingBeing {
 
     @Override
     public void act(World world) {
-        decay = decay - 1;
-        decayed();
+        decay(world);
+
     }
 
     @Override
@@ -25,10 +25,13 @@ public class SmallCarcass extends LivingBeing {
         super(0, 0);
     }
 
-    public void decayed(World world){
-        if(decay<=0){
-            world.delete(this),
+    public void decay(World world){
+        
+        if(this.decay<=0){
+            world.delete(this);
         }
+        else
+            this.decay = this.decay-1;
 
     }
 }
