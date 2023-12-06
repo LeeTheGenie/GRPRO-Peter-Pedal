@@ -1,3 +1,2 @@
-6
-rabbit 1 
-
+7
+rabbit 1

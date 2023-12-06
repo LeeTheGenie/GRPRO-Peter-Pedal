@@ -2,7 +2,7 @@ import java.awt.Color;
 
 import itumulator.world.World;
 import misc.RabbitHole;
-import misc.SmallCarcass;
+import misc.Carcass;
 import plants.BerryBush;
 import plants.Bush;
 import plants.Flower;
@@ -29,7 +29,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 2/t2-5a.txt");
+            Program p = fileLoader("data/input-filer 1/test.txt");
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();
@@ -53,7 +53,7 @@ public class Main {
         // Bear
         p.setDisplayInformation(Bear.class, new DisplayInformation(Color.blue, "bear", false));
         // SmallCarcass
-        p.setDisplayInformation(SmallCarcass.class, new DisplayInformation(Color.black, "carcass-small", false));
+        p.setDisplayInformation(Carcass.class, new DisplayInformation(Color.black, "carcass-small", false));
         // BerryBush
         p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
         // Bush
@@ -177,7 +177,7 @@ public class Main {
 
         // Creating the new program and world
         int world_size = Integer.parseInt(sc.nextLine());
-        Program p = new Program(world_size, 800, 100);
+        Program p = new Program(world_size, 800, 10);
         World world = p.getWorld();
         getDisplayInformation(p);
 

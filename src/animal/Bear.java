@@ -10,7 +10,7 @@ import java.util.Random;
 import itumulator.world.Location;
 import itumulator.world.World;
 import plants.BerryBush;
-import misc.SmallCarcass;
+import misc.Carcass;
 import abstracts.Predator;
 import abstracts.LivingBeing;
 import abstracts.Animal;
@@ -124,7 +124,7 @@ public class Bear extends Predator {
      */
     public boolean foodInTerritory(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof BerryBush || world.getTile(l) instanceof SmallCarcass) {
+            if (world.getTile(l) instanceof BerryBush || world.getTile(l) instanceof Carcass) {
                 return true;
             }
         }
@@ -142,7 +142,7 @@ public class Bear extends Predator {
 
     public void findFoodInTerritory(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof SmallCarcass || world.getTile(l) instanceof BerryBush) {
+            if (world.getTile(l) instanceof Carcass || world.getTile(l) instanceof BerryBush) {
                 foodLocation = l;
             }
         }
@@ -185,9 +185,9 @@ public class Bear extends Predator {
         if (world.getTile(foodLocation) instanceof BerryBush) {
             forage(world);
         }
-        if (world.getTile(foodLocation) instanceof SmallCarcass) {
-            SmallCarcass carcass = (SmallCarcass) world.getTile(foodLocation);
-            carcass.takeBite(world);
+        if (world.getTile(foodLocation) instanceof Carcass) {
+            Carcass carcass = (Carcass) world.getTile(foodLocation);
+            //carcass.takeBite(world);
         }
     }
 }

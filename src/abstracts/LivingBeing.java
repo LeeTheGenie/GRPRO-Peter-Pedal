@@ -4,7 +4,7 @@ import animal.Rabbit;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 import itumulator.world.Location;
-import misc.SmallCarcass;
+import misc.Carcass;
 
 public abstract class LivingBeing implements Actor {
 
@@ -65,7 +65,7 @@ public abstract class LivingBeing implements Actor {
             world.delete(this);
 
             if(isRabbit){
-                world.setTile(deathLocation, new SmallCarcass());}
+                world.setTile(deathLocation, new Carcass(0, 1000, 50));}
     }
 
 }
