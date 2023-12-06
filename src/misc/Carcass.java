@@ -75,5 +75,4 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
         else
             return new DisplayInformation(Color.red,"carcass");
     }
-
 }

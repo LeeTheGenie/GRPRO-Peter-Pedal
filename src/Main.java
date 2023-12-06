@@ -3,7 +3,7 @@ import java.awt.Color;
 import itumulator.world.World;
 import misc.RabbitHole;
 import misc.Carcass;
-import misc.Fungus; 
+import misc.Fungus;
 import plants.BerryBush;
 import plants.Bush;
 import plants.Flower;
@@ -205,13 +205,13 @@ public class Main {
         Random r = new Random();
 
         // Assert the amount of objects to put
-        int diff = Math.min(Math.abs(max - min),0); // find the difference between the highest and lowest
+        int diff = Math.min(Math.abs(max - min), 0); // find the difference between the highest and lowest
 
         int randAmt;
-        if(diff>0){
+        if (diff > 0) {
             randAmt = r.nextInt(diff); // create a random number up until the difference
         } else {
-            randAmt = 0; 
+            randAmt = 0;
         }
 
         int finalAmt = randAmt + min; // add the random amount to the minimum amount to find the final amount
@@ -244,17 +244,19 @@ public class Main {
                 int z = spaceManager.getZ(lineInformation.livingBeing);
 
                 // if nonblocking or empty tile
-                boolean c11 = (z==0), c12 = world.containsNonBlocking(rl), c1 = c11&&c12,
-                        c21 = (z==1), c22 = !world.isTileEmpty(rl), c2 = c21&&c22, j = c1||c2;
+                /*
+                 * boolean c11 = (z==0), c12 = world.containsNonBlocking(rl), c1 = c11&&c12,
+                 * c21 = (z==1), c22 = !world.isTileEmpty(rl), c2 = c21&&c22, j = c1||c2;
+                 * 
+                 * System.out.println("Deriving judgement for: "+lineInformation.livingBeing +
+                 * " on plane: "+z);
+                 * System.out.println("Condition 1: ("+c1+"): "+c11+ " && "+c12);
+                 * System.out.println("Condition 2: ("+c2+"): "+c21+ " && "+c22);
+                 * System.out.println("Judgement ("+j+"): "+c1+ " || "+c2);
+                 */
 
-                System.out.println("Deriving judgement for: "+lineInformation.livingBeing + " on plane: "+z);
-                System.out.println("Condition 1: ("+c1+"): "+c11+ " && "+c12);
-                System.out.println("Condition 2: ("+c2+"): "+c21+ " && "+c22);
-                System.out.println("Judgement ("+j+"): "+c1+ " || "+c2);
-
-                if ( j
-                    /*(z == 0 && world.containsNonBlocking(rl)) || // if nonblocking 
-                        (z == 1 && !world.isTileEmpty(rl)) // if there is a blocking */
+                if ((z == 0 && world.containsNonBlocking(rl)) || // if nonblocking
+                        (z == 1 && !(world.isTileEmpty(rl))) // if there is a blocking */
                 ) {
                     continue; // then stop
                 }

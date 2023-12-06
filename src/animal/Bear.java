@@ -27,7 +27,7 @@ public class Bear extends Predator {
     }
 
     public Bear() {
-        super(0, 100, 120, 0, 0, 0, 0, 2, 0.80);
+        super(0, 100, 120, 0, 2, 0, 0, 2, 0.80);
         this.territory = new HashSet<>();
         this.targetLocation = null;
     }
@@ -38,15 +38,17 @@ public class Bear extends Predator {
             this.spawnLocation = world.getLocation(this);
             setTerritory(world);
         }
+        if (targetInTerritory(world)) {
+            findTargetInTerritory(world);
+            hunt(world);
+        }
         if (foodInTerritory(world) && isHungry()) {
             findFoodInTerritory(world);
             move(world, toAndFrom(world, foodLocation, world.getLocation(this)));
             eatFood(world, foodLocation);
-        } else if (targetInTerritory(world) && isHungry()) {
-            findTargetInTerritory(world);
-            hunt(world);
         } else {
             moveInTerritory(world);
+            System.out.println("moving randomly");
         }
     }
 
@@ -100,7 +102,9 @@ public class Bear extends Predator {
 
     public void hunt(World world) {
         move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
+        System.out.println("moved to target");
         attackTarget(world);
+        System.out.println("attacke target");
     }
 
     /**
@@ -110,7 +114,7 @@ public class Bear extends Predator {
      * @param world
      */
     public void forage(World world) {
-        BerryBush BerryBush = (BerryBush) world.getTile(targetLocation);
+        BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
         BerryBush.setNoBerries(world);
         currentEnergy += 4;
     }
@@ -173,6 +177,8 @@ public class Bear extends Predator {
             List<Wolf> wolfpack = wolf.getPack().getWolfPack();
             if (wolfpack.size() > 2) {
                 this.die(world, "killed by wolf pack greater than 2");
+            } else {
+                ((LivingBeing) world.getTile(targetLocation)).die(world, "Killed by bear");
             }
         } else {
             ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
@@ -184,10 +190,12 @@ public class Bear extends Predator {
     public void eatFood(World world, Location foodLocation) {
         if (world.getTile(foodLocation) instanceof BerryBush) {
             forage(world);
+            System.out.println("ate berry");
         }
         if (world.getTile(foodLocation) instanceof Carcass) {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
-            carcass.takeBite(world);
+            // carcass.takeBite(world);
+            System.out.println("ate carcass");
         }
     }
 }

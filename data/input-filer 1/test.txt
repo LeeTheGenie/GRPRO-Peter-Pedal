@@ -1,3 +1,2 @@
 14
-rabbit 4-10
-fungus 4
+rabbit 3
