@@ -104,7 +104,7 @@ public class Bear extends Predator {
         move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
         System.out.println("moved to target");
         attackTarget(world);
-        System.out.println("attacke target");
+        System.out.println("attacked target");
     }
 
     /**
