@@ -34,7 +34,7 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
     public void decay(World world){
         
         if(this.decay<=0){
-            if (this.fungusGrowth>=2) {
+            if (this.fungusGrowth>=50) {
                 spawnFungus(world);
             }
             else
