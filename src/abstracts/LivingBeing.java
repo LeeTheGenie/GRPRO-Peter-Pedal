@@ -35,25 +35,23 @@ public abstract class LivingBeing implements Actor {
         onDeath(world);
 
         try {
-            Location deathLocation = world.getLocation(this); 
-            boolean isAnimal=false;
+            Location deathLocation = world.getLocation(this);
+            boolean isAnimal = false;
 
-            if(this instanceof Animal){
-                 isAnimal=true;
-                 
+            if (this instanceof Animal) {
+                isAnimal = true;
+
             }
 
             world.delete(this);
 
-            if(isAnimal){
+            if (isAnimal) {
                 world.setTile(deathLocation, new SmallCarcass());
             }
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
-        
-        
 
     }
 
@@ -65,7 +63,6 @@ public abstract class LivingBeing implements Actor {
     }
 
     public void onDeath(World world) {
-        
-        
+
     }
 }

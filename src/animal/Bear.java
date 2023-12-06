@@ -13,11 +13,13 @@ import plants.BerryBush;
 import misc.SmallCarcass;
 import abstracts.Predator;
 import abstracts.LivingBeing;
+import abstracts.Animal;
 
 public class Bear extends Predator {
     private Set<Location> territory;
     private Location spawnLocation;
     private Location targetLocation;
+    private Location foodLocation;
 
     @Override
     public Bear newInstance() {
@@ -36,13 +38,13 @@ public class Bear extends Predator {
             this.spawnLocation = world.getLocation(this);
             setTerritory(world);
         }
-        if (foodInTerritory(world)) {
+        if (foodInTerritory(world) && isHungry()) {
+            findFoodInTerritory(world);
+            move(world, toAndFrom(world, foodLocation, world.getLocation(this)));
+            eatFood(world, foodLocation);
+        } else if (targetInTerritory(world) && isHungry()) {
             findTargetInTerritory(world);
-            if (world.getTile(targetLocation) instanceof BerryBush) {
-                forage(world);
-            } else {
-                hunt(world);
-            }
+            hunt(world);
         } else {
             moveInTerritory(world);
         }
@@ -94,8 +96,7 @@ public class Bear extends Predator {
 
     public void hunt(World world) {
         move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
-        attackPrey(world);
-        eatPrey(world);
+        attackTarget(world);
     }
 
     /**
@@ -105,8 +106,6 @@ public class Bear extends Predator {
      * @param world
      */
     public void forage(World world) {
-
-        move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
         BerryBush BerryBush = (BerryBush) world.getTile(targetLocation);
         BerryBush.setNoBerries(world);
         currentEnergy += 4;
@@ -121,12 +120,28 @@ public class Bear extends Predator {
      */
     public boolean foodInTerritory(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
-                    || world.getTile(l) instanceof BerryBush) {
+            if (world.getTile(l) instanceof BerryBush || world.getTile(l) instanceof SmallCarcass) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean targetInTerritory(World world) {
+        for (Location l : territory) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void findFoodInTerritory(World world) {
+        for (Location l : territory) {
+            if (world.getTile(l) instanceof SmallCarcass || world.getTile(l) instanceof BerryBush) {
+                foodLocation = l;
+            }
+        }
     }
 
     /**
@@ -136,8 +151,7 @@ public class Bear extends Predator {
      */
     public void findTargetInTerritory(World world) {
         for (Location l : territory) {
-            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
-                    || world.getTile(l) instanceof BerryBush) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
                 targetLocation = l;
             }
         }
@@ -149,33 +163,26 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-
-    public void attackPrey(World world) {
-        ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
-
-        if (world.containsNonBlocking(targetLocation)) {
-            world.delete(world.getNonBlocking(targetLocation));
+    public void attackTarget(World world) {
+        if (world.getTile(targetLocation) instanceof Wolf) {
+            WolfPack wolfpack = (Wolf) world.getTile(targetLocation).getWolfPack();
+            if (wolfpack.size() > 2) {
+                this.die(world, "was stupid");
+            }
+        } else {
+            ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
+            currentEnergy -= 3;
         }
 
-        currentEnergy -= 3;
-        System.out.println("dræbt");
     }
 
-    /**
-     * Eats the prey and increases currentenergy. But if energy is already max then
-     * the method return and does noting.
-     * 
-     * @param world
-     */
-
-    public void eatPrey(World world) {
-        int energyIncrement = 5;
-        if (currentEnergy == maxEnergy) // hvis du ikke gavner af at spise så lad vær
-            return;
-        currentEnergy += energyIncrement;
-        if (currentEnergy > maxEnergy) // hvis den er større end max, bare set den til max fordi det er max duh
-            currentEnergy = maxEnergy;
-        world.delete(world.getTile(targetLocation));
+    public void eatFood(World world, Location foodLocation) {
+        if (world.getTile(foodLocation) instanceof BerryBush) {
+            forage(world);
+        }
+        if (world.getTile(foodLocation) instanceof SmallCarcass) {
+            SmallCarcass carcass = (SmallCarcass) world.getTile(foodLocation);
+            carcass.takeBite(world);
+        }
     }
-
 }
