@@ -79,7 +79,7 @@ public class Fungus extends LivingBeing implements DynamicDisplayInformationProv
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
             if (target instanceof Carcass)
-                ((Carcass) target).fungusInfected();
+                ((Carcass) target).giveFungus();
         }
         
     }
