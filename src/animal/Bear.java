@@ -165,9 +165,10 @@ public class Bear extends Predator {
      */
     public void attackTarget(World world) {
         if (world.getTile(targetLocation) instanceof Wolf) {
-            WolfPack wolfpack = (Wolf) world.getTile(targetLocation).getWolfPack();
+            Wolf wolf = (Wolf) world.getTile(targetLocation);
+            List<Wolf> wolfpack = wolf.getPack().getWolfPack();
             if (wolfpack.size() > 2) {
-                this.die(world, "was stupid");
+                this.die(world, "killed by wolf pack greater than 2");
             }
         } else {
             ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
