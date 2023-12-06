@@ -2,7 +2,8 @@ import java.awt.Color;
 
 import itumulator.world.World;
 import misc.RabbitHole;
-import misc.SmallCarcass;
+import misc.Carcass;
+import misc.Fungus;
 import plants.BerryBush;
 import plants.Bush;
 import plants.Flower;
@@ -51,7 +52,7 @@ public class Main {
         // Bear
         p.setDisplayInformation(Bear.class, new DisplayInformation(Color.blue, "bear", false));
         // SmallCarcass
-        p.setDisplayInformation(SmallCarcass.class, new DisplayInformation(Color.black, "carcass-small", false));
+        p.setDisplayInformation(Carcass.class, new DisplayInformation(Color.black, "carcass-small", false));
         // BerryBush
         p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
         // Bush
@@ -80,6 +81,7 @@ public class Main {
         classReferenceMap.put("bear", new Bear());
         classReferenceMap.put("wolf", new Wolf());
         classReferenceMap.put("berry", new BerryBush());
+        classReferenceMap.put("fungus", new Fungus());
         return classReferenceMap;
     }
 
@@ -176,7 +178,7 @@ public class Main {
 
         // Creating the new program and world
         int world_size = Integer.parseInt(sc.nextLine());
-        Program p = new Program(world_size, 800, 100);
+        Program p = new Program(world_size, 800, 10);
         World world = p.getWorld();
         getDisplayInformation(p);
 
@@ -203,8 +205,15 @@ public class Main {
         Random r = new Random();
 
         // Assert the amount of objects to put
-        int diff = Math.abs(max - min); // find the difference between the highest and lowest
-        int randAmt = r.nextInt(diff); // create a random number up until the difference
+        int diff = Math.min(Math.abs(max - min), 0); // find the difference between the highest and lowest
+
+        int randAmt;
+        if (diff > 0) {
+            randAmt = r.nextInt(diff); // create a random number up until the difference
+        } else {
+            randAmt = 0;
+        }
+
         int finalAmt = randAmt + min; // add the random amount to the minimum amount to find the final amount
         return finalAmt;
     }
@@ -235,12 +244,22 @@ public class Main {
                 int z = spaceManager.getZ(lineInformation.livingBeing);
 
                 // if nonblocking or empty tile
-                if ((z == 0 && world.containsNonBlocking(rl)) || // if nonblocking System.out.println("Condition 1:
-                                                                 // "+(z==0)+ " && "+world.containsNonBlocking(rl));
-                        (z == 1 && !world.isTileEmpty(rl)) // if there is a blocking System.out.println("Condition 2:
-                                                           // "+(z==1)+ " && "+world.isTileEmpty(rl));
-                )
+                /*
+                 * boolean c11 = (z==0), c12 = world.containsNonBlocking(rl), c1 = c11&&c12,
+                 * c21 = (z==1), c22 = !world.isTileEmpty(rl), c2 = c21&&c22, j = c1||c2;
+                 * 
+                 * System.out.println("Deriving judgement for: "+lineInformation.livingBeing +
+                 * " on plane: "+z);
+                 * System.out.println("Condition 1: ("+c1+"): "+c11+ " && "+c12);
+                 * System.out.println("Condition 2: ("+c2+"): "+c21+ " && "+c22);
+                 * System.out.println("Judgement ("+j+"): "+c1+ " || "+c2);
+                 */
+
+                if ((z == 0 && world.containsNonBlocking(rl)) || // if nonblocking
+                        (z == 1 && !(world.isTileEmpty(rl))) // if there is a blocking */
+                ) {
                     continue; // then stop
+                }
 
                 // spawn being
                 LivingBeing spawn = lineInformation.livingBeing.newInstance();
