@@ -244,17 +244,18 @@ public class Main {
                 int z = spaceManager.getZ(lineInformation.livingBeing);
 
                 // if nonblocking or empty tile
+                /*
                 boolean c11 = (z==0), c12 = world.containsNonBlocking(rl), c1 = c11&&c12,
                         c21 = (z==1), c22 = !world.isTileEmpty(rl), c2 = c21&&c22, j = c1||c2;
 
                 System.out.println("Deriving judgement for: "+lineInformation.livingBeing + " on plane: "+z);
                 System.out.println("Condition 1: ("+c1+"): "+c11+ " && "+c12);
                 System.out.println("Condition 2: ("+c2+"): "+c21+ " && "+c22);
-                System.out.println("Judgement ("+j+"): "+c1+ " || "+c2);
+                System.out.println("Judgement ("+j+"): "+c1+ " || "+c2);*/
 
-                if ( j
-                    /*(z == 0 && world.containsNonBlocking(rl)) || // if nonblocking 
-                        (z == 1 && !world.isTileEmpty(rl)) // if there is a blocking */
+                if (
+                    (z == 0 && world.containsNonBlocking(rl)) || // if nonblocking 
+                        (z == 1 && !(world.isTileEmpty(rl))) // if there is a blocking */
                 ) {
                     continue; // then stop
                 }

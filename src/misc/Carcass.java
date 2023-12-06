@@ -47,7 +47,7 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
         
     }
 
-    public void fungusInfected(World world){
+    public void fungusInfected(){
         this.infected=true;
     }
 
@@ -60,9 +60,4 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
         else
             return new DisplayInformation(Color.red,"carcass");
     }
-
-    public void giveFungus() {
-    }
-
-
 }

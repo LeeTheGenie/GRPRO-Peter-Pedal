@@ -18,12 +18,12 @@ public class Fungus extends LivingBeing implements DynamicDisplayInformationProv
 
     public Fungus() {
         super(0,0);
-        this.energy = 40;
+        this.energy = 100;
         growthState = new String[]{"fungi-small","fungi"};
     }
 
     @Override public DisplayInformation getInformation() {    
-        int growthPointer = (energy>=100)?1:0;    
+        int growthPointer = (energy>=100)?1:0;
         return new DisplayInformation(Color.red,growthState[growthPointer]);
     }
 
@@ -79,7 +79,7 @@ public class Fungus extends LivingBeing implements DynamicDisplayInformationProv
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
             if (target instanceof Carcass)
-                ((Carcass) target).giveFungus();
+                ((Carcass) target).fungusInfected();
         }
         
     }
