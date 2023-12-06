@@ -27,7 +27,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 2/t2-8a.txt");
+            Program p = fileLoader("data/input-filer 1/test.txt");
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();
@@ -203,8 +203,15 @@ public class Main {
         Random r = new Random();
 
         // Assert the amount of objects to put
-        int diff = Math.abs(max - min); // find the difference between the highest and lowest
-        int randAmt = r.nextInt(diff); // create a random number up until the difference
+        int diff = Math.min(Math.abs(max - min),0); // find the difference between the highest and lowest
+
+        int randAmt;
+        if(diff>0){
+            randAmt = r.nextInt(diff); // create a random number up until the difference
+        } else {
+            randAmt = 0; 
+        }
+
         int finalAmt = randAmt + min; // add the random amount to the minimum amount to find the final amount
         return finalAmt;
     }

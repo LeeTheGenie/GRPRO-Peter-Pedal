@@ -7,7 +7,6 @@ import java.util.Set;
 
 import itumulator.world.Location;
 import itumulator.world.World;
-import misc.SmallCarcass;
 
 public abstract class Animal extends LivingBeing {
 

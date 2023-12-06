@@ -8,24 +8,37 @@ import java.util.Set;
 
 import abstracts.Animal;
 import abstracts.Plant;
+import executable.DisplayInformation;
+import executable.DynamicDisplayInformationProvider;
 
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Rabbit extends Animal {
+public class Rabbit extends Animal implements DynamicDisplayInformationProvider {
 
     private RabbitHole rabbithole;
-    int holeDigCost;
+    private boolean sleeping;
+    private int holeDigCost;
+    public String[][] growthStates;
 
     public Rabbit() {
         super(0, 70, 40, 10, 1, 15, 0, 2);
         this.rabbithole = null;
+        sleeping = false; 
         holeDigCost = 10;
+        growthStates = new String[][]{{"rabbit-small","rabbit-small-sleeping"},{"rabbit-large","rabbit-sleeping"}};
     }
 
-    @Override
-    public Rabbit newInstance() {
+    @Override public DisplayInformation getInformation() {
+        int sleepPointer = (sleeping)?1:0;
+        int growthPointer = (matureAge <= age)?1:0;
+
+        return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
+    }
+
+    @Override public Rabbit newInstance() {
         return new Rabbit();
     }
 
@@ -34,6 +47,7 @@ public class Rabbit extends Animal {
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
 
         if (world.isNight()) {
+            sleeping = true; 
             if (rabbithole == null) {
                 digHole(world);
             } else {
@@ -43,6 +57,7 @@ public class Rabbit extends Animal {
                 enterHole(world);
 
         } else { 
+            sleeping = false;
             // exit hole
             eat(world);
             move(world, null);
