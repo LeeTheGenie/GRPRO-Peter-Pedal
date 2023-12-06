@@ -48,7 +48,6 @@ public class Bear extends Predator {
             eatFood(world, foodLocation);
         } else {
             moveInTerritory(world);
-            System.out.println("moving randomly");
         }
     }
 
@@ -102,9 +101,7 @@ public class Bear extends Predator {
 
     public void hunt(World world) {
         move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
-        System.out.println("moved to target");
         attackTarget(world);
-        System.out.println("attacked target");
     }
 
     /**
@@ -190,12 +187,10 @@ public class Bear extends Predator {
     public void eatFood(World world, Location foodLocation) {
         if (world.getTile(foodLocation) instanceof BerryBush) {
             forage(world);
-            System.out.println("ate berry");
         }
         if (world.getTile(foodLocation) instanceof Carcass) {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
-            // carcass.takeBite(world);
-            System.out.println("ate carcass");
+            carcass.takeBite(world);
         }
     }
 }
