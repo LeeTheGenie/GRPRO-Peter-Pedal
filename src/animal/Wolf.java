@@ -1,7 +1,7 @@
+package animal;
 
 import java.util.Set;
 
-import abstracts.Animal;
 import abstracts.LivingBeing;
 import abstracts.Predator;
 import itumulator.world.Location;
@@ -9,7 +9,7 @@ import itumulator.world.World;
 
 public class Wolf extends Predator {
 
-    LivingBeing target;
+    private LivingBeing target;
 
     @Override
     public Wolf newInstance() {
@@ -18,7 +18,7 @@ public class Wolf extends Predator {
 
     public Wolf() {
         super(0, 500, 400, 20, 3, 20, 30, 3, 0.80d);
-        target = null;
+        this.target = null;
     }
 
     @Override
@@ -29,8 +29,12 @@ public class Wolf extends Predator {
 
         if (target == null) {
             move(world, null);
-        } else if (!world.isOnTile(this) && !world.isOnTile(target)) {
+        } else if (world.isOnTile(this) && world.isOnTile(target)) {
             move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
+            killTarget(world);
+        }
+        if (isHungry()) {
+
         }
 
         if (lonely(world)) {
@@ -65,8 +69,6 @@ public class Wolf extends Predator {
     public void moveCloser(World world) {
         Set<Location> tiles = world.getSurroundingTiles(10);
         Location wolfLocation = world.getLocation(this);
-        int x = wolfLocation.getX();
-        int y = wolfLocation.getY();
         Location newLocation = null;
         for (Location l : tiles) {
             if (world.getTile(l) instanceof Wolf) {
@@ -87,4 +89,7 @@ public class Wolf extends Predator {
         return true;
     }
 
+    public void killTarget(World world) {
+        ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import misc.SmallCarcass;
 
 public abstract class Animal extends LivingBeing {
 
@@ -170,4 +171,7 @@ public abstract class Animal extends LivingBeing {
     public LivingBeing newInstance() {
         return null;// new Animal(0, maxAge, trueMaxEnergy);
     }
+
+
+    
 }

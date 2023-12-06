@@ -1,14 +1,16 @@
+package misc;
 
 import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import abstracts.LivingBeing;
+import animal.Rabbit;
 
 public class RabbitHole extends LivingBeing implements NonBlocking {
 
     Rabbit owner;
 
-    RabbitHole(Rabbit owner) {
+    public RabbitHole(Rabbit owner) {
         super(0, 10);
         this.owner = owner;
     }

@@ -1,5 +1,7 @@
+package animal;
 
 import itumulator.world.World;
+import misc.RabbitHole;
 import itumulator.world.Location;
 
 import java.util.Set;
@@ -40,7 +42,7 @@ public class Rabbit extends Animal {
             if (!resting)
                 enterHole(world);
 
-        } else {
+        } else { 
             // exit hole
             eat(world);
             move(world, null);
@@ -75,10 +77,11 @@ public class Rabbit extends Animal {
     }
 
     @Override
-    public void onDeath() {
+    public void onDeath(World world) {
         if (this.rabbithole != null)
             rabbithole.clearOwner();
-        super.onDeath();
+
+        super.onDeath(world);
     }
 
     /**

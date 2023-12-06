@@ -1,6 +1,8 @@
 import java.awt.Color;
 
 import itumulator.world.World;
+import misc.RabbitHole;
+import misc.SmallCarcass;
 import plants.BerryBush;
 import plants.Bush;
 import plants.Flower;
@@ -15,6 +17,9 @@ import java.util.Scanner;
 import javax.crypto.KEM;
 
 import abstracts.LivingBeing;
+import animal.Bear;
+import animal.Rabbit;
+import animal.Wolf;
 import executable.DisplayInformation;
 import executable.Program;
 
