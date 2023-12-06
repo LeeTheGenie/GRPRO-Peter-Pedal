@@ -11,8 +11,9 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
 
     protected int decay;
     
-    public Carcass(int age, int maxAge, int decay) {
+    public Carcass(int age, int maxAge, int decay) {        
         super(age, maxAge);
+        this.decay=decay;
     }
 
     @Override
@@ -44,9 +45,8 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
 
     @Override
     public DisplayInformation getInformation() {
-        if(decay>50){
+        if(decay<50){
             return new DisplayInformation(Color.red,"carcass-small");
-
         }
         else
             return new DisplayInformation(Color.red,"carcass");

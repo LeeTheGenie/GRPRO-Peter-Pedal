@@ -1,6 +1,8 @@
 package abstracts;
 
+import animal.Bear;
 import animal.Rabbit;
+import animal.Wolf;
 import itumulator.simulator.Actor;
 import itumulator.world.World;
 import itumulator.world.Location;
@@ -57,15 +59,33 @@ public abstract class LivingBeing implements Actor {
     public void dropCarcass(World world){
             Location deathLocation = world.getLocation(this); 
             boolean isRabbit=false;
+            boolean isWolf=false;
+            boolean isBear=false;
 
             if(this instanceof Rabbit){
                  isRabbit=true;
             }
+            if(this instanceof Wolf){
+                 isRabbit=true;
+            }
+            if(this instanceof Bear){
+                isBear=true;
+            }  
 
             world.delete(this);
 
             if(isRabbit){
-                world.setTile(deathLocation, new Carcass(0, 1000, 50));}
+                world.setTile(deathLocation, new Carcass(0, 0, 50));}
+
+            if(isBear){
+                world.setTile(deathLocation, new Carcass(0, 0, 200));}
+            
+            if(isWolf){
+                world.setTile(deathLocation, new Carcass(0, 0, 120));}
+            
+            
+
+            
     }
 
 }
