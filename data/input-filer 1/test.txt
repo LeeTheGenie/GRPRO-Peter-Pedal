@@ -1,2 +1,6 @@
 14
-bear 2
+bear 1
+grass 50
+wolf 6 
+rabbit 4-10
+fungus 10

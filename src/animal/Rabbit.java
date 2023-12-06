@@ -34,7 +34,7 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
     @Override public DisplayInformation getInformation() {
         int sleepPointer = (sleeping)?1:0;
         int growthPointer = (matureAge <= age)?1:0;
-
+        
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
