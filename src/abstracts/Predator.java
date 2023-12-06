@@ -4,6 +4,7 @@ import java.util.Set;
 
 import itumulator.world.Location;
 import itumulator.world.World;
+import misc.Carcass;
 import misc.Fungus;
 
 public abstract class Predator extends Animal {
