@@ -34,4 +34,8 @@ public class SmallCarcass extends LivingBeing {
             this.decay = this.decay-1;
 
     }
+
+    public void takeBite(){
+        
+    }
 }
