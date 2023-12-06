@@ -187,7 +187,7 @@ public class Bear extends Predator {
         }
         if (world.getTile(foodLocation) instanceof Carcass) {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
-            //carcass.takeBite(world);
+            carcass.takeBite(world);
         }
     }
 }

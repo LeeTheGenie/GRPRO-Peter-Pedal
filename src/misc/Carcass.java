@@ -10,10 +10,12 @@ import itumulator.world.World;
 public class Carcass extends LivingBeing implements DynamicDisplayInformationProvider {
 
     protected int decay;
+    protected boolean infected;
     
     public Carcass(int age, int maxAge, int decay) {        
         super(age, maxAge);
         this.decay=decay;
+        this.infected=false;
     }
 
     @Override
@@ -32,16 +34,23 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
             world.delete(this);
         }
         else{
-            this.decay = this.decay-1;
-            System.out.println("decaying...");
+            if (infected) {
+                this.decay = this.decay-2;
+            }else
+                this.decay = this.decay-1;
         }
             
-
     }
 
-    public void takeBite(){
+    public void takeBite(World world){
+        this.decay=this.decay-20;
         
     }
+
+    public void fungusInfected(World world){
+        this.infected=true;
+    }
+
 
     @Override
     public DisplayInformation getInformation() {
@@ -51,4 +60,6 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
         else
             return new DisplayInformation(Color.red,"carcass");
     }
+
+
 }
