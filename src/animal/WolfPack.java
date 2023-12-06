@@ -6,11 +6,14 @@ import java.util.ArrayList;
 public class WolfPack {
 
     private List<Wolf> wolfpack;
+    private List<WolfPack> wolfpacks;
     private String name;
 
     public WolfPack(String name) {
         this.wolfpack = new ArrayList<>();
+        this.wolfpacks = new ArrayList<>();
         this.name = name;
+        wolfpacks.add(this);
     }
 
     public void addWolf(Wolf wolf) {
@@ -29,9 +32,17 @@ public class WolfPack {
         return wolfpack.size();
     }
 
+    public void removePack(WolfPack pack) {
+        wolfpacks.remove(pack);
+    }
+
     public void display() {
         for (Wolf w : wolfpack) {
             System.out.println("- " + w);
         }
+    }
+
+    public List<WolfPack> getWolfPacks() {
+        return wolfpacks;
     }
 }

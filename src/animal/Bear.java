@@ -27,7 +27,7 @@ public class Bear extends Predator {
     }
 
     public Bear() {
-        super(0, 100, 120, 0, 2, 0, 0, 2, 0.80);
+        super(0, 100, 120, 0, 1, 0, 0, 2, 0.80);
         this.territory = new HashSet<>();
         this.targetLocation = null;
     }
@@ -113,7 +113,7 @@ public class Bear extends Predator {
     public void forage(World world) {
         BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
         BerryBush.setNoBerries(world);
-        currentEnergy += 4;
+        changeEnergy(4, world);
     }
 
     /**
@@ -179,7 +179,7 @@ public class Bear extends Predator {
             }
         } else {
             ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
-            currentEnergy -= 3;
+            changeEnergy(-3, world);
         }
 
     }
@@ -191,6 +191,7 @@ public class Bear extends Predator {
         if (world.getTile(foodLocation) instanceof Carcass) {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
             carcass.takeBite(world);
+            changeEnergy(5, world);
         }
     }
 }

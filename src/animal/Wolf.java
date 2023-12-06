@@ -28,17 +28,20 @@ public class Wolf extends Predator {
 
     @Override
     public void act(World world) {
+        // System.out.println("wolf pack: " + pack);
         if (pack == null) {
             if (wolfNearby(world, 3)) {
                 moveCloser(world);
                 if (!hasPack(world, getNearbyWolfs(world, 1))) {
                     createPack(world);
-                    System.out.println("created pack");
+                    // System.out.println("created pack");
+                    pack.display();
+                    // System.out.println(pack.getWolfPackSize());
                 } else if (!packFull(world)) {
                     joinPack();
                 }
-
-                pack.display();
+            } else {
+                move(world, null);
             }
         }
         if (pack != null) {
@@ -143,11 +146,7 @@ public class Wolf extends Predator {
     }
 
     public void joinPack() {
-        // ahdas da
-    }
-
-    public void setPack(String name) {
-        this.pack = new WolfPack(name);
+        System.out.println("joined pack");
     }
 
     public WolfPack getPack() {
@@ -157,11 +156,11 @@ public class Wolf extends Predator {
     public boolean hasPack(World world, List<Location> wolfs) {
         for (Location l : wolfs) {
             Wolf wolf = (Wolf) world.getTile(l);
-            if (wolf.getPack() != null) {
-                return true;
+            if (wolf.getPack() == null) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public boolean packFull(World world) {
