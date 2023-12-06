@@ -14,8 +14,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import javax.crypto.KEM;
-
 import abstracts.LivingBeing;
 import animal.Bear;
 import animal.Rabbit;
@@ -29,7 +27,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 2/t2-5a.txt");
+            Program p = fileLoader("data/input-filer 2/t2-8a.txt");
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();
