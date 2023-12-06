@@ -31,23 +31,24 @@ public class Wolf extends Predator {
         if (pack == null) {
             if (wolfNearby(world, 3)) {
                 moveCloser(world);
-                if(!hasPack(world, getNearbyWolfs(world, 1))){
+                if (!hasPack(world, getNearbyWolfs(world, 1))) {
                     createPack(world);
                     System.out.println("created pack");
-                }else if(this.getPack().getWolfPack().size() < 6){
+                } else if (this.getPack().getWolfPack().size() < 6) {
                     joinPack();
                 }
-                    
-                
+
                 pack.display();
             }
         }
         if (pack != null) {
             if (!wolfNearby(world, 1) && wolfNearby(world, 3)) {
                 moveCloser(world);
-            } else if (/*rabbit eller bear tæt på så hunt eller anden flok så fight*/) {
-
-            } else {
+            } /*
+               * else if () {
+               * 
+               * }
+               */else {
                 move(world, null);
             }
         }

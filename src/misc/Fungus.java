@@ -11,35 +11,37 @@ import itumulator.world.Location;
 import itumulator.world.World;
 import plants.Grass;
 
-public class Fungus extends LivingBeing implements DynamicDisplayInformationProvider{
+public class Fungus extends LivingBeing implements DynamicDisplayInformationProvider {
 
     int energy;
     String[] growthState;
 
     public Fungus() {
-        super(0,0);
+        super(0, 0);
         this.energy = 100;
-        growthState = new String[]{"fungi-small","fungi"};
+        growthState = new String[] { "fungi-small", "fungi" };
     }
 
-    @Override public DisplayInformation getInformation() {    
-        int growthPointer = (energy>=100)?1:0;
-        return new DisplayInformation(Color.red,growthState[growthPointer]);
+    @Override
+    public DisplayInformation getInformation() {
+        int growthPointer = (energy >= 100) ? 1 : 0;
+        return new DisplayInformation(Color.red, growthState[growthPointer]);
     }
 
     public void setEnergy(int energy) {
         this.energy = energy;
     }
 
-    @Override public LivingBeing newInstance() {
+    @Override
+    public LivingBeing newInstance() {
         return new Fungus();
     }
-    
 
-    @Override public void act(World world){
+    @Override
+    public void act(World world) {
         spreadSpores(world);
         spawnGrass(world);
-        changeEnergy(-2,world);
+        changeEnergy(-2, world);
     }
 
     public boolean canAfford(int cost) {
@@ -60,14 +62,14 @@ public class Fungus extends LivingBeing implements DynamicDisplayInformationProv
         if (!world.isOnTile(this))
             return;
 
-        if(world.containsNonBlocking(world.getLocation(this)))
+        if (world.containsNonBlocking(world.getLocation(this)))
             return;
 
         Grass grass = new Grass();
-        world.setTile(world.getLocation(this),grass);
+        world.setTile(world.getLocation(this), grass);
     }
 
-    public void spreadSpores(World world){
+    public void spreadSpores(World world) {
         if (!world.isOnTile(this))
             return;
 
@@ -79,8 +81,8 @@ public class Fungus extends LivingBeing implements DynamicDisplayInformationProv
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
             if (target instanceof Carcass)
-                ((Carcass) target).giveFungus();
+                ((Carcass) target).giveFungus(world);
         }
-        
+
     }
 }
