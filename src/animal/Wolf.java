@@ -1,15 +1,18 @@
 package animal;
 
+import java.util.List;
 import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Predator;
+import abstracts.Animal;
 import itumulator.world.Location;
 import itumulator.world.World;
 
 public class Wolf extends Predator {
 
     private LivingBeing target;
+    private WolfPack pack;
 
     @Override
     public Wolf newInstance() {
@@ -45,7 +48,7 @@ public class Wolf extends Predator {
 
         // hunt animals hvis den er sulten
 
-        // har wolfpack
+        // har pack
         // størrelse 6?
         // hvis de møder en pakkeløs ulv adopterer de den hvis der er plads
         // former sig hver 3. dag?
@@ -91,5 +94,17 @@ public class Wolf extends Predator {
 
     public void killTarget(World world) {
         ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
+    }
+
+    public void eatTarget(World world, Animal target) {
+
+    }
+
+    public void setpack(String name) {
+        this.pack = new WolfPack(name);
+    }
+
+    public WolfPack getPack() {
+        return pack;
     }
 }
