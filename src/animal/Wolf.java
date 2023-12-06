@@ -34,7 +34,7 @@ public class Wolf extends Predator {
                 if (!hasPack(world, getNearbyWolfs(world, 1))) {
                     createPack(world);
                     System.out.println("created pack");
-                } else if (this.getPack().getWolfPack().size() < 6) {
+                } else if (this.getPack().getWolfPack().size() < 6) { // virker nok ikke
                     joinPack();
                 }
 
