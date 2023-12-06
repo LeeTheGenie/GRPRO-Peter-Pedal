@@ -2,7 +2,7 @@ import java.awt.Color;
 
 import itumulator.world.World;
 import misc.RabbitHole;
-import misc.SmallCarcass;
+import misc.Carcass;
 import misc.Fungus; 
 import plants.BerryBush;
 import plants.Bush;
