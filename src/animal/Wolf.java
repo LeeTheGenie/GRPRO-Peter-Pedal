@@ -66,7 +66,7 @@ public class Wolf extends Predator {
                 if (!hasPack(world, getNearbyWolfs(world, 1))) {
                     createPack(world);
                     System.out.println("created pack");
-                } else if (this.getPack().getWolfPack().size() < 6) { // virker nok ikke
+                } else if (!packFull(world)) {
                     joinPack();
                 }
 
@@ -315,4 +315,15 @@ public class Wolf extends Predator {
         setSleeping(false);
     }
 
+
+    public boolean packFull(World world) {
+        List<Location> wolfs = getNearbyWolfs(world, 1);
+        for (Location l : wolfs) {
+            Wolf wolf = (Wolf) world.getTile(l);
+            if (wolf.getPack().getWolfPackSize() < 6) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
