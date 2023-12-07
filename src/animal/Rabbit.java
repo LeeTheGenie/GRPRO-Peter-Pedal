@@ -26,19 +26,22 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
     public Rabbit() {
         super(0, 70, 40, 10, 1, 15, 0, 2);
         this.rabbithole = null;
-        sleeping = false; 
+        sleeping = false;
         holeDigCost = 10;
-        growthStates = new String[][]{{"rabbit-small","rabbit-small-sleeping"},{"rabbit-large","rabbit-sleeping"}};
+        growthStates = new String[][] { { "rabbit-small", "rabbit-small-sleeping" },
+                { "rabbit-large", "rabbit-sleeping" } };
     }
 
-    @Override public DisplayInformation getInformation() {
-        int sleepPointer = (sleeping)?1:0;
-        int growthPointer = (matureAge <= age)?1:0;
-        
+    @Override
+    public DisplayInformation getInformation() {
+        int sleepPointer = (sleeping) ? 1 : 0;
+        int growthPointer = (matureAge <= age) ? 1 : 0;
+
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
-    @Override public Rabbit newInstance() {
+    @Override
+    public Rabbit newInstance() {
         return new Rabbit();
     }
 
@@ -47,7 +50,7 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
         maxEnergy = trueMaxEnergy - (age / 7); // update the max energy
 
         if (world.isNight()) {
-            sleeping = true; 
+            sleeping = true;
             if (rabbithole == null) {
                 digHole(world);
             } else {
@@ -56,7 +59,7 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
             if (!resting)
                 enterHole(world);
 
-        } else { 
+        } else {
             sleeping = false;
             // exit hole
             eat(world);
@@ -242,4 +245,5 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
         world.setTile(exitLocation, this);
         resting = false;
     }
+
 }

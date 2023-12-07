@@ -36,11 +36,11 @@ public abstract class LivingBeing implements Actor {
 
     public void die(World world) {
         onDeath(world);
-        if(world.isOnTile(this)){
+        if (world.isOnTile(this)) {
             dropCarcass(world);
         }
-            
-        else{
+
+        else {
             world.delete(this);
         }
     }
@@ -56,36 +56,36 @@ public abstract class LivingBeing implements Actor {
 
     }
 
-    public void dropCarcass(World world){
-            Location deathLocation = world.getLocation(this); 
-            boolean isRabbit=false;
-            boolean isWolf=false;
-            boolean isBear=false;
+    public void dropCarcass(World world) {
+        Location deathLocation = world.getLocation(this);
+        boolean isRabbit = false;
+        boolean isWolf = false;
+        boolean isBear = false;
 
-            if(this instanceof Rabbit){
-                 isRabbit=true;
-            }
-            if(this instanceof Wolf){
-                 isRabbit=true;
-            }
-            if(this instanceof Bear){
-                isBear=true;
-            }  
+        if (this instanceof Rabbit) {
+            isRabbit = true;
+        }
+        if (this instanceof Wolf) {
+            isRabbit = true;
+        }
+        if (this instanceof Bear) {
+            isBear = true;
+        }
 
-            world.delete(this);
+        world.delete(this);
 
-            if(isRabbit){
-                world.setTile(deathLocation, new Carcass(0, 0, 50));}
+        if (isRabbit) {
+            world.setTile(deathLocation, new Carcass(0, 0, 50));
+        }
 
-            if(isBear){
-                world.setTile(deathLocation, new Carcass(0, 0, 200));}
-            
-            if(isWolf){
-                world.setTile(deathLocation, new Carcass(0, 0, 120));}
-            
-            
+        if (isBear) {
+            world.setTile(deathLocation, new Carcass(0, 0, 200));
+        }
 
-            
+        if (isWolf) {
+            world.setTile(deathLocation, new Carcass(0, 0, 120));
+        }
+
     }
 
 }

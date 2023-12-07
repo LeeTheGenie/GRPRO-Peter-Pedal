@@ -47,11 +47,10 @@ public class Wolf extends Predator {
         if (pack != null) {
             if (!wolfNearby(world, 1) && wolfNearby(world, 3)) {
                 moveCloser(world);
-            } /*
-               * else if () {
-               * 
-               * }
-               */else {
+            } else if (targetNearby(world)) {
+                move(world, world.getLocation(target));
+                killTarget(world);
+            } else {
                 move(world, null);
             }
         }
@@ -109,6 +108,9 @@ public class Wolf extends Predator {
     }
 
     public void killTarget(World world) {
+        if (target instanceof Wolf) {
+
+        }
         ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
     }
 
@@ -174,10 +176,11 @@ public class Wolf extends Predator {
         return false;
     }
 
-    public boolean targetIearby(World world) {
-
+    public boolean targetNearby(World world) {
         for (Location l : world.getSurroundingTiles(3)) {
-            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
+                    || world.getTile(l) instanceof Bear) {
+                target = (LivingBeing) world.getTile(l);
                 return true;
             }
         }
