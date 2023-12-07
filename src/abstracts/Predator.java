@@ -1,7 +1,10 @@
 package abstracts;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import animal.Wolf;
 import itumulator.world.Location;
 import itumulator.world.World;
 import misc.Carcass;
@@ -69,10 +72,11 @@ public abstract class Predator extends Animal {
             Object target = world.getTile(l);
             if (!(target instanceof Animal) || !(target instanceof Carcass)) // hvis ikke animal eller carcass
                 continue;
-            if (!canEat(world,(Animal) target)) // hvis ikke kan spise
+            if (!canEat(world, (Animal) target)) // hvis ikke kan spise
                 continue;
             return (Animal) target;
         }
         return null;
     }
+
 }

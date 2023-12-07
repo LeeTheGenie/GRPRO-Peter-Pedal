@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import animal.Wolf;
 import executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public abstract class Animal extends LivingBeing implements DynamicDisplayInformationProvider  {
+public abstract class Animal extends LivingBeing implements DynamicDisplayInformationProvider {
 
-    // Energy 
+    // Energy
     protected int currentEnergy, maxEnergy, trueMaxEnergy, metabloicRate;
     protected boolean resting, sleeping;
 
@@ -23,7 +24,6 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
 
     // displayinformation [adult/notadult][sleeping/notsleeping]
     public String[][] growthStates;
-
 
     protected Animal(int age, int maxAge, int maxEnergy, int matureAge, int movementCost, int reproductionCost,
             int inheritedEnergy, int metabloicRate) {
@@ -40,7 +40,8 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         this.sleeping = false;
     }
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         if (!resting)
             changeEnergy(-metabloicRate, world);
 
@@ -56,8 +57,8 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return false;
     }
 
-    public boolean isMature(){
-        return (age>=matureAge);
+    public boolean isMature() {
+        return (age >= matureAge);
     }
 
     public void changeEnergy(int change, World world) {
@@ -180,6 +181,27 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return null;// new Animal(0, maxAge, trueMaxEnergy);
     }
 
+    public boolean wolfNearby(World world, int radius) {
+        if (world.isOnTile(this)) {
+            Set<Location> tiles = world.getSurroundingTiles(radius);
+            for (Location l : tiles) {
+                if (world.getTile(l) instanceof Wolf) {
+                    return true;
+                }
+            }
+        }
 
-    
+        return false;
+    }
+
+    public List<Location> getNearbyWolfs(World world, int radius) {
+        Set<Location> tiles = world.getSurroundingTiles(radius);
+        List<Location> wolfsNearby = new ArrayList<>();
+        for (Location l : tiles) {
+            if (world.getTile(l) instanceof Wolf) {
+                wolfsNearby.add(l);
+            }
+        }
+        return wolfsNearby;
+    }
 }

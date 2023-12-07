@@ -13,16 +13,20 @@ import executable.DisplayInformation;
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Rabbit extends Animal {
 
     private RabbitHole rabbithole;
     private int holeDigCost;
+    private Set<Location> dangerTiles;
+    private Set<Location> safeTiles;
 
     public Rabbit() {
         super(0, 70, 40, 10, 1, 15, 0, 2);
         this.rabbithole = null;
+        this.dangerTiles = new HashSet<>();
         sleeping = false;
         holeDigCost = 10;
         growthStates = new String[][] { { "rabbit-small", "rabbit-small-sleeping" },
@@ -60,6 +64,9 @@ public class Rabbit extends Animal {
             sleeping = false;
             // exit hole
             eat(world);
+            // if (wolfNearby(world, 4)) {
+            // flee(world);
+            // }
             move(world, null);
             reproduce(world);
             if (resting)
@@ -69,8 +76,47 @@ public class Rabbit extends Animal {
         super.act(world);
     }
 
+    public void setDangerTiles(World world) {
+        List<Location> wolfs = getNearbyWolfs(world, age);
+        for (Location l : wolfs) {
+            Set<Location> wolfTiles = world.getSurroundingTiles(l, 3);
+            for (Location wt : wolfTiles) {
+                dangerTiles.add(wt);
+            }
+        }
+    }
+
+    public void setSafeTiles(World world) {
+        this.safeTiles = world.getSurroundingTiles(4);
+        for (Location l : safeTiles) {
+            if (dangerTiles.contains(l)) {
+                safeTiles.remove(l);
+            }
+        }
+    }
+
+    public Set<Location> getSafeTiles() {
+        return safeTiles;
+    }
+
+    public Location getRandomSafeTile(World world) {
+        setDangerTiles(world);
+        setSafeTiles(world);
+        Set<Location> tiles = getSafeTiles();
+        List<Location> list = new ArrayList<>(tiles);
+        Random r = new Random();
+        int randomIndex = r.nextInt(list.size());
+        Location randomLocation = list.get(randomIndex);
+        return randomLocation;
+    }
+
+    public void flee(World world) {
+        move(world, toAndFrom(world, getRandomSafeTile(world), world.getLocation(this)));
+    }
+
     /**
      * Eats plants underneath it
+     * 
      * @param world
      */
     public void eat(World world) {
@@ -99,6 +145,7 @@ public class Rabbit extends Animal {
 
     /**
      * locateHole() moves 1 step to the rabbits hole.
+     * 
      * @param world
      */
     public void locateHole(World world) {

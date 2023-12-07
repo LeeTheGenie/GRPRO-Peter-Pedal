@@ -202,7 +202,12 @@ public class Wolf extends Predator {
     }
 
     public void killTarget(World world) {
-        // ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
+        /*
+         * if (!(target instanceof Wolf)) {
+         * ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
+         * }
+         */
+
     }
 
     public void eatTarget(World world, Animal target) {
@@ -219,17 +224,6 @@ public class Wolf extends Predator {
 
     public void joinPack() {
         System.out.println("joined pack");
-    }
-
-    public List<Location> getNearbyWolfs(World world, int radius) {
-        Set<Location> tiles = world.getSurroundingTiles(radius);
-        List<Location> wolfsNearby = new ArrayList<>();
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                wolfsNearby.add(l);
-            }
-        }
-        return wolfsNearby;
     }
 
     public WolfPack getPack() {
@@ -318,16 +312,6 @@ public class Wolf extends Predator {
             }
         }
         return true;
-    }
-
-    public boolean wolfNearby(World world, int radius) {
-        Set<Location> tiles = world.getSurroundingTiles(radius);
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public boolean targetNearby(World world) {
