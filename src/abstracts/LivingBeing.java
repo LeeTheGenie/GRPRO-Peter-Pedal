@@ -13,8 +13,7 @@ public abstract class LivingBeing implements Actor {
     protected int age; // The age a of a being
     protected int maxAge; // The max Age of a being
 
-    @Override
-    public void act(World world) {
+    @Override public void act(World world) {
         ageUp(world);
     }
 

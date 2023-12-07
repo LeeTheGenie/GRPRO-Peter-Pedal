@@ -1,3 +1,4 @@
-10
+5
 grass 30
 wolf 2
+rabbit 3

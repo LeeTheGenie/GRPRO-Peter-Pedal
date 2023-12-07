@@ -9,19 +9,16 @@ import java.util.Set;
 import abstracts.Animal;
 import abstracts.Plant;
 import executable.DisplayInformation;
-import executable.DynamicDisplayInformationProvider;
 
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Rabbit extends Animal implements DynamicDisplayInformationProvider {
+public class Rabbit extends Animal {
 
     private RabbitHole rabbithole;
-    private boolean sleeping;
     private int holeDigCost;
-    public String[][] growthStates;
 
     public Rabbit() {
         super(0, 70, 40, 10, 1, 15, 0, 2);
@@ -74,7 +71,6 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
 
     /**
      * Eats plants underneath it
-     * 
      * @param world
      */
     public void eat(World world) {
@@ -98,13 +94,11 @@ public class Rabbit extends Animal implements DynamicDisplayInformationProvider 
     public void onDeath(World world) {
         if (this.rabbithole != null)
             rabbithole.clearOwner();
-
         super.onDeath(world);
     }
 
     /**
      * locateHole() moves 1 step to the rabbits hole.
-     * 
      * @param world
      */
     public void locateHole(World world) {

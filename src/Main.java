@@ -1,14 +1,17 @@
 import java.awt.Color;
 
-import itumulator.world.World;
 import misc.RabbitHole;
+import misc.WolfHole;
 import misc.Carcass;
 import misc.Fungus;
+
 import plants.BerryBush;
 import plants.Bush;
 import plants.Flower;
 import plants.Grass;
+
 import itumulator.world.Location;
+import itumulator.world.World;
 
 import java.util.Random;
 import java.io.File;
@@ -16,19 +19,23 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import abstracts.LivingBeing;
+
 import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
+
 import executable.DisplayInformation;
 import executable.Program;
 
 import java.util.HashMap;
 
 public class Main {
+    static int displaySize = 800;
+    static int delay = 100;
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 2/test.txt");
+            Program p = fileLoader("data/input-filer 2/test.txt", displaySize, delay);
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();
@@ -48,7 +55,7 @@ public class Main {
         // Rabbit
         p.setDisplayInformation(Rabbit.class, new DisplayInformation(Color.red, "rabbit-small"));
         // RabbitHole
-        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole", false));
+        p.setDisplayInformation(RabbitHole.class, new DisplayInformation(Color.black, "hole-small", false));
         // Bear
         p.setDisplayInformation(Bear.class, new DisplayInformation(Color.blue, "bear", false));
         // SmallCarcass
@@ -62,6 +69,8 @@ public class Main {
         // BerryBush/bush
         p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
         p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
+        // wolf hole
+        p.setDisplayInformation(WolfHole.class, new DisplayInformation(Color.green, "hole", false));
     }
 
     public static HashMap<String, LivingBeing> classReferenceMap;
@@ -171,14 +180,15 @@ public class Main {
      * 
      * @throws FileNotFoundException and NullPointerException
      **/
-    static Program fileLoader(String fileLocation) throws FileNotFoundException, NullPointerException {
+    static Program fileLoader(String fileLocation, int displaySize, int delay)
+            throws FileNotFoundException, NullPointerException {
 
         // Setup Scanner (ERROR LIKELY TO THROW HERE!)
         Scanner sc = new Scanner(new File(fileLocation));
 
         // Creating the new program and world
         int world_size = Integer.parseInt(sc.nextLine());
-        Program p = new Program(world_size, 800, 10);
+        Program p = new Program(world_size, displaySize, delay);
         World world = p.getWorld();
         getDisplayInformation(p);
 

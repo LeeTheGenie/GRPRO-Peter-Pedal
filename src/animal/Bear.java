@@ -4,6 +4,7 @@ import java.util.Set;
 
 import java.util.HashSet;
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,8 +13,7 @@ import itumulator.world.World;
 import plants.BerryBush;
 import misc.Carcass;
 import abstracts.Predator;
-import abstracts.LivingBeing;
-import abstracts.Animal;
+import executable.DisplayInformation;
 
 public class Bear extends Predator {
     private Set<Location> territory;
@@ -30,6 +30,14 @@ public class Bear extends Predator {
         super(0, 100, 120, 0, 1, 0, 0, 2, 0.80);
         this.territory = new HashSet<>();
         this.targetLocation = null;
+        growthStates = new String[][]{{"bear-small","bear-small-sleeping"},{"bear","bear-sleeping"}};
+    }
+
+    @Override public DisplayInformation getInformation() {
+        int sleepPointer = (sleeping)?1:0;
+        int growthPointer = isMature()?1:0;
+        
+        return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
     @Override
@@ -49,6 +57,7 @@ public class Bear extends Predator {
         } else {
             moveInTerritory(world);
         }
+        super.act(world);
     }
 
     /**
@@ -168,7 +177,7 @@ public class Bear extends Predator {
      * 
      * @param world
      */
-    public void attackTarget(World world) {
+    public void attackTarget(World world) {/*
         if (world.getTile(targetLocation) instanceof Wolf) {
             Wolf wolf = (Wolf) world.getTile(targetLocation);
             List<Wolf> wolfpack = wolf.getPack().getWolfPack();
@@ -181,7 +190,7 @@ public class Bear extends Predator {
             ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
             changeEnergy(-3, world);
         }
-
+        */
     }
 
     public void eatFood(World world, Location foodLocation) {

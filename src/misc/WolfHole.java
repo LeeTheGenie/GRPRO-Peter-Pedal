@@ -4,15 +4,15 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import abstracts.LivingBeing;
-import animal.Rabbit;
+import animal.WolfPack;
 
-public class RabbitHole extends LivingBeing implements NonBlocking {
+public class WolfHole extends LivingBeing implements NonBlocking {
 
-    Rabbit owner;
+    WolfPack owner;
 
-    public RabbitHole(Rabbit owner) {
-        super(0, 10);
-        this.owner = owner;
+    public WolfHole() {
+        super(0, 0);
+        this.owner = null; 
     }
 
     public boolean isClaimed() {
@@ -21,7 +21,7 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
         return true;
     }
 
-    public void setOwner(Rabbit owner) {
+    public void setOwner(WolfPack owner) {
         // System.out.println();
         if (!isClaimed()) {
             this.owner = owner;
@@ -35,13 +35,13 @@ public class RabbitHole extends LivingBeing implements NonBlocking {
         this.owner = null;
     }
 
-    public Rabbit getOwner() {
+    public WolfPack getOwner() {
         return owner;
     }
 
     @Override
-    public RabbitHole newInstance() {
-        return new RabbitHole(null);
+    public WolfHole newInstance() {
+        return new WolfHole();
     }
 
     @Override
