@@ -5,20 +5,25 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
 
-public abstract class Animal extends LivingBeing {
+public abstract class Animal extends LivingBeing implements DynamicDisplayInformationProvider  {
 
-    // Energy
+    // Energy 
     protected int currentEnergy, maxEnergy, trueMaxEnergy, metabloicRate;
-    protected boolean resting;
+    protected boolean resting, sleeping;
 
     // Movement
     protected int movementCost;
 
     // Reproduction
     protected int reproductionCost, matureAge, inheritedEnergy;
+
+    // displayinformation [adult/notadult][sleeping/notsleeping]
+    public String[][] growthStates;
+
 
     protected Animal(int age, int maxAge, int maxEnergy, int matureAge, int movementCost, int reproductionCost,
             int inheritedEnergy, int metabloicRate) {
@@ -32,10 +37,10 @@ public abstract class Animal extends LivingBeing {
         this.inheritedEnergy = inheritedEnergy;
         resting = false;
         this.movementCost = movementCost;
+        this.sleeping = false;
     }
 
-    @Override
-    public void act(World world) {
+    @Override public void act(World world) {
         if (!resting)
             changeEnergy(-metabloicRate, world);
 
@@ -43,12 +48,16 @@ public abstract class Animal extends LivingBeing {
     }
 
     /**
-     * Returns true if (currentEnergy - cost != 0)
+     * Returns true if (currentEnergy - cost > 0)
      */
     public boolean canAfford(int cost) {
-        if (currentEnergy - cost != 0)
+        if (currentEnergy - cost > 0)
             return true;
         return false;
+    }
+
+    public boolean isMature(){
+        return (age>=matureAge);
     }
 
     public void changeEnergy(int change, World world) {
