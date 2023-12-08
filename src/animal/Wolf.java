@@ -19,6 +19,7 @@ public class Wolf extends Predator {
 
     private LivingBeing target;
     private WolfPack pack;
+    private boolean haspack;
 
     // Sleeping
     private int sleepyness;
@@ -32,6 +33,7 @@ public class Wolf extends Predator {
         super(0, 500, 400, 20, 3, 20, 30, 3, 0.80d);
         this.target = null;
         this.pack = null;
+        this.haspack = false;
         growthStates = new String[][] { { "wolf-small", "wolf-small-sleeping" }, { "wolf", "wolf-sleeping" } };
         sleepyness = 0;
     }
@@ -47,35 +49,10 @@ public class Wolf extends Predator {
     @Override
     public void act(World world) {
         if (!sleeping) {
-            handlePack(world);
             handleMovement(world);
         }
         handleSleep(world);
         super.act(world);
-    }
-
-    /**
-     * A function to join all wolfpack related acitons
-     * 
-     * @param world
-     */
-    public void handlePack(World world) {
-        // join packs
-        if (pack == null) {
-            if (wolfNearby(world, 3)) {
-                moveCloser(world);
-                if (!hasPack(world, getNearbyWolfs(world, 1))) {
-                    createPack(world);
-                    // System.out.println("created pack");
-                    pack.display();
-                    // System.out.println(pack.getWolfPackSize());
-                } else if (!packFull(world)) {
-                    joinPack();
-                }
-            } else {
-                move(world, null);
-            }
-        }
     }
 
     /**
@@ -116,8 +93,9 @@ public class Wolf extends Predator {
             if (target == null) {
                 // no target? go find one.
                 target = locateTarget(world, 3);
-            } else if (world.isOnTile(this) && world.isOnTile(target)) {
-                move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
+            } else if (world.isOnTile(target) && world.isOnTile(this)) {
+                move(world, toAndFrom(world, world.getLocation(target),
+                        world.getLocation(this)));
                 killTarget(world);
                 // eatTarget(world, null);
                 return;
@@ -202,6 +180,7 @@ public class Wolf extends Predator {
     }
 
     public void killTarget(World world) {
+        System.out.println("Kill");
         /*
          * if (!(target instanceof Wolf)) {
          * ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
@@ -211,19 +190,19 @@ public class Wolf extends Predator {
     }
 
     public void eatTarget(World world, Animal target) {
-        // aaffa
+        // find a Carcass and take a bite of it
+
     }
 
     public void createPack(World world) {
-        pack = new WolfPack(null);
-        List<Location> wolfsNearby = getNearbyWolfs(world, 3);
-        for (Location l : wolfsNearby) {
-            pack.addWolf((Wolf) world.getTile(l));
-        }
+        pack = new WolfPack();
+        LivingBeing wolf = locateTarget(world, 1);
+        ((Wolf) wolf).getPack().addWolf(this);
     }
 
-    public void joinPack() {
-        System.out.println("joined pack");
+    public void joinPack(World world) {
+        LivingBeing wolf = locateTarget(world, 1);
+        ((Wolf) wolf).getPack().addWolf(this);
     }
 
     public WolfPack getPack() {
@@ -304,12 +283,9 @@ public class Wolf extends Predator {
     }
 
     public boolean packFull(World world) {
-        List<Location> wolfs = getNearbyWolfs(world, 1);
-        for (Location l : wolfs) {
-            Wolf wolf = (Wolf) world.getTile(l);
-            if (wolf.getPack().getWolfPackSize() < 6) {
-                return false;
-            }
+        LivingBeing wolf = locateTarget(world, 1);
+        if (((Wolf) wolf).getPack().getPackSize() < 6) {
+            return false;
         }
         return true;
     }
@@ -323,5 +299,9 @@ public class Wolf extends Predator {
             }
         }
         return false;
+    }
+
+    public boolean getHasPack() {
+        return haspack;
     }
 }
