@@ -64,12 +64,12 @@ public class WolfPack extends LivingBeing {
      * @return true if two wolves are standing next to each other
      */
     public boolean twoWolvesNextToEachOther(World world) {
-        Set<Location> tiles = world.getSurroundingTiles();
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                this.wolf1 = (Wolf) world.getTile(l);
-                if (wolf1.wolfNearby(world, 1)) {
-                    this.wolf2 = (Wolf) wolf1.locateTarget(world, 1);
+        Object[][][] tiles = world.getTiles();
+        for (Object o : tiles[][][1]) {// skal gå gennem blocking layer
+            if (world.getTile(l) instanceof Wolf) { // laves
+                this.wolf1 = (Wolf) world.getTile(l); // om
+                if (wolf1.wolfNearby(world, 1)) { // på
+                    this.wolf2 = (Wolf) wolf1.locateTarget(world, 1); // brugte world.getSurroundingTiles() før.
                     return true;
                 }
             }
