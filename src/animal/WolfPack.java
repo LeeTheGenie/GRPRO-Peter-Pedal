@@ -2,6 +2,7 @@ package animal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import abstracts.LivingBeing;
@@ -64,12 +65,13 @@ public class WolfPack extends LivingBeing {
      * @return true if two wolves are standing next to each other
      */
     public boolean twoWolvesNextToEachOther(World world) {
-        Object[][][] tiles = world.getTiles();
-        for (Object o : tiles[][][1]) {// skal gå gennem blocking layer
-            if (world.getTile(l) instanceof Wolf) { // laves
-                this.wolf1 = (Wolf) world.getTile(l); // om
-                if (wolf1.wolfNearby(world, 1)) { // på
-                    this.wolf2 = (Wolf) wolf1.locateTarget(world, 1); // brugte world.getSurroundingTiles() før.
+        Map<Object, Location> tiles = world.getEntities();
+        for (Object o : tiles.keySet()) {
+            if (o instanceof Wolf) {
+                Wolf wolf = (Wolf) o;
+                if (wolf.wolfNearby(world, 1)) {
+                    this.wolf1 = wolf;
+                    this.wolf2 = (Wolf) wolf.locateTarget(world, 1);
                     return true;
                 }
             }
