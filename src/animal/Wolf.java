@@ -282,7 +282,7 @@ public class Wolf extends Predator {
 
     public boolean packFull(World world) {
         LivingBeing wolf = locateTarget(world, 1);
-        if (((Wolf) wolf).getPack().getPackSize() < 6) {
+        if (((Wolf) wolf).getPack().getWolfPackSize() < 6) {
             return false;
         }
         return true;
@@ -301,5 +301,11 @@ public class Wolf extends Predator {
 
     public void setPack(WolfPack pack) {
         this.pack = pack;
+    }
+
+    public void createPack() {
+        if (pack == null) {
+
+        }
     }
 }

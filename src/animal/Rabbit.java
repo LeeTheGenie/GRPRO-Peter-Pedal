@@ -65,17 +65,19 @@ public class Rabbit extends Animal {
             sleeping = false;
             // exit hole
             eat(world);
-            if (wolfNearby(world, 4)) {
-                System.out.println("nearby wolf");
-                flee(world);
-                System.out.println("fleeing");
-                for (Location l : dangerTiles) {
-                    if (safeTiles.contains(l)) {
-                        System.out.println("lort");
-                        break;
-                    }
-                }
-            }
+            /*
+             * if (wolfNearby(world, 4)) {
+             * System.out.println("nearby wolf");
+             * flee(world);
+             * System.out.println("fleeing");
+             * for (Location l : dangerTiles) {
+             * if (safeTiles.contains(l)) {
+             * System.out.println("lort");
+             * break;
+             * }
+             * }
+             * }
+             */
             move(world, null);
             reproduce(world);
             if (resting)
