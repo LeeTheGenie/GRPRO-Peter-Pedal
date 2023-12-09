@@ -68,11 +68,13 @@ public class WolfPack extends LivingBeing {
         Map<Object, Location> tiles = world.getEntities();
         for (Object o : tiles.keySet()) {
             if (o instanceof Wolf) {
-                Wolf wolf = (Wolf) o;
-                if (wolf.wolfNearby(world, 1)) {
-                    this.wolf1 = wolf;
-                    this.wolf2 = (Wolf) wolf.locateTarget(world, 1);
-                    return true;
+                if (world.isOnTile(o)) {
+                    Wolf wolf = (Wolf) o;
+                    if (wolf.wolfNearby(world, 1)) {
+                        this.wolf1 = wolf;
+                        this.wolf2 = (Wolf) wolf.locateTarget(world, 1);
+                        return true;
+                    }
                 }
             }
         }
