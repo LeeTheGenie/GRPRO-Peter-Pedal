@@ -80,20 +80,6 @@ public class WolfPack extends LivingBeing {
     }
 
     /**
-     * Checks if a wolf has a pack
-     * 
-     * @param world
-     * @param wolf  to be checked
-     * @return true if wolf has a pack
-     */
-    public boolean hasPack(World world, Wolf wolf) {
-        if (wolf.getHasPack() == false) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Adds a wolf to the wolfpack
      * 
      * @param wolf to be added
@@ -109,6 +95,8 @@ public class WolfPack extends LivingBeing {
         WolfPack pack = new WolfPack();
         pack.addWolf(wolf1);
         pack.addWolf(wolf2);
+        wolf1.setPack(pack);
+        wolf2.setPack(pack);
         System.out.println("Pack created");
         display();
     }
@@ -122,6 +110,7 @@ public class WolfPack extends LivingBeing {
     public void addWolftoAnotherPack(Wolf recieverPack, Wolf wolf) {
         WolfPack pack = recieverPack.getPack();
         pack.addWolf(wolf);
+        wolf.setPack(pack);
     }
 
     /**

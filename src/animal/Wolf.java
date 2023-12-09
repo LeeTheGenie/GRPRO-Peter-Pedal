@@ -19,7 +19,6 @@ public class Wolf extends Predator {
 
     private LivingBeing target;
     private WolfPack pack;
-    private boolean haspack;
 
     // Sleeping
     private int sleepyness;
@@ -33,7 +32,6 @@ public class Wolf extends Predator {
         super(0, 500, 400, 20, 3, 20, 30, 3, 0.80d);
         this.target = null;
         this.pack = null;
-        this.haspack = false;
         growthStates = new String[][] { { "wolf-small", "wolf-small-sleeping" }, { "wolf", "wolf-sleeping" } };
         sleepyness = 0;
     }
@@ -301,7 +299,7 @@ public class Wolf extends Predator {
         return false;
     }
 
-    public boolean getHasPack() {
-        return haspack;
+    public void setPack(WolfPack pack) {
+        this.pack = pack;
     }
 }
