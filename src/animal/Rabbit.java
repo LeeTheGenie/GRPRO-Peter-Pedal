@@ -27,6 +27,7 @@ public class Rabbit extends Animal {
         super(0, 70, 40, 10, 1, 15, 0, 2);
         this.rabbithole = null;
         this.dangerTiles = new HashSet<>();
+        this.safeTiles = new HashSet<>();
         sleeping = false;
         holeDigCost = 10;
         growthStates = new String[][] { { "rabbit-small", "rabbit-small-sleeping" },
@@ -64,9 +65,17 @@ public class Rabbit extends Animal {
             sleeping = false;
             // exit hole
             eat(world);
-            // if (wolfNearby(world, 4)) {
-            // flee(world);
-            // }
+            if (wolfNearby(world, 4)) {
+                System.out.println("nearby wolf");
+                flee(world);
+                System.out.println("fleeing");
+                for (Location l : dangerTiles) {
+                    if (safeTiles.contains(l)) {
+                        System.out.println("lort");
+                        break;
+                    }
+                }
+            }
             move(world, null);
             reproduce(world);
             if (resting)
@@ -77,7 +86,7 @@ public class Rabbit extends Animal {
     }
 
     public void setDangerTiles(World world) {
-        List<Location> wolfs = getNearbyWolfs(world, age);
+        List<Location> wolfs = getNearbyWolfs(world, 4);
         for (Location l : wolfs) {
             Set<Location> wolfTiles = world.getSurroundingTiles(l, 3);
             for (Location wt : wolfTiles) {
@@ -87,10 +96,10 @@ public class Rabbit extends Animal {
     }
 
     public void setSafeTiles(World world) {
-        this.safeTiles = world.getSurroundingTiles(4);
-        for (Location l : safeTiles) {
-            if (dangerTiles.contains(l)) {
-                safeTiles.remove(l);
+        Set<Location> tiles = world.getSurroundingTiles(1);
+        for (Location l : tiles) {
+            if (!dangerTiles.contains(l)) {
+                safeTiles.add(l);
             }
         }
     }
