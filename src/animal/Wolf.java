@@ -3,6 +3,7 @@ package animal;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import abstracts.LivingBeing;
@@ -47,9 +48,9 @@ public class Wolf extends Predator {
     @Override
     public void act(World world) {
         if (!sleeping) {
-            handleMovement(world);
+            // handleMovement(world);
         }
-        handleSleep(world);
+        // handleSleep(world);
         super.act(world);
     }
 
@@ -194,8 +195,11 @@ public class Wolf extends Predator {
 
     public void createPack(World world) {
         pack = new WolfPack();
-        LivingBeing wolf = locateTarget(world, 1);
-        ((Wolf) wolf).getPack().addWolf(this);
+        Wolf wolf = getWolfNearby(world);
+        pack.addWolf(this);
+        pack.addWolf(wolf);
+        this.setPack(pack);
+        wolf.setPack(pack);
     }
 
     public void joinPack(World world) {
@@ -301,11 +305,5 @@ public class Wolf extends Predator {
 
     public void setPack(WolfPack pack) {
         this.pack = pack;
-    }
-
-    public void createPack() {
-        if (pack == null) {
-
-        }
     }
 }

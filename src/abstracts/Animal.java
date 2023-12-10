@@ -194,6 +194,19 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return false;
     }
 
+    public Wolf getWolfNearby(World world) {
+        if (world.isOnTile(this)) {
+            Set<Location> tiles = world.getSurroundingTiles(1);
+            for (Location l : tiles) {
+                if (world.getTile(l) instanceof Wolf) {
+                    return (Wolf) world.getTile(l);
+                }
+            }
+        }
+
+        return null;
+    }
+
     public List<Location> getNearbyWolfs(World world, int radius) {
         Set<Location> tiles = world.getSurroundingTiles(radius);
         List<Location> wolfsNearby = new ArrayList<>();
@@ -203,5 +216,9 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
             }
         }
         return wolfsNearby;
+    }
+
+    public int getCurrentEnergy() {
+        return currentEnergy;
     }
 }
