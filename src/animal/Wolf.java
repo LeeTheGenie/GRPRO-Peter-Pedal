@@ -1,6 +1,10 @@
 package animal;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Plant;
@@ -17,6 +21,7 @@ public class Wolf extends Predator {
 
     // Sleeping
     private int sleepyness;
+    private int bedtime;
 
 
     @Override public Wolf newInstance() {
@@ -28,7 +33,8 @@ public class Wolf extends Predator {
         this.target = null;
         this.wolfPack = null;
         growthStates = new String[][]{{"wolf-small","wolf-small-sleeping"},{"wolf","wolf-sleeping"}};
-        sleepyness = 0; 
+        this.sleepyness = 0; 
+        this.bedtime=60;
     }
 
     @Override public DisplayInformation getInformation() {
@@ -39,12 +45,14 @@ public class Wolf extends Predator {
     }
 
     @Override public void act(World world) {
-        System.out.println("I "+this+" am in "+wolfPack);
+        //System.out.println("I "+this+" am in "+wolfPack);
         if(!sleeping) {
             handlePack(world);
             handleMovement(world);
         }   
         handleSleep(world);
+        reproduce(world);
+        
         super.act(world);
     }
 
@@ -61,9 +69,10 @@ public class Wolf extends Predator {
                 WolfHole wolfHole = getPack().getWolfHole();
                 if(wolfHole!=null) { 
                     // has a hole - go towards it
-                    if(!world.isOnTile(wolfHole)) {
+                    if(world.isOnTile(wolfHole)) {
                         if(world.getLocation(wolfHole).equals(world.getLocation(this))) {
                             enterHole(world);
+                            setSleeping(true);
                             return;
                         }
                         move(world,toAndFrom(world, world.getLocation(wolfHole), world.getLocation(this)));
@@ -106,12 +115,13 @@ public class Wolf extends Predator {
     public void handleSleep(World world)  {
         if(sleeping) {
             if(sleepyness<10) {
-                setSleeping(false);
+                exitHole(world);
             }
-            sleepyness-=10; 
+            sleepyness-=10;
+            
         } else {
             sleepyness+=1; 
-            if(sleepyness<=0) {
+            if(sleepyness>=100) {
                 die(world,"sleep-exhaustion");
             }
         }
@@ -150,7 +160,7 @@ public class Wolf extends Predator {
     }
 
     public boolean wantToSleep(){
-        return sleepyness>60;
+        return sleepyness>bedtime;
     }
     public boolean isHungry() {
         return maxEnergy*hungerFactor<currentEnergy;
@@ -184,7 +194,59 @@ public class Wolf extends Predator {
     }
 
     public void reproduce(World world) {
-        
+        // Failstates
+        if (matureAge > age)
+            return;
+        if (!canAfford(reproductionCost))
+            return;
+        if (this.validateLocationExistence(world))
+            return;
+
+        // Main
+
+        if(this.wolfPack.hasSpace()&&this.wolfPack.getSize()>1){
+                //Check if more than one wolf is in hole
+                int wolvesInHole = 0;
+                for(Wolf w : this.wolfPack.getWolfList()){
+                    if(!w.validateLocationExistence(world)){
+                        wolvesInHole=wolvesInHole+1;
+                    }
+                }
+                if (this.wolfPack.inHeat()) {
+                    if (wolvesInHole>=2) {
+                        if (this.wolfPack.getSize()==4) {
+                        System.out.println("make 2 babe");
+                        this.makeBaby(world);
+                        this.makeBaby(world);
+                        this.wolfPack.postNutClarity();
+                        }
+                        if (this.wolfPack.getSize()<4) {
+                        this.makeBaby(world);
+                        this.wolfPack.postNutClarity();
+                        }
+                    }
+                }
+                
+                else{
+                    this.wolfPack.getHorny();
+                }
+            }
+        }
+
+    public void makeBaby(World world){
+        world.setCurrentLocation(world.getLocation(this.wolfPack.getWolfHole()));
+        List<Location> list = new ArrayList<>(world.getEmptySurroundingTiles());
+
+        if (list.size() == 0)
+            return;
+
+        Location newLocation = list.get(new Random().nextInt(list.size()));
+        Wolf baby = new Wolf();
+        this.wolfPack.addWolf(baby);
+        int tired =baby.bedtime;
+        baby.sleepyness=baby.sleepyness+tired;
+        world.setTile(newLocation, baby);
+        this.currentEnergy -= reproductionCost;
     }
 
     /**
@@ -283,5 +345,9 @@ public class Wolf extends Predator {
     public boolean hasPack(){
         return wolfPack!=null;
     }
+
+    
+
+
 
 }
