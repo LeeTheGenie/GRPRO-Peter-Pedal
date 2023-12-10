@@ -1,22 +1,18 @@
 package animal;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Plant;
 import abstracts.Predator;
-import abstracts.Animal;
 
 import executable.DisplayInformation;
 
 import itumulator.world.Location;
 import itumulator.world.World;
 
-import misc.RabbitHole;
 import misc.WolfHole;
 import misc.Carcass;
 
@@ -89,6 +85,31 @@ public class Wolf extends Predator {
      * @param world
      */
     public void handleMovement(World world) {
+        if (wantToSleep()) { // if you want to sleep go to sleep
+            if (hasPack()) {
+                // if wolf has a pack
+                WolfHole wolfHole = getPack().getWolfHole();
+                if (wolfHole != null) {
+                    // has a hole - go towards it
+                    if (!world.isOnTile(wolfHole)) {
+                        if (world.getLocation(wolfHole).equals(world.getLocation(this))) {
+                            enterHole(world);
+                            return;
+                        }
+                        move(world, toAndFrom(world, world.getLocation(wolfHole), world.getLocation(this)));
+                        return;
+                    }
+                } else {
+                    // does nst have a hole - dig a hole.
+                    digHole(world);
+                    return;
+                }
+            } else {
+                // if wolf does not have a pack just sleep where you are
+                setSleeping(true);
+                return;
+            }
+        }
         if (target == null) {
             findTarget(world);
             if (target == null) {
@@ -189,20 +210,6 @@ public class Wolf extends Predator {
     public void eatTarget(World world) {
         move(world, carcass);
         ((Carcass) world.getTile(carcass)).takeBite(world);
-    }
-
-    public void createPack(World world) {
-        pack = new WolfPack();
-        Wolf wolf = getWolfNearby(world);
-        pack.addWolf(this);
-        pack.addWolf(wolf);
-        this.setPack(pack);
-        wolf.setPack(pack);
-    }
-
-    public void joinPack(World world) {
-        LivingBeing wolf = locateTarget(world, 1);
-        ((Wolf) wolf).getPack().addWolf(this);
     }
 
     public WolfPack getPack() {
