@@ -9,8 +9,7 @@ import itumulator.world.World;
 public abstract class Plant extends LivingBeing  {
 
     protected int reproductiveCooldown;
-    protected int trueReproductiveCooldown;
-    
+    protected int trueReproductiveCooldown;  
 
     protected Plant(int age, int maxAge,int reproductiveCooldown) {
         super(age, maxAge);

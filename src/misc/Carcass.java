@@ -28,7 +28,7 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
 
     @Override
     public Carcass newInstance() {
-        return new Carcass(age,maxAge, decay);
+        return new Carcass(0,0, 50);
     }
 
     public void decay(World world){
@@ -49,11 +49,16 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
         }
     }
 
-    public void takeBite(World world){
+    public void takeBite(){
         this.decay=this.decay-20;
     }
 
-    public void giveFungus(World world){
+    public void secureFungus() {
+        giveFungus();
+        this.fungusGrowth+=50;
+    }
+
+    public void giveFungus(){
         System.out.println("infected");
         this.infected=true;
     }
@@ -62,8 +67,6 @@ public class Carcass extends LivingBeing implements DynamicDisplayInformationPro
         Location spawnLocation = world.getLocation(this);
         world.delete(this);
         world.setTile(spawnLocation, new Fungus());
-        
-
     }
 
 

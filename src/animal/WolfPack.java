@@ -1,24 +1,21 @@
 package animal;
-
-import java.util.List;
-
 import misc.WolfHole;
-
 import java.util.ArrayList;
 
 public class WolfPack {
 
-    private List<Wolf> wolfpack;
-    private String name;
+    private ArrayList<Wolf> wolfList;
     private WolfHole wolfHole;
 
-    public WolfPack(String name) {
-        this.wolfpack = new ArrayList<>();
-        this.name = name;
+    public WolfPack() {
+        this.wolfList = new ArrayList<>();
     }
 
     public void addWolf(Wolf wolf) {
-        wolfpack.add(wolf);
+        wolfList.add(wolf);
+    }
+    public void removeWolf(Wolf wolf) {
+        wolfList.add(wolf);
     }
 
     public WolfHole getWolfHole() {
@@ -29,20 +26,20 @@ public class WolfPack {
         this.wolfHole = wolfHole;
     }
 
-    public String getName() {
-        return name;
+    public ArrayList<Wolf> getWolfList() {
+        return wolfList;
     }
 
-    public List<Wolf> getWolfPack() {
-        return wolfpack;
+    public int getSize() {
+        return wolfList.size();
     }
 
-    public int getWolfPackSize() {
-        return wolfpack.size();
+    public boolean hasSpace() {
+        return (getSize()<6);
     }
 
     public void display() {
-        for (Wolf w : wolfpack) {
+        for (Wolf w : wolfList) {
             System.out.println("- " + w);
         }
     }

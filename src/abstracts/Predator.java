@@ -54,7 +54,7 @@ public abstract class Predator extends Animal {
      * @param range
      * @return animal if one could be found. null if none could be found.
      */
-    public Animal locateTarget(World world, int range) {
+     public Animal locateTarget(World world, int range) {
         if (!world.isOnTile(this))
             return null;
 
@@ -74,5 +74,13 @@ public abstract class Predator extends Animal {
             return (Animal) target;
         }
         return null;
+    }
+    
+    public void killTarget(World world) {
+        
+    }
+
+    public void eatTarget(World world, Animal target) {
+        
     }
 }

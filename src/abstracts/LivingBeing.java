@@ -1,5 +1,7 @@
 package abstracts;
 
+import java.lang.reflect.Type;
+
 import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
@@ -44,6 +46,16 @@ public abstract class LivingBeing implements Actor {
         }
     }
 
+    public boolean validateExistence(World world) {
+        return world.contains(this);
+    }
+    public boolean validateLocationExistence(World world) {
+        if(validateExistence(world)) {
+            return world.isOnTile(this);
+        }
+        return false;
+    }
+
     public void die(World world, String reason) {
         die(world);
         if (!(this instanceof Plant))
@@ -80,11 +92,7 @@ public abstract class LivingBeing implements Actor {
                 world.setTile(deathLocation, new Carcass(0, 0, 200));}
             
             if(isWolf){
-                world.setTile(deathLocation, new Carcass(0, 0, 120));}
-            
-            
-
-            
+                world.setTile(deathLocation, new Carcass(0, 0, 120));}            
     }
 
 }

@@ -1,38 +1,32 @@
 package animal;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Plant;
 import abstracts.Predator;
 import executable.DisplayInformation;
-import abstracts.Animal;
 import itumulator.world.Location;
 import itumulator.world.World;
-import misc.RabbitHole;
 import misc.WolfHole;
 
 public class Wolf extends Predator {
 
     private LivingBeing target;
-    private WolfPack pack;
+    private WolfPack wolfPack;
 
     // Sleeping
     private int sleepyness;
 
 
-    @Override
-    public Wolf newInstance() {
+    @Override public Wolf newInstance() {
         return new Wolf();
     }
 
     public Wolf() {
         super(0, 500, 400, 20, 3, 20, 30, 3, 0.80d);
         this.target = null;
-        this.pack = null;
+        this.wolfPack = null;
         growthStates = new String[][]{{"wolf-small","wolf-small-sleeping"},{"wolf","wolf-sleeping"}};
         sleepyness = 0; 
     }
@@ -44,7 +38,8 @@ public class Wolf extends Predator {
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
-    @Override public void act(World world) {     
+    @Override public void act(World world) {
+        System.out.println("I "+this+" am in "+wolfPack);
         if(!sleeping) {
             handlePack(world);
             handleMovement(world);
@@ -54,34 +49,12 @@ public class Wolf extends Predator {
     }
 
     /**
-     * A function to join all wolfpack related acitons
-     * @param world
-     */
-    public void handlePack(World world) {
-        // join packs
-        if (pack == null) {
-            if (wolfNearby(world, 3)) {
-                moveCloser(world);
-                if (!hasPack(world, getNearbyWolfs(world, 1))) {
-                    createPack(world);
-                    System.out.println("created pack");
-                } else if (!packFull(world)) {
-                    joinPack();
-                }
-
-                pack.display();
-            }
-        }
-    }
-
-    /**
      * A function to join all movement for wolfs together.
      * @param world
      */
     public void handleMovement(World world){
         if (!world.isOnTile(this))
             return;
-
         if(wantToSleep()) {     // if you want to sleep go to sleep
             if(hasPack()) { 
                 // if wolf has a pack
@@ -120,12 +93,8 @@ public class Wolf extends Predator {
                 target = null;
             }
         }
-        if(pack != null)  {          // if you are lonely go find friends
-            if(!wolfNearby(world, 1) && wolfNearby(world, 3)) {
-                moveCloser(world);
-                // er not sure på det her.
-
-            }            
+        if(!hasPack())  {          // if you are lonely go find friends
+            move(world, null);// move randomly around for now 
         }               
         // if none go wander around
         move(world, null);
@@ -179,84 +148,6 @@ public class Wolf extends Predator {
         world.setTile(wolfLocation, wolfHole);
     }
 
-
-    /**
-     * nicky please explain what this does
-     * @param world
-     */
-    public void moveCloser(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(3);
-        Location wolfLocation = world.getLocation(this);
-        Location newLocation = null;
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                newLocation = toAndFrom(world, l, wolfLocation);
-            }
-        }
-        move(world,newLocation);
-    }
-
-    public boolean wolfNearby(World world, int radius) {
-        Set<Location> tiles = world.getSurroundingTiles(radius);
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public List<Location> getNearbyWolfs(World world, int radius) {
-        Set<Location> tiles = world.getSurroundingTiles(radius);
-        List<Location> wolfsNearby = new ArrayList<>();
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                wolfsNearby.add(l);
-            }
-        }
-        return wolfsNearby;
-    }
-
-    public void killTarget(World world) {
-        //((LivingBeing) world.getTile(world.getLocation(target))).die(world);
-    }
-
-    public void eatTarget(World world, Animal target) {
-        // aaffa
-    }
-
-    public void createPack(World world) {
-        pack = new WolfPack(null);
-        List<Location> wolfsNearby = getNearbyWolfs(world, 3);
-        for (Location l : wolfsNearby) {
-            pack.addWolf((Wolf) world.getTile(l));
-        }
-    }
-
-    public void joinPack() {
-        // ahdas da
-    }
-
-    public void setPack(String name) {
-        this.pack = new WolfPack(name);
-    }
-
-    public WolfPack getPack() {
-        return pack;
-    }
-
-    public boolean hasPack(World world, List<Location> wolfs) {
-        for (Location l : wolfs) {
-            Wolf wolf = (Wolf) world.getTile(l);
-            if (wolf.getPack() != null) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean hasPack(){
-        return pack!=null;
-    }
     public boolean wantToSleep(){
         return sleepyness>60;
     }
@@ -291,6 +182,10 @@ public class Wolf extends Predator {
         }
     }
 
+    public void reproduce(World world) {
+        
+    }
+
     /**
      * Atempts to exit the hole the rabbit is in;
      * 
@@ -313,16 +208,79 @@ public class Wolf extends Predator {
         world.setTile(exitLocation, this);
         setSleeping(false);
     }
+            /*
+                                        $$\       
+                                        $$ |      
+            $$$$$$\   $$$$$$\   $$$$$$$\ $$ |  $$\ 
+            $$  __$$\  \____$$\ $$  _____|$$ | $$  |
+            $$ /  $$ | $$$$$$$ |$$ /      $$$$$$  / 
+            $$ |  $$ |$$  __$$ |$$ |      $$  _$$<  
+            $$$$$$$  |\$$$$$$$ |\$$$$$$$\ $$ | \$$\ 
+            $$  ____/  \_______| \_______|\__|  \__|
+            $$ |                                    
+            $$ |                                    
+            \__|                                    
+            */
 
-
-    public boolean packFull(World world) {
-        List<Location> wolfs = getNearbyWolfs(world, 1);
-        for (Location l : wolfs) {
-            Wolf wolf = (Wolf) world.getTile(l);
-            if (wolf.getPack().getWolfPackSize() < 6) {
-                return false;
+    /**
+     * A function to join all wolfpack related acitons
+     * @param world
+     */
+    public void handlePack(World world) {
+        if(!validateLocationExistence(world)) return; 
+        if(hasPack()) {
+            if(getPack().getSize()<=1) {    // if you are in a 1 size pack just leave
+                getPack().removeWolf(this);
+                leavePack();
             }
         }
-        return true;
+        if(!hasPack()) {                // if you dont have a pack find one
+            searchForPack(world);
+        }
     }
+
+    /**
+     * Searches nearby tiles for wolfs and creates a pack with them if the conditions are right.
+     * @param world
+     */
+    public void searchForPack(World world) {
+        for(Location l : world.getSurroundingTiles()) {
+            Object o = world.getTile(l);
+            if(o instanceof Wolf) {
+                if(((Wolf) o).hasPack()) {// if the target wolf has a pack
+                    if(((Wolf) o).getPack().hasSpace()) // if there is space
+                        joinPack(((Wolf) o).getPack());
+                } else { // if the target wolf does not have a pack
+                    createPack(world);
+                    joinPack(wolfPack);
+                    ((Wolf)o).joinPack(wolfPack);
+                }
+            }
+        }
+    }
+
+    public void createPack(World world) {
+        wolfPack = new WolfPack();
+    }
+
+    public void joinPack(WolfPack wolfPack) {
+        //System.out.println("I "+this+" joined "+wolfPack);
+        this.wolfPack = wolfPack;
+        wolfPack.addWolf(this);
+    }
+
+    public void leavePack() {
+        //System.out.println("I "+this+" left "+wolfPack);
+        wolfPack.removeWolf(this);
+        this.wolfPack = null;
+    }
+
+    public WolfPack getPack() {
+        return wolfPack;
+    }
+
+    public boolean hasPack(){
+        return wolfPack!=null;
+    }
+
 }
