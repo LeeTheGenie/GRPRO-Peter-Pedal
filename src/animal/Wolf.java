@@ -9,16 +9,21 @@ import java.util.Set;
 import abstracts.LivingBeing;
 import abstracts.Plant;
 import abstracts.Predator;
-import executable.DisplayInformation;
 import abstracts.Animal;
+
+import executable.DisplayInformation;
+
 import itumulator.world.Location;
 import itumulator.world.World;
+
 import misc.RabbitHole;
 import misc.WolfHole;
+import misc.Carcass;
 
 public class Wolf extends Predator {
 
-    private LivingBeing target;
+    private Location target;
+    private Location carcass;
     private WolfPack pack;
 
     // Sleeping
@@ -50,16 +55,32 @@ public class Wolf extends Predator {
         if (!sleeping) {
             handleMovement(world);
         }
-        // handleSleep(world);
+        handleSleep(world);
         super.act(world);
     }
 
     @Override
     public boolean canEat(World world, LivingBeing livingBeing) {
-        if (LivingBeing instanceof Bear) {
-
+        if (livingBeing instanceof Bear) {
+            if (getPack().getWolfPackSize() < 3) {
+                return false;
+            }
         }
+        return true;
 
+    }
+
+    public void findTarget(World world) {
+        Set<Location> tiles = world.getSurroundingTiles(3);
+        for (Location l : tiles) {
+            if (world.getTile(l) instanceof Carcass) {
+                carcass = l;
+            }
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Bear) {
+
+                target = l;
+            }
+        }
     }
 
     /**
@@ -68,16 +89,19 @@ public class Wolf extends Predator {
      * @param world
      */
     public void handleMovement(World world) {
-
         if (target == null) {
-            // no target? go find one.
-            target = locateTarget(world, 3);
+            findTarget(world);
+            if (target == null) {
+                move(world, null);
+            }
+            System.out.println(target);
         }
-        move(world, toAndFrom(world, world.getLocation(target),
-                world.getLocation(this)));
-        killTarget(world);
-        // eatTarget(world, null);
-        target = null;
+        if (target != null) {
+            move(world, toAndFrom(world, target,
+                    world.getLocation(this)));
+            killTarget(world);
+            target = null;
+        }
 
         if (pack != null) { // if you are lonely go find friends
             if (!wolfNearby(world, 1) && wolfNearby(world, 3)) {
@@ -157,17 +181,14 @@ public class Wolf extends Predator {
 
     public void killTarget(World world) {
         System.out.println("Kill");
-        /*
-         * if (!(target instanceof Wolf)) {
-         * ((LivingBeing) world.getTile(world.getLocation(target))).die(world);
-         * }
-         */
-
+        if (canEat(world, (LivingBeing) world.getTile(target))) {
+            ((LivingBeing) world.getTile(target)).die(world, "wolf");
+        }
     }
 
-    public void eatTarget(World world, Animal target) {
-        // find a Carcass and take a bite of it
-
+    public void eatTarget(World world) {
+        move(world, carcass);
+        ((Carcass) world.getTile(carcass)).takeBite(world);
     }
 
     public void createPack(World world) {
@@ -273,7 +294,7 @@ public class Wolf extends Predator {
         for (Location l : world.getSurroundingTiles(3)) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf
                     || world.getTile(l) instanceof Bear) {
-                target = (LivingBeing) world.getTile(l);
+                // target = (LivingBeing) world.getTile(l);
                 return true;
             }
         }

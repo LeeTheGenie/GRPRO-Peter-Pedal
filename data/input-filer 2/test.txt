@@ -1,4 +1,4 @@
-10
+20
 grass 100
 wolf 1
-rabbit 1
+rabbit 4
