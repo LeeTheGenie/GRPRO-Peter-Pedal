@@ -44,8 +44,7 @@ public class Wolf extends Predator {
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
-    @Override
-    public void act(World world) {     
+    @Override public void act(World world) {     
         if(!sleeping) {
             handlePack(world);
             handleMovement(world);
