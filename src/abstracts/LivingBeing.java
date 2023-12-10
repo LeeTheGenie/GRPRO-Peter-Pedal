@@ -77,7 +77,7 @@ public abstract class LivingBeing implements Actor {
                  isRabbit=true;
             }
             if(this instanceof Wolf){
-                 isRabbit=true;
+                 isWolf=true;
             }
             if(this instanceof Bear){
                 isBear=true;

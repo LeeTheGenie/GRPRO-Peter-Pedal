@@ -6,9 +6,11 @@ public class WolfPack {
 
     private ArrayList<Wolf> wolfList;
     private WolfHole wolfHole;
+    private int heat;
 
     public WolfPack() {
         this.wolfList = new ArrayList<>();
+        this.heat=60;
     }
 
     public void addWolf(Wolf wolf) {
@@ -37,6 +39,22 @@ public class WolfPack {
     public boolean hasSpace() {
         return (getSize()<6);
     }
+
+    public boolean inHeat(){
+            if (this.heat>=60) {
+                return true;
+            }
+        return false;
+    }
+
+    public void getHorny(){
+        this.heat=this.heat+1;
+    }
+
+    public void postNutClarity(){
+        this.heat=0;
+    }
+
 
     public void display() {
         for (Wolf w : wolfList) {
