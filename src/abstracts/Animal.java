@@ -113,10 +113,8 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
      * Moves to a certain location, if target is null move to a random location
      */
     public void move(World world, Location target) {
-        if (!canAfford(movementCost))
-            return;
-        if (!world.isOnTile(this))
-            return;
+        if (!canAfford(movementCost)) return;
+        if (!world.isOnTile(this)) return;
         freeMove(world,target);  
         changeEnergy(-movementCost, world);
     }

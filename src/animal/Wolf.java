@@ -119,6 +119,7 @@ public class Wolf extends Predator {
 
     public void setSleeping(boolean sleeping) {
         this.sleeping = sleeping;
+        this.resting = sleeping; 
     }
 
     public void digHole(World world) {
