@@ -73,7 +73,6 @@ public class Wolf extends Predator {
                         if(world.getLocation(wolfHole).equals(world.getLocation(this))) {
                             enterHole(world);
                             setSleeping(true);
-                            System.out.println(this+" i slep");
                             return;
                         }
                         move(world,toAndFrom(world, world.getLocation(wolfHole), world.getLocation(this)));
@@ -118,10 +117,11 @@ public class Wolf extends Predator {
             if(sleepyness<10) {
                 exitHole(world);
             }
-            sleepyness-=10; 
+            sleepyness-=10;
+            
         } else {
             sleepyness+=1; 
-            if(sleepyness<=0) {
+            if(sleepyness>=100) {
                 die(world,"sleep-exhaustion");
             }
         }
@@ -212,17 +212,17 @@ public class Wolf extends Predator {
                     }
                 }
                 if (this.wolfPack.inHeat()) {
-                    
-
-                    if (wolvesInHole<=3) {
-                        this.makeBaby(world);
-                        this.wolfPack.postNutClarity();
-
-                    }
-                    if (wolvesInHole==4) {
+                    if (wolvesInHole>=2) {
+                        if (this.wolfPack.getSize()==4) {
+                        System.out.println("make 2 babe");
                         this.makeBaby(world);
                         this.makeBaby(world);
                         this.wolfPack.postNutClarity();
+                        }
+                        if (this.wolfPack.getSize()<4) {
+                        this.makeBaby(world);
+                        this.wolfPack.postNutClarity();
+                        }
                     }
                 }
                 
@@ -242,8 +242,10 @@ public class Wolf extends Predator {
         Location newLocation = list.get(new Random().nextInt(list.size()));
         Wolf baby = new Wolf();
         this.wolfPack.addWolf(baby);
+        int tired =baby.bedtime;
+        baby.sleepyness=baby.sleepyness+tired;
         world.setTile(newLocation, baby);
-        currentEnergy -= reproductionCost;
+        this.currentEnergy -= reproductionCost;
     }
 
     /**
