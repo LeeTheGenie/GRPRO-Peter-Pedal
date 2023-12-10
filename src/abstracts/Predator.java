@@ -1,10 +1,7 @@
 package abstracts;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-import animal.Wolf;
 import itumulator.world.Location;
 import itumulator.world.World;
 import misc.Carcass;

@@ -23,7 +23,6 @@ import abstracts.LivingBeing;
 import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
-import animal.WolfPack;
 
 import executable.DisplayInformation;
 import executable.Program;
