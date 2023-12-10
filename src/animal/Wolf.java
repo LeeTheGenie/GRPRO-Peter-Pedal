@@ -48,10 +48,18 @@ public class Wolf extends Predator {
     @Override
     public void act(World world) {
         if (!sleeping) {
-            // handleMovement(world);
+            handleMovement(world);
         }
         // handleSleep(world);
         super.act(world);
+    }
+
+    @Override
+    public boolean canEat(World world, LivingBeing livingBeing) {
+        if (LivingBeing instanceof Bear) {
+
+        }
+
     }
 
     /**
@@ -60,57 +68,26 @@ public class Wolf extends Predator {
      * @param world
      */
     public void handleMovement(World world) {
-        if (!world.isOnTile(this))
-            return;
 
-        if (wantToSleep()) { // if you want to sleep go to sleep
-            if (hasPack()) {
-                // if wolf has a pack
-                WolfHole wolfHole = getPack().getWolfHole();
-                if (wolfHole != null) {
-                    // has a hole - go towards it
-                    if (!world.isOnTile(wolfHole)) {
-                        if (world.getLocation(wolfHole).equals(world.getLocation(this))) {
-                            enterHole(world);
-                            return;
-                        }
-                        move(world, toAndFrom(world, world.getLocation(wolfHole), world.getLocation(this)));
-                        return;
-                    }
-                } else {
-                    // does nst have a hole - dig a hole.
-                    digHole(world);
-                    return;
-                }
-            } else {
-                // if wolf does not have a pack just sleep where you are
-                setSleeping(true);
-                return;
-            }
+        if (target == null) {
+            // no target? go find one.
+            target = locateTarget(world, 3);
         }
-        if (isHungry()) { // if you are hungry go eat
-            if (target == null) {
-                // no target? go find one.
-                target = locateTarget(world, 3);
-            } else if (world.isOnTile(target) && world.isOnTile(this)) {
-                move(world, toAndFrom(world, world.getLocation(target),
-                        world.getLocation(this)));
-                killTarget(world);
-                // eatTarget(world, null);
-                return;
-            } else {
-                target = null;
-            }
-        }
+        move(world, toAndFrom(world, world.getLocation(target),
+                world.getLocation(this)));
+        killTarget(world);
+        // eatTarget(world, null);
+        target = null;
+
         if (pack != null) { // if you are lonely go find friends
             if (!wolfNearby(world, 1) && wolfNearby(world, 3)) {
                 moveCloser(world);
                 // er not sure på det her.
 
             }
+            // if none go wander around
+            move(world, null);
         }
-        // if none go wander around
-        move(world, null);
     }
 
     /**

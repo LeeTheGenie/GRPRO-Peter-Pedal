@@ -65,20 +65,17 @@ public class Rabbit extends Animal {
             sleeping = false;
             // exit hole
             eat(world);
-            /*
-             * if (wolfNearby(world, 4)) {
-             * System.out.println("nearby wolf");
-             * flee(world);
-             * System.out.println("fleeing");
-             * for (Location l : dangerTiles) {
-             * if (safeTiles.contains(l)) {
-             * System.out.println("lort");
-             * break;
-             * }
-             * }
-             * }
-             */
-            move(world, null);
+            if (wolfNearby(world, 4)) {
+                flee(world);
+                for (Location l : safeTiles) {
+                    if (dangerTiles.contains(l)) {
+                        System.out.println("same tile: " + l);
+                    }
+
+                }
+            } else {
+                move(world, null);
+            }
             reproduce(world);
             if (resting)
                 exitHole(world);
@@ -89,6 +86,7 @@ public class Rabbit extends Animal {
 
     public void setDangerTiles(World world) {
         List<Location> wolfs = getNearbyWolfs(world, 4);
+        System.out.println("wolfs: " + wolfs);
         for (Location l : wolfs) {
             Set<Location> wolfTiles = world.getSurroundingTiles(l, 3);
             for (Location wt : wolfTiles) {
@@ -98,7 +96,7 @@ public class Rabbit extends Animal {
     }
 
     public void setSafeTiles(World world) {
-        Set<Location> tiles = world.getSurroundingTiles(1);
+        Set<Location> tiles = world.getSurroundingTiles(3);
         for (Location l : tiles) {
             if (!dangerTiles.contains(l)) {
                 safeTiles.add(l);
