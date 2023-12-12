@@ -1,5 +1,6 @@
 package abstracts;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,7 @@ import animal.Wolf;
 import executable.DynamicDisplayInformationProvider;
 import itumulator.world.Location;
 import itumulator.world.World;
+import misc.Carcass;
 
 public abstract class Animal extends LivingBeing implements DynamicDisplayInformationProvider {
 
@@ -48,13 +50,13 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         super.act(world);
     }
 
-    /**
-     * Returns true if (currentEnergy - cost > 0)
-     */
+    @Override
+    public LivingBeing newInstance() {
+        return null;// new Animal(0, maxAge, trueMaxEnergy);
+    }
+
     public boolean canAfford(int cost) {
-        if (currentEnergy - cost > 0)
-            return true;
-        return false;
+        return (currentEnergy - cost > 0);
     }
 
     public boolean isMature() {
@@ -78,16 +80,27 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         currentEnergy = inheritedEnergy;
     }
 
-    /**
-     * Moves to a certain location, if target is null move to a random location
+    /*
+     * $$\
+     * $$ |
+     * $$$$$$\$$$$\ $$$$$$\ $$\ $$\ $$$$$$\ $$$$$$\$$$$\ $$$$$$\ $$$$$$$\ $$$$$$\
+     * $$ _$$ _$$\ $$ __$$\\$$\ $$ |$$ __$$\ $$ _$$ _$$\ $$ __$$\ $$ __$$\\_$$ _|
+     * $$ / $$ / $$ |$$ / $$ |\$$\$$ / $$$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |$$ | $$ |
+     * $$ |
+     * $$ | $$ | $$ |$$ | $$ | \$$$ / $$ ____|$$ | $$ | $$ |$$ ____|$$ | $$ | $$
+     * |$$\
+     * $$ | $$ | $$ |\$$$$$$ | \$ / \$$$$$$$\ $$ | $$ | $$ |\$$$$$$$\ $$ | $$ |
+     * \$$$$ |
+     * \__| \__| \__| \______/ \_/ \_______|\__| \__| \__| \_______|\__| \__| \____/
      */
 
-    public void move(World world, Location target) {
-        if (!canAfford(movementCost))
-            return;
-        if (!world.isOnTile(this))
-            return;
-
+    /**
+     * a free move
+     * 
+     * @param world
+     * @param target
+     */
+    private void freeMove(World world, Location target) {
         if (target == null) { // random
             Set<Location> neighbors = world.getEmptySurroundingTiles();
             List<Location> list = new ArrayList<>(neighbors);
@@ -99,7 +112,22 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
             return;
 
         world.move(this, target);
+    }
+
+    /**
+     * Moves to a certain location, if target is null move to a random location
+     */
+    public void move(World world, Location target) {
+        if (!canAfford(movementCost))
+            return;
+        if (!world.isOnTile(this))
+            return;
+        freeMove(world, target);
         changeEnergy(-movementCost, world);
+    }
+
+    public void push(World world) {
+        freeMove(world, null);
     }
 
     /**
@@ -111,7 +139,6 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
      * @param from
      *              The current location of the object. "world.getLocation(this)"
      */
-
     public Location toAndFrom(World world, Location to, Location from) {
 
         int x = from.getX();
@@ -144,6 +171,13 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return newLocation;
     }
 
+    /**
+     * PLEASE PROVIDE JAVADOC
+     * 
+     * @param world
+     * @param to
+     * @param from
+     */
     public void toAndFromBesides(World world, Location to, Location from) {
 
         int x = from.getX();
@@ -176,49 +210,43 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
 
     }
 
-    @Override
-    public LivingBeing newInstance() {
-        return null;// new Animal(0, maxAge, trueMaxEnergy);
-    }
+    /*
+     * $$$$$$$\ $$$$$$$\ $$$$$$\ $$$$$$$\ $$$$$$$\ $$$$$$\ $$$$$$\
+     * $$ _____|$$ _____|\____$$\ $$ __$$\ $$ __$$\ $$ __$$\ $$ __$$\
+     * \$$$$$$\ $$ / $$$$$$$ |$$ | $$ |$$ | $$ |$$$$$$$$ |$$ | \__|
+     * \____$$\ $$ | $$ __$$ |$$ | $$ |$$ | $$ |$$ ____|$$ |
+     * $$$$$$$ |\$$$$$$$\\$$$$$$$ |$$ | $$ |$$ | $$ |\$$$$$$$\ $$ |
+     * \_______/ \_______|\_______|\__| \__|\__| \__| \_______|\__|
+     */
 
-    public boolean wolfNearby(World world, int radius) {
-        if (world.isOnTile(this)) {
-            Set<Location> tiles = world.getSurroundingTiles(radius);
-            for (Location l : tiles) {
-                if (world.getTile(l) instanceof Wolf) {
-                    return true;
-                }
-            }
-        }
+    /*
+     * public ArrayList<Object> locateTarget(World world, int
+     * range,Class<LivingBeing> searchObject) {
+     * if (!validateExistence(world)) return null;
+     * 
+     * Location currentLocation = world.getLocation(this);
+     * Set<Location> surroundingTiles = world.getSurroundingTiles(currentLocation,
+     * range);
+     * ArrayList<Object> returningObjects = new ArrayList<Object>();
+     * 
+     * for (Location l : surroundingTiles) {
+     * Object target = world.getTile(l);
+     * if(target instanceof searchObject) {
+     * 
+     * }
+     * 
+     * }
+     * return returningObjects;
+     * }
+     */
 
-        return false;
-    }
+    public Integer getDistance(World world, LivingBeing o) {
+        if (!validateLocationExistence(world) || !o.validateExistence(world))
+            return null;
 
-    public Wolf getWolfNearby(World world) {
-        if (world.isOnTile(this)) {
-            Set<Location> tiles = world.getSurroundingTiles(1);
-            for (Location l : tiles) {
-                if (world.getTile(l) instanceof Wolf) {
-                    return (Wolf) world.getTile(l);
-                }
-            }
-        }
+        int deltaX = Math.abs(world.getLocation(this).getX() - world.getLocation(o).getX()),
+                deltaY = Math.abs(world.getLocation(this).getY() - world.getLocation(o).getY());
 
-        return null;
-    }
-
-    public List<Location> getNearbyWolfs(World world, int radius) {
-        Set<Location> tiles = world.getSurroundingTiles(radius);
-        List<Location> wolfsNearby = new ArrayList<>();
-        for (Location l : tiles) {
-            if (world.getTile(l) instanceof Wolf) {
-                wolfsNearby.add(l);
-            }
-        }
-        return wolfsNearby;
-    }
-
-    public int getCurrentEnergy() {
-        return currentEnergy;
+        return Math.min(deltaX, deltaY);
     }
 }

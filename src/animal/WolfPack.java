@@ -1,22 +1,25 @@
 package animal;
 
-import java.util.List;
-
 import misc.WolfHole;
-
 import java.util.ArrayList;
 
 public class WolfPack {
 
-    private List<Wolf> wolfpack;
+    private ArrayList<Wolf> wolfList;
     private WolfHole wolfHole;
+    private int heat;
 
     public WolfPack() {
-        this.wolfpack = new ArrayList<>();
+        this.wolfList = new ArrayList<>();
+        this.heat = 60;
     }
 
     public void addWolf(Wolf wolf) {
-        wolfpack.add(wolf);
+        wolfList.add(wolf);
+    }
+
+    public void removeWolf(Wolf wolf) {
+        wolfList.add(wolf);
     }
 
     public WolfHole getWolfHole() {
@@ -27,16 +30,35 @@ public class WolfPack {
         this.wolfHole = wolfHole;
     }
 
-    public List<Wolf> getWolfPack() {
-        return wolfpack;
+    public ArrayList<Wolf> getWolfList() {
+        return wolfList;
     }
 
-    public int getWolfPackSize() {
-        return wolfpack.size();
+    public int getSize() {
+        return wolfList.size();
+    }
+
+    public boolean hasSpace() {
+        return (getSize() < 6);
+    }
+
+    public boolean inHeat() {
+        if (this.heat >= 60) {
+            return true;
+        }
+        return false;
+    }
+
+    public void getHorny() {
+        this.heat = this.heat + 1;
+    }
+
+    public void postNutClarity() {
+        this.heat = 0;
     }
 
     public void display() {
-        for (Wolf w : wolfpack) {
+        for (Wolf w : wolfList) {
             System.out.println("- " + w);
         }
     }

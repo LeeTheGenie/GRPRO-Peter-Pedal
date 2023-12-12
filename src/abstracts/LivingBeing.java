@@ -1,5 +1,7 @@
 package abstracts;
 
+import java.lang.reflect.Type;
+
 import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
@@ -13,7 +15,8 @@ public abstract class LivingBeing implements Actor {
     protected int age; // The age a of a being
     protected int maxAge; // The max Age of a being
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         ageUp(world);
     }
 
@@ -44,6 +47,17 @@ public abstract class LivingBeing implements Actor {
         }
     }
 
+    public boolean validateExistence(World world) {
+        return world.contains(this);
+    }
+
+    public boolean validateLocationExistence(World world) {
+        if (validateExistence(world)) {
+            return world.isOnTile(this);
+        }
+        return false;
+    }
+
     public void die(World world, String reason) {
         die(world);
         if (!(this instanceof Plant))
@@ -65,7 +79,7 @@ public abstract class LivingBeing implements Actor {
             isRabbit = true;
         }
         if (this instanceof Wolf) {
-            isRabbit = true;
+            isWolf = true;
         }
         if (this instanceof Bear) {
             isBear = true;
@@ -84,7 +98,6 @@ public abstract class LivingBeing implements Actor {
         if (isWolf) {
             world.setTile(deathLocation, new Carcass(0, 0, 120));
         }
-
     }
 
 }

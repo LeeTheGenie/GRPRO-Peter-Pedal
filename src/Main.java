@@ -23,7 +23,7 @@ import abstracts.LivingBeing;
 import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
-
+import animal.WolfPack;
 import executable.DisplayInformation;
 import executable.Program;
 
@@ -31,11 +31,11 @@ import java.util.HashMap;
 
 public class Main {
     static int displaySize = 800;
-    static int delay = 100;
+    static int delay = 500;
 
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer 2/test.txt", displaySize, delay);
+            Program p = fileLoader("data/input-filer/test.txt", displaySize, delay);
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();
@@ -91,6 +91,7 @@ public class Main {
         classReferenceMap.put("wolf", new Wolf());
         classReferenceMap.put("berry", new BerryBush());
         classReferenceMap.put("fungus", new Fungus());
+        classReferenceMap.put("carcass", new Carcass(0, 0, 0));
         return classReferenceMap;
     }
 
@@ -141,10 +142,18 @@ public class Main {
     }
 
     static LineInformation parseLine(String line) {
+        // ex [bear][1-2][(1,1)]
+        // ex [carcass][fungi][5-10]
+        // ex [carcass][4]
+        // ex [cordyceps][rabbit][1-2]
+        // Generalized form:
+        // [typeOfCreature/cordyceps][amount/fungi][location/amount][location] bro
+        // :skull:
+
         // Get the line
         String[] splitLine = line.split("[\r\t\f ]");
-        // ex [bear][1-2][(1,1)]
-        // [typeOfCreature][amount][location]
+        int aP = 0; // arrayPointer
+        boolean cordyceps = false, fungus = true;
         // printStringArray(splitLine);
 
         // Assert the creature
@@ -152,25 +161,34 @@ public class Main {
             System.out.println("ERROR (main): emptystring given as argument");
             return null;
         }
-        LivingBeing typeOfCreature = parseLivingBeing(splitLine[0]);
+        if (splitLine[0].equals("cordyceps")) { // check for cordyceps
+            cordyceps = true;
+            aP++;
+        }
+        LivingBeing typeOfCreature = parseLivingBeing(splitLine[0 + aP]);
 
         if (typeOfCreature == null)
-            System.out.println("ERROR (main): LivingBeing not recognized \"" + splitLine[0] + "\"");
+            System.out.println("ERROR (main): LivingBeing not recognized \"" + splitLine[0 + aP] + "\"");
 
         // Assert min max
-        if (!(splitLine.length >= 1)) {
-            System.out.println("ERROR (main): no amount specifier for: " + splitLine[0]);
+        if (!(splitLine.length >= 1 + aP)) {
+            System.out.println("ERROR (main): no amount specifier for: " + splitLine[0 + aP]);
             return null;
         }
-        int[] minMax = parseMinMax(splitLine[1]);
+        if (splitLine[1 + aP].equals("fungi") && typeOfCreature instanceof Carcass) { // check for fungus
+            fungus = true;
+            aP++;
+        }
+
+        int[] minMax = parseMinMax(splitLine[1 + aP]);
 
         // Assert location
         Location spawnLocation = null;
-        if (splitLine.length >= 3) {
-            spawnLocation = parseLocation(splitLine[2]);
+        if (splitLine.length >= 3 + aP) {
+            spawnLocation = parseLocation(splitLine[2 + aP]);
         }
 
-        return new LineInformation(typeOfCreature, minMax[0], minMax[1], spawnLocation);
+        return new LineInformation(typeOfCreature, minMax[0], minMax[1], spawnLocation, fungus, cordyceps);
     }
 
     /**
@@ -233,6 +251,7 @@ public class Main {
         // Failstates
         if (lineInformation == null)
             return;
+        WolfPack wolfPack = null; // wolfpack
 
         // assert amount to be placed
         int amount = assertAmount(lineInformation.minAmount, lineInformation.maxAmount);
@@ -277,8 +296,18 @@ public class Main {
                 spaceManager.incrementDimension(lineInformation.livingBeing);
                 hasPlaced = true;
 
-                // special if bear
-                if ((spawn instanceof Bear) && lineInformation.spawnLocation != null) {
+                if (lineInformation.fungi && spawn instanceof Carcass) { // special if fungis
+                    ((Carcass) spawn).secureFungus();
+                } else if (spawn instanceof Wolf) { // special if wolf
+                    if (wolfPack == null) {
+                        ((Wolf) spawn).createPack(world);
+                        wolfPack = ((Wolf) spawn).getPack();
+                    } else {
+                        ((Wolf) spawn).joinPack(wolfPack);
+                    }
+
+                } else if ((spawn instanceof Bear) && lineInformation.spawnLocation != null) { // special if bear
+
                     ((Bear) spawn).setSpawnLocation(lineInformation.spawnLocation);
                     ((Bear) spawn).setTerritory(world);
                 }
