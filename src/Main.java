@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class Main {
     static int displaySize = 800;
-    static int delay = 500;
+    static int delay = 100;
 
     public static void main(String[] args) {
         try {
