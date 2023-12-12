@@ -291,4 +291,39 @@ public class Rabbit extends Animal {
         resting = false;
     }
 
+    public List<Location> getNearbyWolfs(World world, int radius) {
+        Set<Location> tiles = world.getSurroundingTiles(radius);
+        List<Location> wolfsNearby = new ArrayList<>();
+        for (Location l : tiles) {
+            if (world.getTile(l) instanceof Wolf) {
+                wolfsNearby.add(l);
+            }
+        }
+        return wolfsNearby;
+    }
+
+    public Wolf getWolfNearby(World world) {
+        Wolf wolf = null;
+        if (world.isOnTile(this)) {
+            Set<Location> tiles = world.getSurroundingTiles(1);
+            for (Location l : tiles) {
+                if (world.getTile(l) instanceof Wolf) {
+                    return (Wolf) world.getTile(l);
+                }
+            }
+        }
+        return wolf;
+    }
+
+    public boolean wolfNearby(World world, int radius) {
+        if (world.isOnTile(this)) {
+            Set<Location> tiles = world.getSurroundingTiles(radius);
+            for (Location l : tiles) {
+                if (world.getTile(l) instanceof Wolf) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
