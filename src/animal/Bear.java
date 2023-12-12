@@ -55,7 +55,8 @@ public class Bear extends Predator {
         if (targetInTerritory(world)) {
             findTargetInTerritory(world);
             hunt(world);
-        } else if (foodInTerritory(world) && isHungry()) {
+        }
+        if (foodInTerritory(world) && isHungry()) {
             findFoodInTerritory(world);
             move(world, toAndFrom(world, foodLocation, world.getLocation(this)));
             eatFood(world, foodLocation);
@@ -107,6 +108,31 @@ public class Bear extends Predator {
         }
     }
 
+    public boolean nextTo(World world) {
+        Location currentLocation = world.getLocation(this);
+        if (foodLocation != null) {
+            if (currentLocation.getX() - foodLocation.getX() == 1
+                    || currentLocation.getX() - foodLocation.getX() == -1) {
+                return true;
+
+            } else if (currentLocation.getY() - foodLocation.getY() == 1
+                    || currentLocation.getY() - foodLocation.getY() == -1) {
+                return true;
+            }
+        }
+        if (targetLocation != null) {
+            if (currentLocation.getX() - targetLocation.getX() == 1
+                    || currentLocation.getX() - targetLocation.getX() == -1) {
+                return true;
+
+            } else if (currentLocation.getY() - targetLocation.getY() == 1
+                    || currentLocation.getY() - targetLocation.getY() == -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Moves the object to a prey then kills it and eats it.
      * 
@@ -115,7 +141,10 @@ public class Bear extends Predator {
 
     public void hunt(World world) {
         move(world, toAndFrom(world, targetLocation, world.getLocation(this)));
-        attackTarget(world);
+        if (nextTo(world)) {
+            attackTarget(world);
+        }
+
     }
 
     /**
@@ -126,7 +155,9 @@ public class Bear extends Predator {
      */
     public void forage(World world) {
         BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
-        BerryBush.setNoBerries(world);
+        if (nextTo(world)) {
+            BerryBush.setNoBerries(world);
+        }
         changeEnergy(4, world);
     }
 

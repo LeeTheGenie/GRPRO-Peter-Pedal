@@ -79,6 +79,11 @@ public class Rabbit extends Animal {
         super.act(world);
     }
 
+    /**
+     * Sets the danger tiles to the tiles around wolfs
+     * 
+     * @param world
+     */
     public void setDangerTiles(World world) {
         List<Location> wolfs = getNearbyWolfs(world, 4);
         System.out.println("wolfs: " + wolfs);
@@ -90,6 +95,11 @@ public class Rabbit extends Animal {
         }
     }
 
+    /**
+     * Sets the safe tiles to the tiles around the danger tiles
+     * 
+     * @param world
+     */
     public void setSafeTiles(World world) {
         Set<Location> tiles = world.getSurroundingTiles(3);
         for (Location l : tiles) {
@@ -99,10 +109,21 @@ public class Rabbit extends Animal {
         }
     }
 
+    /**
+     * Returns the safe tiles
+     * 
+     * @return
+     */
     public Set<Location> getSafeTiles() {
         return safeTiles;
     }
 
+    /**
+     * Returns a random safe tile
+     * 
+     * @param world
+     * @return random safe location
+     */
     public Location getRandomSafeTile(World world) {
         setDangerTiles(world);
         setSafeTiles(world);
@@ -114,6 +135,11 @@ public class Rabbit extends Animal {
         return randomLocation;
     }
 
+    /**
+     * Moves the rabbit to a random safe tile
+     * 
+     * @param world
+     */
     public void flee(World world) {
         move(world, toAndFrom(world, getRandomSafeTile(world), world.getLocation(this)));
     }
