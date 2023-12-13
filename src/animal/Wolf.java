@@ -57,11 +57,6 @@ public class Wolf extends Predator {
         if (getAlphaWolf(world) == null) { // sets the alpha wolf
             handlePack(world);
             giveOneWolfAlpha(world);
-            // alpharange =
-            // world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 4); // sets
-            // the initial alpha
-            // range, will change
-            // each step
         }
         if (!sleeping) {
             handlePack(world);
@@ -133,6 +128,7 @@ public class Wolf extends Predator {
                                                                                                        // target
                     if (!(target instanceof Bear)) {
                         killTarget(world); // kill target
+                        eatTarget(world);
                         target = null; // reset target
                     } else {
                         groupOnBear(world);
@@ -164,6 +160,22 @@ public class Wolf extends Predator {
         }
     }
 
+    public void killTarget(World world) {
+        ((LivingBeing) world.getTile(world.getLocation(target))).die(world, "wolf");
+    }
+
+    public void eatTarget(World world) {
+        if (target instanceof Carcass) {
+            ((Carcass) target).takeBite();
+            changeEnergy(4, world);
+        }
+    }
+
+    /**
+     * If the pack size is 4 or more, the wolves will group on the bear and kill it.
+     * 
+     * @param world
+     */
     public void groupOnBear(World world) {
         if (getPack().getSize() < 4) {
             return;

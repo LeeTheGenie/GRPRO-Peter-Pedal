@@ -237,13 +237,11 @@ public class Bear extends Predator {
         if (world.getTile(targetLocation) instanceof Wolf) { // tjek hvor mange wolf der er omkring sig hvis der er to
                                                              // eller mindre dræb dem ellers flee
             List<Location> wolves = getNearbyWolfs(world, 1);
-            if (wolves.size() <= 2) {
+            if (wolves.size() < 4) {
                 for (Location l : wolves) {
                     ((Wolf) world.getTile(l)).die(world, "killed by bear");
+                    changeEnergy(-3, world);
                 }
-            } else {
-                // flee(world);
-                System.out.println("flee");
             }
         } else {
             ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");

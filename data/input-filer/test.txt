@@ -2,4 +2,3 @@
 wolf 5
 rabbit 1
 grass 100
-bear 1
