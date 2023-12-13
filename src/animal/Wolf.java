@@ -128,8 +128,8 @@ public class Wolf extends Predator {
                                                                                                        // target
                     if (!(target instanceof Bear)) {
                         killTarget(world); // kill target
-                        eatTarget(world);
-                        target = null; // reset target
+                        eatTarget(world, target);
+
                     } else {
                         groupOnBear(world);
                         target = null;
@@ -164,10 +164,13 @@ public class Wolf extends Predator {
         ((LivingBeing) world.getTile(world.getLocation(target))).die(world, "wolf");
     }
 
-    public void eatTarget(World world) {
+    public void eatTarget(World world, LivingBeing target) {
         if (target instanceof Carcass) {
+            move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
             ((Carcass) target).takeBite();
             changeEnergy(4, world);
+            System.out.println("munch");
+            target = null; // reset target
         }
     }
 
