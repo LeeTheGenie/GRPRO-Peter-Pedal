@@ -1,3 +1,4 @@
 10
 wolf 5
+rabbit 1
 grass 100

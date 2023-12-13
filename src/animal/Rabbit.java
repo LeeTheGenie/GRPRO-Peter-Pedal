@@ -86,7 +86,6 @@ public class Rabbit extends Animal {
      */
     public void setDangerTiles(World world) {
         List<Location> wolfs = getNearbyWolfs(world, 4);
-        System.out.println("wolfs: " + wolfs);
         for (Location l : wolfs) {
             Set<Location> wolfTiles = world.getSurroundingTiles(l, 3);
             for (Location wt : wolfTiles) {
@@ -130,6 +129,9 @@ public class Rabbit extends Animal {
         Set<Location> tiles = getSafeTiles();
         List<Location> list = new ArrayList<>(tiles);
         Random r = new Random();
+        if (list.size() == 0) {
+            return null;
+        }
         int randomIndex = r.nextInt(list.size());
         Location randomLocation = list.get(randomIndex);
         return randomLocation;
@@ -141,6 +143,9 @@ public class Rabbit extends Animal {
      * @param world
      */
     public void flee(World world) {
+        Location randomTile = getRandomSafeTile(world);
+        if (randomTile == null)
+            return;
         move(world, toAndFrom(world, getRandomSafeTile(world), world.getLocation(this)));
     }
 

@@ -77,7 +77,6 @@ public abstract class Predator extends Animal {
     }
 
     public void killTarget(World world) {
-
     }
 
     public void eatTarget(World world, Animal target) {

@@ -2,6 +2,7 @@ package animal;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -20,6 +21,8 @@ public class Wolf extends Predator {
 
     private LivingBeing target;
     private WolfPack wolfPack;
+    private boolean alpha;
+    private Set<Location> alpharange;
 
     // Sleeping
     private int sleepyness;
@@ -34,6 +37,7 @@ public class Wolf extends Predator {
         super(0, 500, 400, 20, 3, 20, 30, 3, 0.80d);
         this.target = null;
         this.wolfPack = null;
+        this.alpha = false;
         growthStates = new String[][] { { "wolf-small", "wolf-small-sleeping" }, { "wolf", "wolf-sleeping" } };
         this.sleepyness = 0;
         this.bedtime = 60;
@@ -50,9 +54,17 @@ public class Wolf extends Predator {
     @Override
     public void act(World world) {
         // System.out.println("I "+this+" am in "+wolfPack);
+        if (getAlphaWolf(world) == null) { // sets the alpha wolf
+            handlePack(world);
+            giveOneWolfAlpha(world);
+            alpharange = world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 4); // sets the initial alpha
+                                                                                               // range, will change
+                                                                                               // each step
+        }
         if (!sleeping) {
             handlePack(world);
-            handleMovement(world);
+            handleGoSleep(world);
+            hunt(world);
         }
         handleSleep(world);
         reproduce(world);
@@ -65,7 +77,7 @@ public class Wolf extends Predator {
      * 
      * @param world
      */
-    public void handleMovement(World world) {
+    public void handleGoSleep(World world) {
         if (!world.isOnTile(this))
             return;
         if (wantToSleep()) { // if you want to sleep go to sleep
@@ -94,24 +106,100 @@ public class Wolf extends Predator {
                 return;
             }
         }
-        if (isHungry()) { // if you are hungry go eat
-            if (target == null) {
-                // no target? go find one.
-                target = locateTarget(world, 3);
-            } else if (world.isOnTile(this) && world.isOnTile(target)) {
-                move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
-                killTarget(world);
-                // eatTarget(world, null);
-                return;
-            } else {
-                target = null;
+
+    }
+
+    /**
+     * 
+     * For alpha wolf, it will try to find a target and kill it.
+     * For non-alpha wolf, it will try to find the alpha wolf and follow it.
+     * 
+     * @param world
+     */
+    public void hunt(World world) {
+        if (isAlpha()) { // if alpha wolf
+            if (isHungry()) { // if hungry
+                findTarget(world, 3); // find target in range 3
+                if (target == null) { // if no target
+                    move(world, null); // move randomly
+                }
+                if (target != null) { // if target
+                    move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this))); // move towards
+                                                                                                       // target
+                    killTarget(world); // kill target
+                    target = null; // reset target
+                }
+            }
+            if (!isHungry()) { // if not hungry
+                move(world, null); // move randomly
             }
         }
-        if (!hasPack()) { // if you are lonely go find friends
-            move(world, null);// move randomly around for now
+        if (!isAlpha() && !hasPack()) { // if not alpha and does not have a pack
+            move(world, null); // move randomly
+        } else if (world.isOnTile(getAlphaWolf(world)) && world.isOnTile(this) && !isAlpha() && hasPack()) { // if not
+                                                                                                             // alpha
+                                                                                                             // and has
+                                                                                                             // a pack
+                                                                                                             // and the
+                                                                                                             // alphawolf
+                                                                                                             // and this
+                                                                                                             // wolf is
+                                                                                                             // shown in
+                                                                                                             // the
+                                                                                                             // world
+            alpharange = world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 3); // set the alpha range to
+                                                                                               // the alphawolf
+            followAlpha(world); // follow the alpha
         }
-        // if none go wander around
-        move(world, null);
+    }
+
+    /**
+     * Finds a target within the given radius
+     * 
+     * @param world
+     * @param radius to search within
+     */
+    public void findTarget(World world, int radius) {
+        Set<Location> surroundingTiles = world.getSurroundingTiles(radius);
+        for (Location l : surroundingTiles) {
+            if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Bear) {
+                target = (LivingBeing) world.getTile(l);
+                return;
+            }
+        }
+    }
+
+    /**
+     * Goes to a random empty tile within the alpha wolf's range, if the tile is not
+     * within the alpha wolf's range, it will go to the alpha wolf.
+     * 
+     * @param world
+     */
+    public void followAlpha(World world) {
+        Set<Location> emptyTiles = world.getEmptySurroundingTiles(); // get all empty tiles
+        List<Location> list = new ArrayList<>(emptyTiles); // convert to list
+
+        Random r = new Random(); // random number generator
+
+        int randomIndex = r.nextInt(emptyTiles.size()); // get random index
+        Location randomLocation = list.get(randomIndex); // get random location
+        if (alpharange.contains(randomLocation)) { // if the random location is within the alpha range
+            move(world, randomLocation); // move to the random location
+        } else {
+            move(world, toAndFrom(world, world.getLocation(getAlphaWolf(world)), randomLocation)); // move towards the
+                                                                                                   // alpha
+        }
+
+    }
+
+    /**
+     * Check for if criteria to eat is met
+     * 
+     * @param world
+     * @return true is criteria is met, false if not
+     */
+    public boolean canEat(World world) { // not implemented yet.
+        return true;
     }
 
     /**
@@ -135,6 +223,50 @@ public class Wolf extends Predator {
     public void setSleeping(boolean sleeping) {
         this.sleeping = sleeping;
         this.resting = sleeping;
+    }
+
+    /**
+     * Gives the first wolf in the pack the alpha status
+     * 
+     * @param world
+     */
+    public void giveOneWolfAlpha(World world) {
+        List<Wolf> wolfList = wolfPack.getWolfList();
+        wolfList.get(0).setAlpha();
+    }
+
+    /**
+     * Sets the wolf to alpha
+     */
+    public void setAlpha() {
+        this.alpha = true;
+    }
+
+    /**
+     * Checks if the wolf is alpha
+     * 
+     * @return true if alpha, false if not
+     */
+    public boolean isAlpha() {
+        return alpha;
+    }
+
+    /**
+     * Finds the alphawolf in the pack
+     * 
+     * @param world
+     * @return alphawolf if found, null if not
+     */
+    public Wolf getAlphaWolf(World world) {
+        if (world.isOnTile(this)) {
+            for (Wolf w : wolfPack.getWolfList()) {
+                if (w.isAlpha()) {
+                    return w;
+                }
+            }
+        }
+
+        return null;
     }
 
     public void digHole(World world) {
@@ -241,7 +373,7 @@ public class Wolf extends Predator {
     }
 
     public void makeBaby(World world) {
-        world.setCurrentLocation(world.getLocation(this.wolfPack.getWolfHole()));
+        world.setCurrentLocation(world.getLocation(wolfPack.getWolfHole()));
         List<Location> list = new ArrayList<>(world.getEmptySurroundingTiles());
 
         if (list.size() == 0)
@@ -249,15 +381,15 @@ public class Wolf extends Predator {
 
         Location newLocation = list.get(new Random().nextInt(list.size()));
         Wolf baby = new Wolf();
-        this.wolfPack.addWolf(baby);
+        wolfPack.addWolf(baby);
         int tired = baby.bedtime;
         baby.sleepyness = baby.sleepyness + tired;
         world.setTile(newLocation, baby);
-        this.currentEnergy -= reproductionCost;
+        changeEnergy(-reproductionCost, world);
     }
 
     /**
-     * Atempts to exit the hole the rabbit is in;
+     * Atempts to exit the hole the wolf is in;
      * 
      * @param world
      * 
