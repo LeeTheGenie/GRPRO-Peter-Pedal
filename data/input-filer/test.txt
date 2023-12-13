@@ -1,5 +1,4 @@
 10
-bear 1 (5,5)
 berry 5
-wolf 2
+wolf 4
 grass 100
