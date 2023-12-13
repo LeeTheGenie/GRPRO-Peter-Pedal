@@ -81,6 +81,11 @@ public class Bear extends Predator {
         return territory;
     }
 
+    /**
+     * Sets the spawn location of the object.
+     * 
+     * @param location to set the spawn location to.
+     */
     public void setSpawnLocation(Location location) {
         spawnLocation = location;
     }
@@ -108,6 +113,12 @@ public class Bear extends Predator {
         }
     }
 
+    /**
+     * Checks if the object is next to a prey or food.
+     * 
+     * @param world
+     * @return True if next to a prey or food.
+     */
     public boolean nextTo(World world) {
         Location currentLocation = world.getLocation(this);
         if (foodLocation != null) {
@@ -134,7 +145,7 @@ public class Bear extends Predator {
     }
 
     /**
-     * Moves the object to a prey then kills it and eats it.
+     * Moves the object to a prey then kills it.
      * 
      * @param world
      */
@@ -148,8 +159,7 @@ public class Bear extends Predator {
     }
 
     /**
-     * Goes to berrybush and eats all the berries on the bush. Then replaces the
-     * berrybush with a regular bush.
+     * Goes to berrybush and eats all the berries on the bush.
      * 
      * @param world
      */
@@ -162,11 +172,10 @@ public class Bear extends Predator {
     }
 
     /**
-     * Scans the territory and checks if there is anything edible in it.
+     * Scans the territory and checks if there is food in it.
      * 
      * @param world
-     * @return True if there is a prey in the territory.
-     *         False if there is not a prey in the territory.
+     * @return True if there is food in the territory.
      */
     public boolean foodInTerritory(World world) {
         for (Location l : territory) {
@@ -177,6 +186,12 @@ public class Bear extends Predator {
         return false;
     }
 
+    /**
+     * Scans the territory and checks if there is any prey in it.
+     * 
+     * @param world
+     * @return True if there is a prey in the territory.
+     */
     public boolean targetInTerritory(World world) {
         for (Location l : territory) {
             if (world.getTile(l) instanceof Rabbit || world.getTile(l) instanceof Wolf) {
@@ -186,6 +201,11 @@ public class Bear extends Predator {
         return false;
     }
 
+    /**
+     * Finds the location of food in the territory.
+     * 
+     * @param world
+     */
     public void findFoodInTerritory(World world) {
         for (Location l : territory) {
             if (world.getTile(l) instanceof Carcass || world.getTile(l) instanceof BerryBush) {
@@ -195,7 +215,7 @@ public class Bear extends Predator {
     }
 
     /**
-     * Finds the location of anything edible in the territory.
+     * Finds the location of animal to kill in the territory.
      * 
      * @param world
      */
@@ -214,13 +234,16 @@ public class Bear extends Predator {
      * @param world
      */
     public void attackTarget(World world) {
-        if (world.getTile(targetLocation) instanceof Wolf) {
-            Wolf wolf = (Wolf) world.getTile(targetLocation);
-            WolfPack wolfpackkk = wolf.getPack();
-            if (wolf.hasPack() && wolfpackkk.getSize() > 4) {
-                this.die(world, "killed by wolfpack");
+        if (world.getTile(targetLocation) instanceof Wolf) { // tjek hvor mange wolf der er omkring sig hvis der er to
+                                                             // eller mindre dræb dem ellers flee
+            List<Location> wolves = getNearbyWolfs(world, 1);
+            if (wolves.size() <= 2) {
+                for (Location l : wolves) {
+                    ((Wolf) world.getTile(l)).die(world, "killed by bear");
+                }
             } else {
-                wolf.die(world, "killed by bear");
+                // flee(world);
+                System.out.println("flee");
             }
         } else {
             ((LivingBeing) world.getTile(targetLocation)).die(world, "killed by bear");
@@ -229,6 +252,13 @@ public class Bear extends Predator {
 
     }
 
+    /**
+     * Eats food if it is a berrybush it eats all the berries on the bush. If it is
+     * a carcass it takes a bite of the carcass.
+     * 
+     * @param world
+     * @param foodLocation location of the food
+     */
     public void eatFood(World world, Location foodLocation) {
         if (world.getTile(foodLocation) instanceof BerryBush) {
             forage(world);
@@ -237,5 +267,24 @@ public class Bear extends Predator {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
             carcass.takeBite();
         }
+    }
+
+    /**
+     * Creates a ArrayList with location of all wolves withing a radius from a given
+     * point.
+     * 
+     * @param world
+     * @param radius to search in
+     * @return ArrayList with all locations of the wolves within the radius
+     */
+    public List<Location> getNearbyWolfs(World world, int radius) {
+        Set<Location> tiles = world.getSurroundingTiles(radius);
+        List<Location> wolfsNearby = new ArrayList<>();
+        for (Location l : tiles) {
+            if (world.getTile(l) instanceof Wolf) {
+                wolfsNearby.add(l);
+            }
+        }
+        return wolfsNearby;
     }
 }

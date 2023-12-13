@@ -57,9 +57,11 @@ public class Wolf extends Predator {
         if (getAlphaWolf(world) == null) { // sets the alpha wolf
             handlePack(world);
             giveOneWolfAlpha(world);
-            alpharange = world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 4); // sets the initial alpha
-                                                                                               // range, will change
-                                                                                               // each step
+            // alpharange =
+            // world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 4); // sets
+            // the initial alpha
+            // range, will change
+            // each step
         }
         if (!sleeping) {
             handlePack(world);
@@ -117,6 +119,9 @@ public class Wolf extends Predator {
      * @param world
      */
     public void hunt(World world) {
+        if (!world.isOnTile(this)) {
+            return;
+        }
         if (isAlpha()) { // if alpha wolf
             if (isHungry()) { // if hungry
                 findTarget(world, 3); // find target in range 3
@@ -126,8 +131,14 @@ public class Wolf extends Predator {
                 if (target != null) { // if target
                     move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this))); // move towards
                                                                                                        // target
-                    killTarget(world); // kill target
-                    target = null; // reset target
+                    if (!(target instanceof Bear)) {
+                        killTarget(world); // kill target
+                        target = null; // reset target
+                    } else {
+                        groupOnBear(world);
+                        target = null;
+                    }
+
                 }
             }
             if (!isHungry()) { // if not hungry
@@ -150,6 +161,18 @@ public class Wolf extends Predator {
             alpharange = world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 3); // set the alpha range to
                                                                                                // the alphawolf
             followAlpha(world); // follow the alpha
+        }
+    }
+
+    public void groupOnBear(World world) {
+        if (getPack().getSize() < 4) {
+            return;
+        }
+        if (getPack().getSize() >= 4) {
+            move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
+            // if mere end to ulve ved siden af bear så dræb bear, hvis pack size under 4 så
+            // flee
+            killTarget(world);
         }
     }
 
