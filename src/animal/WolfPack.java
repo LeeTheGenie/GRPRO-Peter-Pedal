@@ -1,15 +1,15 @@
 package animal;
 import misc.WolfHole;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class WolfPack {
 
-    private ArrayList<Wolf> wolfList;
+    private HashSet<Wolf> wolfList;
     private WolfHole wolfHole;
     private int heat;
 
     public WolfPack() {
-        this.wolfList = new ArrayList<>();
+        this.wolfList = new HashSet<Wolf>();
         this.heat=60;
     }
 
@@ -28,7 +28,7 @@ public class WolfPack {
         this.wolfHole = wolfHole;
     }
 
-    public ArrayList<Wolf> getWolfList() {
+    public HashSet<Wolf> getWolfList() {
         return wolfList;
     }
 
@@ -41,9 +41,9 @@ public class WolfPack {
     }
 
     public boolean inHeat(){
-            if (this.heat>=60) {
-                return true;
-            }
+        if (this.heat>=60) {
+            return true;
+        }
         return false;
     }
 
@@ -54,7 +54,6 @@ public class WolfPack {
     public void postNutClarity(){
         this.heat=0;
     }
-
 
     public void display() {
         for (Wolf w : wolfList) {

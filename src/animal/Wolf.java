@@ -58,6 +58,11 @@ public class Wolf extends Predator {
         super.act(world);
     }
 
+    @Override public void die(World world) {
+        super.die(world);
+        leavePack();
+    }   
+
     /**
      * A function to join all movement for wolfs together.
      * 
@@ -208,7 +213,6 @@ public class Wolf extends Predator {
             return;
 
         // Main
-
         if (this.wolfPack.hasSpace() && this.wolfPack.getSize() > 1) {
             // Check if more than one wolf is in hole
             int wolvesInHole = 0;
@@ -279,7 +283,7 @@ public class Wolf extends Predator {
     /*
      * $$\
      * $$ |
-     * $$$$$$\ $$$$$$\ $$$$$$$\ $$ | $$\
+     * $$$$$$\  $$$$$$\ $$$$$$$\ $$ | $$\
      * $$ __$$\ \____$$\ $$ _____|$$ | $$ |
      * $$ / $$ | $$$$$$$ |$$ / $$$$$$ /
      * $$ | $$ |$$ __$$ |$$ | $$ _$$<
@@ -287,7 +291,7 @@ public class Wolf extends Predator {
      * $$ ____/ \_______| \_______|\__| \__|
      * $$ |
      * $$ |
-     * \__| 'øhh cringe much?'
+     * \__| 
      */
 
     /**
@@ -324,7 +328,6 @@ public class Wolf extends Predator {
                         joinPack(((Wolf) o).getPack());
                 } else { // if the target wolf does not have a pack
                     createPack(world);
-                    joinPack(wolfPack);
                     ((Wolf) o).joinPack(wolfPack);
                 }
             }
@@ -333,6 +336,7 @@ public class Wolf extends Predator {
 
     public void createPack(World world) {
         wolfPack = new WolfPack();
+        joinPack(wolfPack);
     }
 
     public void joinPack(WolfPack wolfPack) {
