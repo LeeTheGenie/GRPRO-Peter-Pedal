@@ -32,9 +32,10 @@ import java.util.HashMap;
 public class Main {
     static int displaySize = 800;
     static int delay = 100;
+
     public static void main(String[] args) {
         try {
-            Program p = fileLoader("data/input-filer/test.txt",displaySize,delay);
+            Program p = fileLoader("data/input-filer/test.txt", displaySize, delay);
             p.show();
             for (int i = 0; i < 3000; i++) {
                 p.run();
@@ -68,7 +69,7 @@ public class Main {
         // BerryBush/bush
         p.setDisplayInformation(BerryBush.class, new DisplayInformation(Color.green, "bush-berries", false));
         p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
-            // wolf hole
+        // wolf hole
         p.setDisplayInformation(WolfHole.class, new DisplayInformation(Color.green, "hole", false));
     }
 
@@ -90,7 +91,7 @@ public class Main {
         classReferenceMap.put("wolf", new Wolf());
         classReferenceMap.put("berry", new BerryBush());
         classReferenceMap.put("fungus", new Fungus());
-        classReferenceMap.put("carcass", new Carcass(0,0,0));
+        classReferenceMap.put("carcass", new Carcass(0, 0, 0));
         return classReferenceMap;
     }
 
@@ -145,12 +146,14 @@ public class Main {
         // ex [carcass][fungi][5-10]
         // ex [carcass][4]
         // ex [cordyceps][rabbit][1-2]
-        // Generalized form: [typeOfCreature/cordyceps][amount/fungi][location/amount][location] bro :skull:
+        // Generalized form:
+        // [typeOfCreature/cordyceps][amount/fungi][location/amount][location] bro
+        // :skull:
 
         // Get the line
         String[] splitLine = line.split("[\r\t\f ]");
         int aP = 0; // arrayPointer
-        boolean cordyceps=false,fungus=true;
+        boolean cordyceps = false, fungus = true;
         // printStringArray(splitLine);
 
         // Assert the creature
@@ -158,34 +161,34 @@ public class Main {
             System.out.println("ERROR (main): emptystring given as argument");
             return null;
         }
-        if(splitLine[0].equals("cordyceps")) { // check for cordyceps
+        if (splitLine[0].equals("cordyceps")) { // check for cordyceps
             cordyceps = true;
             aP++;
         }
-        LivingBeing typeOfCreature = parseLivingBeing(splitLine[0+aP]);
+        LivingBeing typeOfCreature = parseLivingBeing(splitLine[0 + aP]);
 
         if (typeOfCreature == null)
-            System.out.println("ERROR (main): LivingBeing not recognized \"" + splitLine[0+aP] + "\"");
+            System.out.println("ERROR (main): LivingBeing not recognized \"" + splitLine[0 + aP] + "\"");
 
         // Assert min max
-        if (!(splitLine.length >= 1+aP)) {
-            System.out.println("ERROR (main): no amount specifier for: " + splitLine[0+aP]);
+        if (!(splitLine.length >= 1 + aP)) {
+            System.out.println("ERROR (main): no amount specifier for: " + splitLine[0 + aP]);
             return null;
         }
-        if(splitLine[1+aP].equals("fungi")&&typeOfCreature instanceof Carcass) { // check for fungus
+        if (splitLine[1 + aP].equals("fungi") && typeOfCreature instanceof Carcass) { // check for fungus
             fungus = true;
             aP++;
         }
 
-        int[] minMax = parseMinMax(splitLine[1+aP]);
+        int[] minMax = parseMinMax(splitLine[1 + aP]);
 
         // Assert location
         Location spawnLocation = null;
-        if (splitLine.length >= 3+aP) {
-            spawnLocation = parseLocation(splitLine[2+aP]);
+        if (splitLine.length >= 3 + aP) {
+            spawnLocation = parseLocation(splitLine[2 + aP]);
         }
 
-        return new LineInformation(typeOfCreature, minMax[0], minMax[1], spawnLocation,fungus,cordyceps);
+        return new LineInformation(typeOfCreature, minMax[0], minMax[1], spawnLocation, fungus, cordyceps);
     }
 
     /**
@@ -195,7 +198,8 @@ public class Main {
      * 
      * @throws FileNotFoundException and NullPointerException
      **/
-    static Program fileLoader(String fileLocation, int displaySize, int delay) throws FileNotFoundException, NullPointerException {
+    static Program fileLoader(String fileLocation, int displaySize, int delay)
+            throws FileNotFoundException, NullPointerException {
 
         // Setup Scanner (ERROR LIKELY TO THROW HERE!)
         Scanner sc = new Scanner(new File(fileLocation));
@@ -292,19 +296,18 @@ public class Main {
                 spaceManager.incrementDimension(lineInformation.livingBeing);
                 hasPlaced = true;
 
-                
-                if(lineInformation.fungi&&spawn instanceof Carcass) { // special if fungis
+                if (lineInformation.fungi && spawn instanceof Carcass) { // special if fungis
                     ((Carcass) spawn).secureFungus();
-                } else if(spawn instanceof Wolf) { // special if wolf
-                    if(wolfPack==null) {
-                        ((Wolf)spawn).createPack(world);
-                        wolfPack = ((Wolf)spawn).getPack();
+                } else if (spawn instanceof Wolf) { // special if wolf
+                    if (wolfPack == null) {
+                        ((Wolf) spawn).createPack(world);
+                        wolfPack = ((Wolf) spawn).getPack();
                     } else {
-                        ((Wolf)spawn).joinPack(wolfPack);
+                        ((Wolf) spawn).joinPack(wolfPack);
                     }
 
                 } else if ((spawn instanceof Bear) && lineInformation.spawnLocation != null) { // special if bear
-               
+
                     ((Bear) spawn).setSpawnLocation(lineInformation.spawnLocation);
                     ((Bear) spawn).setTerritory(world);
                 }
