@@ -1,4 +1,4 @@
-10
+15
 wolf 5
-rabbit 1
+rabbit 5
 grass 100

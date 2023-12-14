@@ -117,6 +117,9 @@ public class Wolf extends Predator {
         if (!world.isOnTile(this)) {
             return;
         }
+        if (getAlphaWolf(world) == null) {
+            return;
+        }
         if (isAlpha()) { // if alpha wolf
             if (isHungry()) { // if hungry
                 findTarget(world, 3); // find target in range 3
@@ -128,7 +131,7 @@ public class Wolf extends Predator {
                                                                                                        // target
                     if (!(target instanceof Bear)) {
                         killTarget(world); // kill target
-                        eatTarget(world, target);
+                        target = null;
 
                     } else {
                         groupOnBear(world);
@@ -136,24 +139,13 @@ public class Wolf extends Predator {
                     }
 
                 }
-            }
-            if (!isHungry()) { // if not hungry
+            } else if (!isHungry()) { // if not hungry
                 move(world, null); // move randomly
             }
         }
         if (!isAlpha() && !hasPack()) { // if not alpha and does not have a pack
             move(world, null); // move randomly
-        } else if (world.isOnTile(getAlphaWolf(world)) && world.isOnTile(this) && !isAlpha() && hasPack()) { // if not
-                                                                                                             // alpha
-                                                                                                             // and has
-                                                                                                             // a pack
-                                                                                                             // and the
-                                                                                                             // alphawolf
-                                                                                                             // and this
-                                                                                                             // wolf is
-                                                                                                             // shown in
-                                                                                                             // the
-                                                                                                             // world
+        } else if (world.isOnTile(getAlphaWolf(world)) && world.isOnTile(this) && !isAlpha() && hasPack()) {
             alpharange = world.getSurroundingTiles(world.getLocation(getAlphaWolf(world)), 3); // set the alpha range to
                                                                                                // the alphawolf
             followAlpha(world); // follow the alpha
@@ -165,13 +157,7 @@ public class Wolf extends Predator {
     }
 
     public void eatTarget(World world, LivingBeing target) {
-        if (target instanceof Carcass) {
-            move(world, toAndFrom(world, world.getLocation(target), world.getLocation(this)));
-            ((Carcass) target).takeBite();
-            changeEnergy(4, world);
-            System.out.println("munch");
-            target = null; // reset target
-        }
+
     }
 
     /**
@@ -218,7 +204,9 @@ public class Wolf extends Predator {
         List<Location> list = new ArrayList<>(emptyTiles); // convert to list
 
         Random r = new Random(); // random number generator
-
+        if (list.size() == 0) { // if there are no empty tiles
+            return;
+        }
         int randomIndex = r.nextInt(emptyTiles.size()); // get random index
         Location randomLocation = list.get(randomIndex); // get random location
         if (alpharange.contains(randomLocation)) { // if the random location is within the alpha range
@@ -296,6 +284,8 @@ public class Wolf extends Predator {
      * @return alphawolf if found, null if not
      */
     public Wolf getAlphaWolf(World world) {
+        if (!hasPack())
+            return null;
         if (world.isOnTile(this)) {
             for (Wolf w : wolfPack.getWolfList()) {
                 if (w.isAlpha()) {
