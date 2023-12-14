@@ -87,13 +87,6 @@ public class Rabbit extends Animal {
         }
     }
 
-    @Override
-    public void onDeath(World world) {
-        if (this.rabbithole != null)
-            rabbithole.clearOwner();
-        super.onDeath(world);
-    }
-
     /**
      * locateHole() moves 1 step to the rabbits hole.
      * @param world

@@ -78,6 +78,24 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         currentEnergy = inheritedEnergy;
     }
 
+    @Override public void die(World world) {
+        if(!validateExistence(world))
+            return;   
+         
+        if(validateLocationExistence(world)) {
+            Location deathLocation = world.getLocation(this);
+            world.delete(this);
+            dropCarcass(world,deathLocation);
+        } else {
+            world.delete(this);
+        }
+    }
+
+    public void dropCarcass(World world,Location location){
+        int energyToDrop = (int) ((int) currentEnergy + Math.floor((maxEnergy)*0.1d));
+        world.setTile(location, new Carcass(0, 0,energyToDrop));
+    }
+
     /*                                                                             $$\     
                                                                                 $$ |    
     $$$$$$\$$$$\   $$$$$$\ $$\    $$\  $$$$$$\  $$$$$$\$$$$\   $$$$$$\  $$$$$$$\ $$$$$$\   
@@ -87,8 +105,6 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
     $$ | $$ | $$ |\$$$$$$  |  \$  /   \$$$$$$$\ $$ | $$ | $$ |\$$$$$$$\ $$ |  $$ | \$$$$  |
     \__| \__| \__| \______/    \_/     \_______|\__| \__| \__| \_______|\__|  \__|  \____/                                                                                   
     */
-
-
     
     /**
      * a free move

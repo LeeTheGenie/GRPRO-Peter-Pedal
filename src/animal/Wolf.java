@@ -39,7 +39,8 @@ public class Wolf extends Predator {
     }
 
     @Override public void act(World world) {
-        System.out.println("I "+this+" am in "+wolfPack);
+        if(hasPack())
+            System.out.println("I "+this+" am in "+wolfPack+", size: "+wolfPack.getSize());
         if(!sleeping) {
             handlePack(world);
             handleMovement(world);
@@ -111,7 +112,7 @@ public class Wolf extends Predator {
             sleepyness-=10; 
         } else {
             sleepyness+=1; 
-            if(sleepyness<=0) {
+            if(sleepyness>=100) {
                 die(world,"sleep-exhaustion");
             }
         }
