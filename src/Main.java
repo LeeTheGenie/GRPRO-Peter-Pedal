@@ -24,6 +24,8 @@ import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
 import animal.WolfPack;
+import animal.Monkey;
+
 import executable.DisplayInformation;
 import executable.Program;
 
@@ -71,6 +73,8 @@ public class Main {
         p.setDisplayInformation(Bush.class, new DisplayInformation(Color.green, "bush", false));
         // wolf hole
         p.setDisplayInformation(WolfHole.class, new DisplayInformation(Color.green, "hole", false));
+        // moneky
+        p.setDisplayInformation(Monkey.class, new DisplayInformation(Color.green, "monkey", false));
     }
 
     public static HashMap<String, LivingBeing> classReferenceMap;
@@ -92,6 +96,7 @@ public class Main {
         classReferenceMap.put("berry", new BerryBush());
         classReferenceMap.put("fungus", new Fungus());
         classReferenceMap.put("carcass", new Carcass(0, 0, 0));
+        classReferenceMap.put("monkey", new Monkey());
         return classReferenceMap;
     }
 
