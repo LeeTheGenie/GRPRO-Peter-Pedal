@@ -1,9 +1,13 @@
 package animal;
 
 import java.awt.Color;
+import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Predator;
+import abstracts.Animal;
+
+import plants.BerryBush;
 
 import executable.DisplayInformation;
 
@@ -16,7 +20,7 @@ import itumulator.world.Location;
 public class Monkey extends Predator {
 
     private Location foodLocation;
-    private Location targetLocation;
+    private Animal targetLocation;
     private boolean hasStick;
 
     public Monkey() {
@@ -43,8 +47,20 @@ public class Monkey extends Predator {
 
     @Override
     public void act(World world) {
-
+        if (isHungry()) {
+            handleHunger(world);
+        } else {
+            move(world, null);
+        }
         super.act(world);
+    }
+
+    public void handleHunger(World world) {
+        if (hasStick) {
+            if (targetLocation == null) {
+                targetLocation = world.getLocation(locateTarget(world, 3));
+            }
+        }
     }
 
     /**
@@ -54,9 +70,20 @@ public class Monkey extends Predator {
      * @param world
      */
     public void forage(World world) {
+        if (foodLocation == null) {
+            findFood(world);
+        }
         BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
         BerryBush.setNoBerries(world);
         changeEnergy(4, world);
+    }
+
+    public void findFood(World world) {
+        for (Location l : world.getSurroundingTiles(3)) {
+            if (world.getTile(l) instanceof Carcass || world.getTile(l) instanceof BerryBush) {
+                foodLocation = l;
+            }
+        }
     }
 
     /**
@@ -82,6 +109,13 @@ public class Monkey extends Predator {
         return false;
     }
 
+    public void hunt(World world) {
+        if (targetLocation == null) {
+            locateTarget(world, 3);
+        }
+
+    }
+
     public boolean getHasStick() {
         return hasStick;
     }
@@ -90,4 +124,8 @@ public class Monkey extends Predator {
     // destroy bushes for sticks
     // without stick can only pick berries
     // with stick can kill rabbit
+    // can reproduce
+    // can sleep
+    // can die
+    // can eat carcass
 }
