@@ -12,9 +12,12 @@ import plants.BerryBush;
 import executable.DisplayInformation;
 
 import itumulator.world.World;
+
 import misc.Carcass;
 import misc.MonkeyFamily;
 import misc.WolfPack;
+import misc.Trap;
+
 import plants.BerryBush;
 
 import itumulator.world.Location;
@@ -29,7 +32,7 @@ public class Monkey extends Predator {
     private int children;
 
     public Monkey() {
-        super(0, 100, 300, 18, 1, 10, 0, 2,
+        super(0, 100, 300, 50, 1, 10, 0, 2,
                 0.80d);
         growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
         this.foodLocation = null;
@@ -57,14 +60,17 @@ public class Monkey extends Predator {
     public void act(World world) {
         if (!sleeping) {
             handleFamily(world);
+            System.out.println("family; " + getFamily());
         }
         if (!isAdult()) {
             followAdult(world);
         }
         if (isHungry()) {
-            handleHunger(world);
+            System.out.println("hungry");
+            // handleHunger(world);
         } else {
             move(world, null);
+            System.out.println("moved randonmly");
         }
         super.act(world);
     }
@@ -92,6 +98,7 @@ public class Monkey extends Predator {
         for (Monkey m : family.getFamily()) {
             if (m.isAdult()) {
                 move(world, world.getLocation(m));
+                break;
             }
         }
     }
@@ -153,6 +160,12 @@ public class Monkey extends Predator {
     public void handleFamily(World world) {
         if (!validateLocationExistence(world))
             return;
+        if (!hasFamily() && isAdult()) {
+            return;
+        }
+        if (isAdult()) {
+            leaveFamily();
+        }
         if (hasFamily()) {
             if (getFamily().getSize() <= 1) { // if you are in a 1 size family just leave
                 getFamily().removeMonkey(this);
@@ -210,6 +223,7 @@ public class Monkey extends Predator {
      */
     public void leaveFamily() {
         family.removeMonkey(this);
+        System.out.println("left family");
         this.family = null;
     }
 
