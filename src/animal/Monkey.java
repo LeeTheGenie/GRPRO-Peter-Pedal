@@ -94,35 +94,33 @@ public class Monkey extends Predator {
     /**
      * Checks if the monkey is an adult.
      * 
-     * 
-     * 
-     * pubic b
-     * 
-     * return (age >= matureAge);
-     * }
-     * 
-     * public void followAdult(World world) {
-     * if (!hasFamily()) {
-     * return;
-     * }
-     * 
-     * 
-     * for (Monkey m : family.getFamily()) {
-     * if (m.isAdult()) {
-     * move(world, world.getLocation(m));
-     * break;
-     * }
-     * }
-     * }
-     * 
-     * /**
+     * @return true is adult, false if not adult.
+     */
+    public boolean isAdult() {
+        return (age >= matureAge);
+    }
+
+    public void followAdult(World world) {
+        if (!hasFamily()) {
+            return;
+        }
+        MonkeyFamily family = getFamily();
+        for (Monkey m : family.getFamily()) {
+            if (m.isAdult()) {
+                move(world, world.getLocation(m));
+                break;
+            }
+        }
+    }
+
+    /**
      * Checks the the monkey trap for contents if there is any it eats it.
      * 
      * @param world
      */
     public void checkTrap(World world) {
         move(world, trapLocation);
-        Trap trap = world.getNonBlocking(trapLocation);
+        Trap trap = ((Trap) world.getNonBlocking(trapLocation));
         if (trap.hasContents()) {
             eatContents(world, trapLocation);
         }
@@ -283,7 +281,7 @@ public class Monkey extends Predator {
      * @param trapLocation the location of the trap
      */
     public void eatContents(World world, Location trapLocation) {
-        Trap trap = world.getNonBlocking(trapLocation);
+        Trap trap = ((Trap) world.getNonBlocking(trapLocation));
         trap.removeContents();
         changeEnergy(10, world);
         trapLocation = null;
