@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import abstracts.Predator;
 import executable.DisplayInformation;
+import itumulator.world.World;
 
 public class Monkey extends Predator {
 
@@ -25,6 +26,13 @@ public class Monkey extends Predator {
 
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
+
+    @Override
+    public void act(World world) {
+
+        super.act(world);
+    }
+
     // pack
     // pick berries
     // destroy bushes for sticks
