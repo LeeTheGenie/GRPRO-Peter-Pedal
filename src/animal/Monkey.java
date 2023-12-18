@@ -30,6 +30,8 @@ public class Monkey extends Predator {
     private Location trapLocation;
     private MonkeyFamily family;
     private int children;
+    private int sleepyness;
+    private int bedtime;
 
     public Monkey() {
         super(0, 100, 300, 50, 1, 10, 0, 2,
@@ -41,6 +43,8 @@ public class Monkey extends Predator {
         this.hasBerries = false;
         this.family = null;
         this.children = 0;
+        this.sleepyness = 0;
+        this.bedtime = 30;
     }
 
     @Override
@@ -58,7 +62,6 @@ public class Monkey extends Predator {
 
     @Override
     public void act(World world) {
-        System.out.println(family);
         if (!sleeping) {
             handleFamily(world);
         }
@@ -67,16 +70,19 @@ public class Monkey extends Predator {
         }
         if (isHungry()) {
             handleHunger(world);
-        } else {
-            move(world, null);
         }
+        handleSleep(world);
+        move(world, null);
+
         super.act(world);
         // TODO: reproduce, traphandling, dynamicdisplayinfo med stick, sleep handling,
         // can not reproduce
         // can not destroy bushes for sticks
         // does not change display with stick
-        // can not sleep
+        // can not sleep properly
+        // can move while sleeping
         // can not build traps
+
     }
 
     @Override
@@ -148,6 +154,34 @@ public class Monkey extends Predator {
     public void setSleeping(boolean sleeping) {
         this.sleeping = sleeping;
         this.resting = sleeping;
+    }
+
+    /**
+     * Function to gather all sleep related acts
+     */
+    public void handleSleep(World world) {
+        if (!world.isOnTile(this))
+            return;
+        if (sleeping) {
+            if (sleepyness < 10) {
+                setSleeping(false);
+            }
+            sleepyness -= 10;
+
+        } else {
+            sleepyness += 1;
+            if (sleepyness >= 100) {
+                die(world, "sleep-exhaustion");
+            }
+        }
+
+        if (wantToSleep()) {
+            setSleeping(true);
+        }
+    }
+
+    public boolean wantToSleep() {
+        return sleepyness > bedtime;
     }
 
     /**
