@@ -19,16 +19,14 @@ import itumulator.world.Location;
 
 public class Monkey extends Predator {
 
-    private Location foodLocation;
-    private Animal targetLocation;
+    private Location location;
     private boolean hasStick;
 
     public Monkey() {
         super(0, 100, 300, 18, 1, 10, 0, 2,
                 0.80d);
         growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
-        this.foodLocation = null;
-        this.targetLocation = null;
+        this.location = null;
         this.hasStick = false;
     }
 
@@ -60,6 +58,9 @@ public class Monkey extends Predator {
             if (targetLocation == null) {
                 targetLocation = world.getLocation(locateTarget(world, 3));
             }
+            move(world, targetLocation);
+        } else {
+            forage(world);
         }
     }
 
@@ -73,6 +74,7 @@ public class Monkey extends Predator {
         if (foodLocation == null) {
             findFood(world);
         }
+        move(world, foodLocation);
         BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
         BerryBush.setNoBerries(world);
         changeEnergy(4, world);
