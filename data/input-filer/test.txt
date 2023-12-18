@@ -1,2 +1,3 @@
 10
-monkey 3
+rabbit 1
+trap 1

@@ -2,6 +2,7 @@ package animal;
 
 import itumulator.world.World;
 import misc.RabbitHole;
+import misc.Trap;
 import itumulator.world.Location;
 
 import java.util.Set;
@@ -19,12 +20,14 @@ public class Rabbit extends Animal {
 
     private RabbitHole rabbithole;
     private int holeDigCost;
+    private Location yummyBerries;
 
     public Rabbit() {
         super(0, 70, 40, 10, 1, 15, 0, 2);
         this.rabbithole = null;
         sleeping = false; 
         holeDigCost = 10;
+        this.yummyBerries=null;
         growthStates = new String[][]{{"rabbit-small","rabbit-small-sleeping"},{"rabbit-large","rabbit-sleeping"}};
     }
 
@@ -56,8 +59,15 @@ public class Rabbit extends Animal {
         } else { 
             sleeping = false;
             // exit hole
+            findYummyBerries(world);
             eat(world);
-            move(world, null);
+
+            if (this.yummyBerries==null) {
+                move(world, null);
+            }
+            else
+            goToBerries(world);
+            trapped(world);
             reproduce(world);
             if (resting)
                 exitHole(world);
@@ -228,5 +238,47 @@ public class Rabbit extends Animal {
         // System.out.println("Go to tile:" + exitLocation);
         world.setTile(exitLocation, this);
         resting = false;
+    }
+
+    public void findYummyBerries(World world){
+        if (validateLocationExistence(world)) {
+            Location currentLocation = world.getLocation(this);
+        Set<Location> surroundingTiles =  world.getSurroundingTiles(currentLocation,3);
+
+        for (Location l : surroundingTiles) {
+            Object trap = world.getTile(l);
+            if (trap instanceof Trap){
+                this.yummyBerries=world.getLocation(trap);
+            }
+        }
+        return;
+        }
+
+    }
+
+    public void goToBerries(World world){
+
+        if (validateLocationExistence(world)) {
+            if (!(yummyBerries==null)) {
+                toAndFrom(world, yummyBerries, world.getLocation(this));
+            }
+    
+        }
+        
+    }
+
+    public void trapped(World world){
+        if (!world.isOnTile(this))
+            return;
+        if (!world.containsNonBlocking(world.getLocation(this)))
+            return;
+
+        Object objectUnderneath = world.getNonBlocking(world.getLocation(this));
+
+        if (objectUnderneath instanceof Trap) {
+            ((Trap)objectUnderneath).trapped();
+            world.delete(this);
+        }
+
     }
 }

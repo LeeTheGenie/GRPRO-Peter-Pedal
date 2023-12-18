@@ -176,7 +176,7 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         Location newLocation = new Location(x, y);
         // System.out.println("going to "+newLocation);
 
-        // world.move(this, newLocation);
+        world.move(this, newLocation);
         return newLocation;
     }
 

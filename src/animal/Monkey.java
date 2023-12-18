@@ -20,7 +20,7 @@ import itumulator.world.Location;
 public class Monkey extends Predator {
 
     private Location foodLocation;
-    private Animal targetLocation;
+    private Location targetLocation;
     private boolean hasStick;
 
     public Monkey() {
@@ -47,20 +47,25 @@ public class Monkey extends Predator {
 
     @Override
     public void act(World world) {
-        if (isHungry()) {
-            handleHunger(world);
-        } else {
-            move(world, null);
-        }
+        
+        
+        handleHunger(world);
         super.act(world);
     }
 
     public void handleHunger(World world) {
-        if (hasStick) {
-            if (targetLocation == null) {
-                targetLocation = world.getLocation(locateTarget(world, 3));
+
+        if (isHungry()) {
+            if (hasStick) {
+                if (targetLocation == null) {
+                    targetLocation = world.getLocation(locateTarget(world, 3));
+                    }
             }
+            
+        } else {
+            move(world, null);
         }
+        
     }
 
     /**

@@ -1,6 +1,8 @@
 import java.awt.Color;
 
 import misc.RabbitHole;
+import misc.Trap;
+import misc.TrapActivated;
 import misc.WolfHole;
 import misc.Carcass;
 import misc.Fungus;
@@ -75,6 +77,10 @@ public class Main {
         p.setDisplayInformation(WolfHole.class, new DisplayInformation(Color.green, "hole", false));
         // moneky
         p.setDisplayInformation(Monkey.class, new DisplayInformation(Color.green, "monkey", false));
+        // trap
+        p.setDisplayInformation(Trap.class, new DisplayInformation(Color.green, "trap", false));
+        p.setDisplayInformation(TrapActivated.class, new DisplayInformation(Color.green, "trap-used", false));
+
     }
 
     public static HashMap<String, LivingBeing> classReferenceMap;
@@ -97,6 +103,7 @@ public class Main {
         classReferenceMap.put("fungus", new Fungus());
         classReferenceMap.put("carcass", new Carcass(0, 0, 0));
         classReferenceMap.put("monkey", new Monkey());
+        classReferenceMap.put("trap", new Trap());
         return classReferenceMap;
     }
 
