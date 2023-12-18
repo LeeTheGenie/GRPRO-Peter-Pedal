@@ -100,6 +100,11 @@ public class Monkey extends Predator {
         return (age >= matureAge);
     }
 
+    /**
+     * Follows adult monkey.
+     * 
+     * @param world
+     */
     public void followAdult(World world) {
         if (!hasFamily()) {
             return;
@@ -132,7 +137,7 @@ public class Monkey extends Predator {
      * @param world
      */
     public void handleHunger(World world) {
-        findAndEatFood(world);
+        findAndEatFood(world); // test findandeatfood
         /*
          * if (trapLocation != null) {
          * checkTrap(world);
@@ -180,6 +185,11 @@ public class Monkey extends Predator {
         }
     }
 
+    /**
+     * Checks if the monkey wants to sleep.
+     * 
+     * @return
+     */
     public boolean wantToSleep() {
         return sleepyness > bedtime;
     }
