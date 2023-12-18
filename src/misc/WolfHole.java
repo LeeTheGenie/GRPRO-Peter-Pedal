@@ -4,7 +4,6 @@ import itumulator.world.NonBlocking;
 import itumulator.world.World;
 
 import abstracts.LivingBeing;
-import animal.WolfPack;
 
 public class WolfHole extends LivingBeing implements NonBlocking {
 
@@ -12,7 +11,7 @@ public class WolfHole extends LivingBeing implements NonBlocking {
 
     public WolfHole() {
         super(0, 0);
-        this.owner = null; 
+        this.owner = null;
     }
 
     public boolean isClaimed() {
