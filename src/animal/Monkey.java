@@ -20,14 +20,22 @@ import itumulator.world.Location;
 public class Monkey extends Predator {
 
     private Location foodLocation;
-    private boolean hasStick;
+    private boolean hasSticks;
+    private boolean hasBerries;
+    private Location trapLocation;
+    private Trap trap;
+    private MonkeyPack monkeyPack;
 
     public Monkey() {
         super(0, 100, 300, 18, 1, 10, 0, 2,
                 0.80d);
         growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
         this.foodLocation = null;
-        this.hasStick = false;
+        this.trapLocation = null;
+        this.hasSticks = false;
+        this.hasBerries = false;
+        this.monkeyPack = null;
+        this.trap = null;
     }
 
     @Override
@@ -54,7 +62,40 @@ public class Monkey extends Predator {
     }
 
     public void handleHunger(World world) {
-        return;
+        MonkeyPack monkeyPack = this.getPack();
+        if (monkeyPack.hasTrap()) {
+            for (Trap t : monkeyPack.getTraps()) {
+                if (t.hasContents()) {
+                    trapLocation = world.getLocation(t);
+                    trap = t;
+                    break;
+                }
+            }
+            move(world, trapLocation);
+            eatContents(world, trap);
+        }
+
+    }
+
+    public void eatContents(World world, Trap trap) {
+        trap.removeContents();
+        changeEnergy(10, world);
+        trapLocation = null;
+        trap = null;
+    }
+
+    public MonkeyPack getPack() {
+        return monkeyPack;
+    }
+
+    public void buildTrap(World world) {
+        if (hasSticks && hasBerries) {
+            world.setTile(world.getLocation(this), new Trap());
+            hasSticks = false;
+            hasBerries = false;
+            hasTrap = true;
+            trapLocation = world.getLocation(this);
+        }
     }
 
     /**
@@ -71,6 +112,8 @@ public class Monkey extends Predator {
         BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
         BerryBush.setNoBerries(world);
         changeEnergy(4, world);
+        hasSticks = true;
+        hasBerries = true;
     }
 
     public void findFood(World world) {
@@ -99,9 +142,6 @@ public class Monkey extends Predator {
         return false;
     }
 
-    public boolean getHasStick() {
-        return hasStick;
-    }
     // pack
     // pick berries
     // destroy bushes for sticks
