@@ -61,10 +61,10 @@ public class Monkey extends Predator {
         super.act(world);
     }
 
-    public void handleHunger(World world) {
+    public void handleHunger(World world) { // hvad hvis monkey ikke har pack?
         MonkeyPack monkeyPack = this.getPack();
         if (monkeyPack.hasTrap()) {
-            for (Trap t : monkeyPack.getTraps()) {
+            for (Trap t : monkeyPack.getTraps()) { // skal monkey have sine egne traps?
                 if (t.hasContents()) {
                     trapLocation = world.getLocation(t);
                     trap = t;
