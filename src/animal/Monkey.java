@@ -24,16 +24,19 @@ import itumulator.world.Location;
 
 public class Monkey extends Predator {
 
-    private Location foodLocation;    priate boolean hasSticks;
+    private Location foodLocation;
+    private boolean hasSticks;
     private boolean hasBerries;
-    private Location trapLoca    private MonkeyFamily family;
+    private Location trapLocation;
+    private MonkeyFamily family;
     private int children;
     private int sleepyness;
     private int bedtime;
 
     public Monkey() {
         super(0, 100, 300, 50, 1, 10, 0, 2,
-                0.80d);       growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
+                0.80d);
+        growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
         this.foodLocation = null;
         this.trapLocation = null;
         this.hasSticks = false;
@@ -91,28 +94,28 @@ public class Monkey extends Predator {
     /**
      * Checks if the monkey is an adult.
      * 
-     
-
-        pubic b
-
-        return (age >= matureAge);
-    }
-
-    public void followAdult(World world) {
-        if (!hasFamily()) {
-            return;
-        }
-       
-
-        for (Monkey m : family.getFamily()) {
-            if (m.isAdult()) {
-                move(world, world.getLocation(m));
-                break;
-            }
-        }
-    }
-
-    /**
+     * 
+     * 
+     * pubic b
+     * 
+     * return (age >= matureAge);
+     * }
+     * 
+     * public void followAdult(World world) {
+     * if (!hasFamily()) {
+     * return;
+     * }
+     * 
+     * 
+     * for (Monkey m : family.getFamily()) {
+     * if (m.isAdult()) {
+     * move(world, world.getLocation(m));
+     * break;
+     * }
+     * }
+     * }
+     * 
+     * /**
      * Checks the the monkey trap for contents if there is any it eats it.
      * 
      * @param world
