@@ -71,6 +71,12 @@ public class Monkey extends Predator {
             move(world, null);
         }
         super.act(world);
+        // TODO: reproduce, traphandling, dynamicdisplayinfo med stick, sleep handling,
+        // can not reproduce
+        // can not destroy bushes for sticks
+        // does not change display with stick
+        // can not sleep
+        // can not build traps
     }
 
     @Override
@@ -326,14 +332,4 @@ public class Monkey extends Predator {
         }
         return false;
     }
-
-    // pack
-    // pick berries
-    // destroy bushes for sticks
-    // without stick can only pick berries
-    // with stick can kill rabbit
-    // can reproduce
-    // can sleep
-    // can die
-    // can eat carcass
 }
