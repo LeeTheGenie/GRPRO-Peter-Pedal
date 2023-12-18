@@ -8,7 +8,7 @@ import abstracts.Predator;
 import abstracts.Animal;
 
 import plants.BerryBush;
-
+import plants.Bush;
 import executable.DisplayInformation;
 
 import itumulator.world.World;
@@ -58,19 +58,17 @@ public class Monkey extends Predator {
 
     @Override
     public void act(World world) {
+        System.out.println(family);
         if (!sleeping) {
             handleFamily(world);
-            System.out.println("family; " + getFamily());
         }
         if (!isAdult()) {
             followAdult(world);
         }
         if (isHungry()) {
-            System.out.println("hungry");
-            // handleHunger(world);
+            handleHunger(world);
         } else {
             move(world, null);
-            System.out.println("moved randonmly");
         }
         super.act(world);
     }
@@ -122,15 +120,18 @@ public class Monkey extends Predator {
      * @param world
      */
     public void handleHunger(World world) {
-        if (trapLocation != null) {
-            checkTrap(world);
-        } else {
-            if (hasSticks && hasBerries) {
-                buildTrap(world);
-            } else {
-                forage(world);
-            }
-        }
+        findAndEatFood(world);
+        /*
+         * if (trapLocation != null) {
+         * checkTrap(world);
+         * } else {
+         * if (hasSticks && hasBerries) {
+         * buildTrap(world);
+         * } else {
+         * forage(world);
+         * }
+         * }
+         */
     }
 
     /**
@@ -184,6 +185,9 @@ public class Monkey extends Predator {
      * @param world
      */
     public void searchForFamily(World world) {
+        if (isAdult()) {
+            return;
+        }
         for (Location l : world.getSurroundingTiles()) {
             Object o = world.getTile(l);
             if (o instanceof Monkey) {
@@ -222,6 +226,9 @@ public class Monkey extends Predator {
      * Leaves the family the monkey is in.
      */
     public void leaveFamily() {
+        if (family == null) {
+            return;
+        }
         family.removeMonkey(this);
         System.out.println("left family");
         this.family = null;
@@ -262,26 +269,35 @@ public class Monkey extends Predator {
     }
 
     /**
-     * If the monkey knows where there is a berrybush it goes to it and takes
-     * berries and sticks from the bush, if the monkey does not know where there is
-     * a bush it finds one.
+     * Finds and eats food.
      * 
      * @param world
      */
-    public void forage(World world) {
+    public void findAndEatFood(World world) {
         if (foodLocation == null) {
             findFood(world);
+            return;
         }
-        move(world, foodLocation);
-        BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
-        BerryBush.setNoBerries(world);
-        changeEnergy(4, world);
-        hasSticks = true;
-        hasBerries = true;
+        if (world.getTile(foodLocation) instanceof Bush) {
+            foodLocation = null;
+            return;
+        }
+        move(world, toAndFrom(world, foodLocation, world.getLocation(this)));
+        if (world.getTile(foodLocation) instanceof BerryBush) {
+            BerryBush BerryBush = (BerryBush) world.getTile(foodLocation);
+            BerryBush.setNoBerries(world);
+            changeEnergy(4, world);
+            hasSticks = true;
+            hasBerries = true;
+        } else if (world.getTile(foodLocation) instanceof Carcass) {
+            Carcass carcass = (Carcass) world.getTile(foodLocation);
+            carcass.takeBite();
+            changeEnergy(10, world);
+        }
     }
 
     /**
-     * Finds the location of anything in a three tile radius.
+     * Finds the location of food in a three tile radius.
      * 
      * @param world
      */

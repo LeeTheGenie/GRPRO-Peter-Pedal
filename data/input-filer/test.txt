@@ -1,2 +1,4 @@
 10
 monkey 3
+berry 10
+grass 100
