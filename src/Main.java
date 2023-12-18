@@ -2,6 +2,7 @@ import java.awt.Color;
 
 import misc.RabbitHole;
 import misc.WolfHole;
+import misc.WolfPack;
 import misc.Carcass;
 import misc.Fungus;
 
@@ -23,7 +24,6 @@ import abstracts.LivingBeing;
 import animal.Bear;
 import animal.Rabbit;
 import animal.Wolf;
-import animal.WolfPack;
 import animal.Monkey;
 
 import executable.DisplayInformation;

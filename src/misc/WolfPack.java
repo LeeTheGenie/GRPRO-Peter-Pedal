@@ -1,6 +1,8 @@
-package animal;
-import misc.WolfHole;
+package misc;
+
 import java.util.HashSet;
+
+import animal.Wolf;
 
 public class WolfPack {
 
@@ -10,12 +12,13 @@ public class WolfPack {
 
     public WolfPack() {
         this.wolfList = new HashSet<Wolf>();
-        this.heat=60;
+        this.heat = 60;
     }
 
     public void addWolf(Wolf wolf) {
         wolfList.add(wolf);
     }
+
     public void removeWolf(Wolf wolf) {
         wolfList.add(wolf);
     }
@@ -24,7 +27,7 @@ public class WolfPack {
         return this.wolfHole;
     }
 
-    public void setWolfHole(WolfHole wolfHole){
+    public void setWolfHole(WolfHole wolfHole) {
         this.wolfHole = wolfHole;
     }
 
@@ -37,22 +40,22 @@ public class WolfPack {
     }
 
     public boolean hasSpace() {
-        return (getSize()<6);
+        return (getSize() < 6);
     }
 
-    public boolean inHeat(){
-        if (this.heat>=60) {
+    public boolean inHeat() {
+        if (this.heat >= 60) {
             return true;
         }
         return false;
     }
 
-    public void getHorny(){
-        this.heat=this.heat+1;
+    public void getHorny() {
+        this.heat = this.heat + 1;
     }
 
-    public void postNutClarity(){
-        this.heat=0;
+    public void postNutClarity() {
+        this.heat = 0;
     }
 
     public void display() {

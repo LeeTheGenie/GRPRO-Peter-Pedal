@@ -13,6 +13,7 @@ import executable.DisplayInformation;
 
 import itumulator.world.World;
 import misc.Carcass;
+import misc.MonkeyFamily;
 import plants.BerryBush;
 
 import itumulator.world.Location;
@@ -23,8 +24,8 @@ public class Monkey extends Predator {
     private boolean hasSticks;
     private boolean hasBerries;
     private Location trapLocation;
-    private Trap trap;
-    private MonkeyPack monkeyPack;
+    private MonkeyFamily family;
+    private int children;
 
     public Monkey() {
         super(0, 100, 300, 18, 1, 10, 0, 2,
@@ -34,8 +35,7 @@ public class Monkey extends Predator {
         this.trapLocation = null;
         this.hasSticks = false;
         this.hasBerries = false;
-        this.monkeyPack = null;
-        this.trap = null;
+        this.family = null;
     }
 
     @Override
@@ -61,19 +61,11 @@ public class Monkey extends Predator {
         super.act(world);
     }
 
-    public void handleHunger(World world) { // hvad hvis monkey ikke har pack?
-        MonkeyPack monkeyPack = this.getPack();
-        if (monkeyPack.hasTrap()) {
-            for (Trap t : monkeyPack.getTraps()) { // skal monkey have sine egne traps?
-                if (t.hasContents()) {
-                    trapLocation = world.getLocation(t);
-                    trap = t;
-                    break;
-                }
-            }
-            move(world, trapLocation);
-            eatContents(world, trap);
-        }
+    public void checkTrap(World world) {
+
+    }
+
+    public void handleHunger(World world) {
 
     }
 
@@ -84,8 +76,8 @@ public class Monkey extends Predator {
         trap = null;
     }
 
-    public MonkeyPack getPack() {
-        return monkeyPack;
+    public MonkeyFamily getPack() {
+        return family;
     }
 
     public void buildTrap(World world) {
@@ -93,7 +85,6 @@ public class Monkey extends Predator {
             world.setTile(world.getLocation(this), new Trap());
             hasSticks = false;
             hasBerries = false;
-            hasTrap = true;
             trapLocation = world.getLocation(this);
         }
     }
