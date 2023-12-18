@@ -19,14 +19,14 @@ import itumulator.world.Location;
 
 public class Monkey extends Predator {
 
-    private Location location;
+    private Location foodLocation;
     private boolean hasStick;
 
     public Monkey() {
         super(0, 100, 300, 18, 1, 10, 0, 2,
                 0.80d);
         growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
-        this.location = null;
+        this.foodLocation = null;
         this.hasStick = false;
     }
 
@@ -54,14 +54,7 @@ public class Monkey extends Predator {
     }
 
     public void handleHunger(World world) {
-        if (hasStick) {
-            if (targetLocation == null) {
-                targetLocation = world.getLocation(locateTarget(world, 3));
-            }
-            move(world, targetLocation);
-        } else {
-            forage(world);
-        }
+        return;
     }
 
     /**
@@ -103,19 +96,7 @@ public class Monkey extends Predator {
         if (livingBeing instanceof Carcass) {
             return true;
         }
-        if (livingBeing instanceof Rabbit) {
-            if (hasStick) {
-                return true;
-            }
-        }
         return false;
-    }
-
-    public void hunt(World world) {
-        if (targetLocation == null) {
-            locateTarget(world, 3);
-        }
-
     }
 
     public boolean getHasStick() {
