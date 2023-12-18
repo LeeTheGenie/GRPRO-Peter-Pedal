@@ -54,7 +54,7 @@ public abstract class Predator extends Animal {
      * @param range
      * @return animal if one could be found. null if none could be found.
      */
-     public Animal locateTarget(World world, int range) {
+    public Animal locateTarget(World world, int range) {
         if (!world.isOnTile(this))
             return null;
 
@@ -67,20 +67,20 @@ public abstract class Predator extends Animal {
 
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
-            if (!(target instanceof Animal) || !(target instanceof Carcass)) // hvis ikke animal eller carcass
+            if (!(target instanceof Animal)) // hvis ikke animal
                 continue;
-            if (!canEat(world,(Animal) target)) // hvis ikke kan spise
+            if (!canEat(world, (Animal) target)) // hvis ikke kan spise
                 continue;
             return (Animal) target;
         }
         return null;
     }
-    
+
     public void killTarget(World world) {
-        
+
     }
 
     public void eatTarget(World world, Animal target) {
-        
+
     }
 }
