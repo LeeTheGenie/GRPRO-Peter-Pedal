@@ -10,7 +10,7 @@ public class Monkey extends Predator {
     public Monkey() {
         super(0, 100, 300, 18, 1, 10, 0, 2,
                 0.80d);
-        growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "moneky", "monkey-sleeping" } };
+        growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
     }
 
     @Override
