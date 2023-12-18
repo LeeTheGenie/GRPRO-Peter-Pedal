@@ -1,3 +1,4 @@
 6
+monkey 1
 trap 1
 rabbit 3

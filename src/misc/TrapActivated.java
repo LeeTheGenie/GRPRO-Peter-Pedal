@@ -26,5 +26,6 @@ public class TrapActivated extends LivingBeing implements NonBlocking{
     public void claim(World world){
         world.delete(this);
         //create a carcass with size dependent on this.supply 
+        
     }
 }
