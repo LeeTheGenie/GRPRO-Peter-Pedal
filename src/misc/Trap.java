@@ -8,6 +8,7 @@ import itumulator.world.World;
 public class Trap extends LivingBeing implements NonBlocking {
     protected Boolean caught;
     protected Location spawnpoint;
+    protected int supply;
 
     @Override
     public Trap newInstance() {
@@ -34,16 +35,21 @@ public class Trap extends LivingBeing implements NonBlocking {
         }
     }
 
-    public void rabbitCaught(World world) { // migrate noBerries to animal class and rename to pickBerries
+    public void rabbitCaught(World world) { 
         if (this.caught) {
             world.delete(this);
-            world.setTile(spawnpoint, new TrapActivated());
+            world.setTile(spawnpoint, new TrapActivated(supply));
         }
     }
 
     public void trapped(){
         System.out.println("trapped");
+        this.supply=this.supply+1;
         this.caught=true;
+    }
+
+    public boolean used(){
+        return this.caught;
     }
 
 }
