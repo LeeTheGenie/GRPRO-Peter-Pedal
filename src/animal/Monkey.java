@@ -65,6 +65,7 @@ public class Monkey extends Predator {
             followAdult(world);
         }
         if (isHungry() && isAdult()) {
+            System.out.println("hungry");
             handleHunger(world);
         }
         handleSleep(world);
@@ -119,9 +120,6 @@ public class Monkey extends Predator {
      */
     public void checkTrap(World world) {
         Object trap = world.getNonBlocking(trapLocation);
-        if (trap instanceof Trap) {
-            return;
-        }
         if (trap instanceof TrapActivated) {
             move(world, trapLocation);
             claimTrap(world);
@@ -134,14 +132,17 @@ public class Monkey extends Predator {
      * @param world
      */
     public void handleHunger(World world) {
-
-        if (trapLocation != null) {
+        if (trapLocation != null && world.getNonBlocking(trapLocation) instanceof TrapActivated) {
             checkTrap(world);
+            System.out.println("checked trap");
         } else {
             if (hasSticks && hasBerries) {
+                System.out.println("want to build trap");
                 buildTrap(world);
+                System.out.println("built trap");
             } else {
                 findAndEatFood(world);
+                System.out.println("trying to find and eat food");
             }
         }
 
@@ -276,7 +277,6 @@ public class Monkey extends Predator {
             return;
         }
         family.removeMonkey(this);
-        System.out.println("left family");
         this.family = null;
     }
 
@@ -308,6 +308,9 @@ public class Monkey extends Predator {
      * @param world
      */
     public void buildTrap(World world) {
+        if (world.containsNonBlocking(world.getLocation(this))) {
+            return;
+        }
         world.setTile(world.getLocation(this), new Trap());
         hasSticks = false;
         hasBerries = false;
@@ -335,6 +338,7 @@ public class Monkey extends Predator {
             changeEnergy(4, world);
             hasSticks = true;
             hasBerries = true;
+            System.out.println("ate bush");
         } else if (world.getTile(foodLocation) instanceof Carcass) {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
             carcass.takeBite();
