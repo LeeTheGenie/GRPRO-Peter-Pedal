@@ -91,7 +91,9 @@ public class Bear extends Predator {
      */
     public void moveInTerritory(World world) { // there is a bug where the bear is removed somehow and not deleted so
                                                // the program crashes. Might be caused by rabbits reproduced method or
-                                               // rabbithole.
+        if (!validateLocationExistence(world)) {
+            return;
+        }                                     // rabbithole.
         Set<Location> emptyTiles = world.getEmptySurroundingTiles();
         List<Location> list = new ArrayList<>(emptyTiles);
 
