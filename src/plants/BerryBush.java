@@ -5,7 +5,7 @@ import itumulator.world.Location;
 import itumulator.world.World;
 
 public class BerryBush extends Plant {
-    protected Boolean berries;
+    protected boolean berries;
     protected Location spawnpoint;
 
     public BerryBush() {
