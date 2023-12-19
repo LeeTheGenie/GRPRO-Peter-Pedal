@@ -1,6 +1,5 @@
 package abstracts;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +25,9 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
     // displayinformation [adult/notadult][sleeping/notsleeping]
     public String[][] growthStates;
 
+    // Alertness 
+    protected boolean alerted;
+
 
     protected Animal(int age, int maxAge, int maxEnergy, int matureAge, int movementCost, int reproductionCost,
             int inheritedEnergy, int metabloicRate) {
@@ -40,6 +42,7 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         resting = false;
         this.movementCost = movementCost;
         this.sleeping = false;
+        alerted = false;
     }
 
     @Override public void act(World world) {
@@ -94,6 +97,14 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
     public void dropCarcass(World world,Location location){
         int energyToDrop = (int) ((int) currentEnergy + Math.floor((maxEnergy)*0.1d));
         world.setTile(location, new Carcass(0, 0,energyToDrop));
+    }
+
+    public void setAlert(boolean alert) {
+        this.alerted = alert;
+    }
+
+    public boolean getAlert() {
+        return this.alerted;
     }
 
     /*                                                                             $$\     
@@ -228,7 +239,9 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
     \_______/  \_______|\_______|\__|  \__|\__|  \__| \_______|\__|                                                                   
         */
 
-    /*public ArrayList<Object> locateTarget(World world, int range,Class<LivingBeing> searchObject) {
+
+    /*
+    public ArrayList<Object> locateObject(World world, int range,Class<LivingBeing> searchObject) {
         if (!validateExistence(world)) return null;
 
         Location currentLocation = world.getLocation(this);
@@ -238,19 +251,11 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
             if(target instanceof searchObject) {
-
+                returningObjects.add(target);
             }
 
         }
         return returningObjects;
     }*/
-
-    public Integer getDistance(World world, LivingBeing o) {
-        if(!validateLocationExistence(world)||!o.validateExistence(world)) return null;
-
-        int deltaX = Math.abs(world.getLocation(this).getX()-world.getLocation(o).getX()),
-            deltaY = Math.abs(world.getLocation(this).getY()-world.getLocation(o).getY());
-
-        return Math.min(deltaX,deltaY); 
-    }
+    
 }
