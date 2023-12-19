@@ -68,9 +68,9 @@ public abstract class Predator extends Animal {
 
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
-            if (!(target instanceof Animal)) // hvis ikke animal eller carcass
+            if (!(target instanceof Animal) || !(target instanceof Carcass)) // hvis ikke animal eller carcass
                 continue;
-            if (!canEat(world,(Animal) target)) // hvis ikke kan spise
+            if (!canEat(world, (Animal) target)) // hvis ikke kan spise
                 continue;
             return (Animal) target;
         }

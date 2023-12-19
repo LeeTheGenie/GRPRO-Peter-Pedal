@@ -2,6 +2,7 @@ package animal;
 
 import itumulator.world.World;
 import misc.RabbitHole;
+import misc.Trap;
 import itumulator.world.Location;
 
 import java.util.Set;
@@ -25,27 +26,32 @@ public class Rabbit extends Animal {
     private int reproductiveCooldown;
     private Rabbit mate;
 
+    private Location yummyBerries;
 
     // TODO: reproductive cooldown
     // TODO: Run from predators
     public Rabbit() {
         super(0, 140, 120, 10, 1, 15, 0, 2);
         this.rabbithole = null;
-        sleeping = false; 
+        sleeping = false;
         holeDigCost = 10;
-        growthStates = new String[][]{{"rabbit-small","rabbit-small-sleeping"},{"rabbit-large","rabbit-sleeping"}};
+        this.yummyBerries = null;
+        growthStates = new String[][] { { "rabbit-small", "rabbit-small-sleeping" },
+                { "rabbit-large", "rabbit-sleeping" } };
         reproductiveCooldown = 0; 
         mate = null;
     }
 
-    @Override public DisplayInformation getInformation() {
-        int sleepPointer = (sleeping)?1:0;
-        int growthPointer = (matureAge <= age)?1:0;
-        
+    @Override
+    public DisplayInformation getInformation() {
+        int sleepPointer = (sleeping) ? 1 : 0;
+        int growthPointer = (matureAge <= age) ? 1 : 0;
+
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
-    @Override public Rabbit newInstance() {
+    @Override
+    public Rabbit newInstance() {
         return new Rabbit();
     }
 
@@ -55,7 +61,7 @@ public class Rabbit extends Animal {
         reproductiveCooldown--;
 
         if (world.isNight()) {
-            sleeping = true; 
+            sleeping = true;
             if (rabbithole == null) {
                 digHole(world);
             } else {
@@ -64,11 +70,17 @@ public class Rabbit extends Animal {
             if (!resting)
                 enterHole(world);
 
-        } else { 
+        } else {
             sleeping = false;
             // exit hole
+            findYummyBerries(world);
             eat(world);
-            handleMovement(world);
+
+            if (this.yummyBerries == null) {
+                handleMovement(world);
+            } else
+                goToBerries(world);
+            trapped(world);
             reproduce(world);
             if (resting)
                 exitHole(world);
@@ -211,6 +223,7 @@ public class Rabbit extends Animal {
 
     /**
      * Eats plants underneath it
+     * 
      * @param world
      */
     public void eat(World world) {
@@ -227,11 +240,13 @@ public class Rabbit extends Animal {
         if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
             world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
             changeEnergy(energyIncrement, world);
+            System.out.println("plant");
         }
     }
 
     /**
      * locateHole() moves 1 step to the rabbits hole.
+     * 
      * @param world
      */
     public void locateHole(World world) {
@@ -374,6 +389,50 @@ public class Rabbit extends Animal {
         // System.out.println("Go to tile:" + exitLocation);
         world.setTile(exitLocation, this);
         resting = false;
+    }
+
+    public void findYummyBerries(World world) {
+        if (validateLocationExistence(world)) {
+            Location currentLocation = world.getLocation(this);
+
+            Set<Location> surroundingTiles = world.getSurroundingTiles(currentLocation, 3);
+
+            for (Location l : surroundingTiles) {
+                Object trap = world.getTile(l);
+                if (trap instanceof Trap) {
+                    this.yummyBerries = world.getLocation(trap);
+                    break;
+                } else
+                    this.yummyBerries = null;
+
+            }
+        }
+
+    }
+
+    public void goToBerries(World world) {
+
+        if (validateLocationExistence(world)) {
+            if (!(yummyBerries == null)) {
+                move(world, toAndFrom(world, yummyBerries, world.getLocation(this)));
+            }
+
+        }
+
+    }
+
+    public void trapped(World world) {
+        if (!world.isOnTile(this))
+            return;
+        if (!world.containsNonBlocking(world.getLocation(this)))
+            return;
+
+        Object objectUnderneath = world.getNonBlocking(world.getLocation(this));
+
+        if ((objectUnderneath instanceof Trap)) {
+            ((Trap) objectUnderneath).trapped();
+            world.delete(this);
+        }
     }
 
     @Override public void die(World world) {

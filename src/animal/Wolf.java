@@ -12,6 +12,7 @@ import executable.DisplayInformation;
 import itumulator.world.Location;
 import itumulator.world.World;
 import misc.WolfHole;
+import misc.WolfPack;
 
 public class Wolf extends Predator {
 
@@ -56,7 +57,8 @@ public class Wolf extends Predator {
         super.act(world);
     }
 
-    @Override public void die(World world) {
+    @Override
+    public void die(World world) {
         super.die(world);
         if(hasPack())
             leavePack();
@@ -209,9 +211,9 @@ public class Wolf extends Predator {
             sleepyness -= 4;
 
         } else {
-            sleepyness+=1; 
-            if(sleepyness>=100) {
-                die(world,"sleep-exhaustion");
+            sleepyness += 1;
+            if (sleepyness >= 100) {
+                die(world, "sleep-exhaustion");
             }
         }
     }
@@ -370,7 +372,7 @@ public class Wolf extends Predator {
     /*
      * $$\
      * $$ |
-     * $$$$$$\  $$$$$$\ $$$$$$$\ $$ | $$\
+     * $$$$$$\ $$$$$$\ $$$$$$$\ $$ | $$\
      * $$ __$$\ \____$$\ $$ _____|$$ | $$ |
      * $$ / $$ | $$$$$$$ |$$ / $$$$$$ /
      * $$ | $$ |$$ __$$ |$$ | $$ _$$<
@@ -378,7 +380,7 @@ public class Wolf extends Predator {
      * $$ ____/ \_______| \_______|\__| \__|
      * $$ |
      * $$ |
-     * \__| 
+     * \__|
      */
 
     /**

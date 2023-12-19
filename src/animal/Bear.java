@@ -14,7 +14,7 @@ import itumulator.world.World;
 import plants.BerryBush;
 
 import misc.Carcass;
-
+import misc.WolfPack;
 import abstracts.Predator;
 import abstracts.LivingBeing;
 

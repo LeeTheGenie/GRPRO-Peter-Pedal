@@ -10,9 +10,9 @@ import itumulator.world.Location;
 import itumulator.world.World;
 import misc.Carcass;
 
-public abstract class Animal extends LivingBeing implements DynamicDisplayInformationProvider  {
+public abstract class Animal extends LivingBeing implements DynamicDisplayInformationProvider {
 
-    // Energy 
+    // Energy
     protected int currentEnergy, maxEnergy, trueMaxEnergy, metabloicRate;
     protected boolean resting, sleeping;
 
@@ -24,9 +24,6 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
 
     // displayinformation [adult/notadult][sleeping/notsleeping]
     public String[][] growthStates;
-
-    // Alertness 
-    protected boolean alerted;
 
 
     protected Animal(int age, int maxAge, int maxEnergy, int matureAge, int movementCost, int reproductionCost,
@@ -45,14 +42,16 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         alerted = false;
     }
 
-    @Override public void act(World world) {
+    @Override
+    public void act(World world) {
         if (!resting)
             changeEnergy(-metabloicRate, world);
 
         super.act(world);
     }
 
-    @Override public LivingBeing newInstance() {
+    @Override
+    public LivingBeing newInstance() {
         return null;// new Animal(0, maxAge, trueMaxEnergy);
     }
 
@@ -60,8 +59,8 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return (currentEnergy - cost > 0);
     }
 
-    public boolean isMature(){
-        return (age>=matureAge);
+    public boolean isMature() {
+        return (age >= matureAge);
     }
 
     public void changeEnergy(int change, World world) {
@@ -81,22 +80,23 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         currentEnergy = inheritedEnergy;
     }
 
-    @Override public void die(World world) {
-        if(!validateExistence(world))
-            return;   
-         
-        if(validateLocationExistence(world)) {
+    @Override
+    public void die(World world) {
+        if (!validateExistence(world))
+            return;
+
+        if (validateLocationExistence(world)) {
             Location deathLocation = world.getLocation(this);
             world.delete(this);
-            dropCarcass(world,deathLocation);
+            dropCarcass(world, deathLocation);
         } else {
             world.delete(this);
         }
     }
 
-    public void dropCarcass(World world,Location location){
-        int energyToDrop = (int) ((int) currentEnergy + Math.floor((maxEnergy)*0.1d));
-        world.setTile(location, new Carcass(0, 0,energyToDrop));
+    public void dropCarcass(World world, Location location) {
+        int energyToDrop = (int) ((int) currentEnergy + Math.floor((maxEnergy) * 0.1d));
+        world.setTile(location, new Carcass(0, 0, energyToDrop));
     }
 
     public void setAlert(boolean alert) {
@@ -107,18 +107,23 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return this.alerted;
     }
 
-    /*                                                                             $$\     
-                                                                                $$ |    
-    $$$$$$\$$$$\   $$$$$$\ $$\    $$\  $$$$$$\  $$$$$$\$$$$\   $$$$$$\  $$$$$$$\ $$$$$$\   
-    $$  _$$  _$$\ $$  __$$\\$$\  $$  |$$  __$$\ $$  _$$  _$$\ $$  __$$\ $$  __$$\\_$$  _|  
-    $$ / $$ / $$ |$$ /  $$ |\$$\$$  / $$$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |$$ |  $$ | $$ |    
-    $$ | $$ | $$ |$$ |  $$ | \$$$  /  $$   ____|$$ | $$ | $$ |$$   ____|$$ |  $$ | $$ |$$\ 
-    $$ | $$ | $$ |\$$$$$$  |  \$  /   \$$$$$$$\ $$ | $$ | $$ |\$$$$$$$\ $$ |  $$ | \$$$$  |
-    \__| \__| \__| \______/    \_/     \_______|\__| \__| \__| \_______|\__|  \__|  \____/                                                                                   
-    */
-    
+    /*
+     * $$\
+     * $$ |
+     * $$$$$$\$$$$\ $$$$$$\ $$\ $$\ $$$$$$\ $$$$$$\$$$$\ $$$$$$\ $$$$$$$\ $$$$$$\
+     * $$ _$$ _$$\ $$ __$$\\$$\ $$ |$$ __$$\ $$ _$$ _$$\ $$ __$$\ $$ __$$\\_$$ _|
+     * $$ / $$ / $$ |$$ / $$ |\$$\$$ / $$$$$$$$ |$$ / $$ / $$ |$$$$$$$$ |$$ | $$ |
+     * $$ |
+     * $$ | $$ | $$ |$$ | $$ | \$$$ / $$ ____|$$ | $$ | $$ |$$ ____|$$ | $$ | $$
+     * |$$\
+     * $$ | $$ | $$ |\$$$$$$ | \$ / \$$$$$$$\ $$ | $$ | $$ |\$$$$$$$\ $$ | $$ |
+     * \$$$$ |
+     * \__| \__| \__| \______/ \_/ \_______|\__| \__| \__| \_______|\__| \__| \____/
+     */
+
     /**
      * a free move
+     * 
      * @param world
      * @param target
      */
@@ -140,9 +145,11 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
      * Moves to a certain location, if target is null move to a random location
      */
     public void move(World world, Location target) {
-        if (!canAfford(movementCost)) return;
-        if (!world.isOnTile(this)) return;
-        freeMove(world,target);  
+        if (!canAfford(movementCost))
+            return;
+        if (!world.isOnTile(this))
+            return;
+        freeMove(world, target);
         changeEnergy(-movementCost, world);
     }
 
@@ -187,7 +194,7 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         Location newLocation = new Location(x, y);
         // System.out.println("going to "+newLocation);
 
-        // world.move(this, newLocation);
+        //world.move(this, newLocation);
         return newLocation;
     }
 
@@ -239,9 +246,7 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
     \_______/  \_______|\_______|\__|  \__|\__|  \__| \_______|\__|                                                                   
         */
 
-
-    /*
-    public ArrayList<Object> locateObject(World world, int range,Class<LivingBeing> searchObject) {
+    /*public ArrayList<Object> locateTarget(World world, int range,Class<LivingBeing> searchObject) {
         if (!validateExistence(world)) return null;
 
         Location currentLocation = world.getLocation(this);
@@ -251,11 +256,19 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
             if(target instanceof searchObject) {
-                returningObjects.add(target);
+
             }
 
         }
         return returningObjects;
     }*/
-    
+
+    public Integer getDistance(World world, LivingBeing o) {
+        if(!validateLocationExistence(world)||!o.validateExistence(world)) return null;
+
+        int deltaX = Math.abs(world.getLocation(this).getX()-world.getLocation(o).getX()),
+            deltaY = Math.abs(world.getLocation(this).getY()-world.getLocation(o).getY());
+
+        return Math.min(deltaX,deltaY); 
+    }
 }
