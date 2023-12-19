@@ -1,11 +1,9 @@
 package animal;
 
 import java.awt.Color;
-import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Predator;
-import abstracts.Animal;
 
 import plants.BerryBush;
 import plants.Bush;
@@ -15,10 +13,8 @@ import itumulator.world.World;
 
 import misc.Carcass;
 import misc.MonkeyFamily;
-import misc.WolfPack;
 import misc.Trap;
-
-import plants.BerryBush;
+import misc.TrapActivated;
 
 import itumulator.world.Location;
 
@@ -126,8 +122,10 @@ public class Monkey extends Predator {
     public void checkTrap(World world) {
         move(world, trapLocation);
         Trap trap = ((Trap) world.getNonBlocking(trapLocation));
-        if (trap.hasContents()) {
-            eatContents(world, trapLocation);
+        if (trap instanceof TrapActivated) {
+            claimTrap(world);
+        } else {
+            return;
         }
     }
 
@@ -290,9 +288,9 @@ public class Monkey extends Predator {
      * @param world
      * @param trapLocation the location of the trap
      */
-    public void eatContents(World world, Location trapLocation) {
+    public void claimTrap(World world) {
         Trap trap = ((Trap) world.getNonBlocking(trapLocation));
-        trap.removeContents();
+        ((TrapActivated) trap).claim(world);
         changeEnergy(10, world);
         trapLocation = null;
     }
