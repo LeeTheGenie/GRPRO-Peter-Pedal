@@ -71,13 +71,11 @@ public class Monkey extends Predator {
         move(world, null);
 
         super.act(world);
-        // TODO: reproduce, traphandling, dynamicdisplayinfo med stick, sleep handling,
+        // TODO: reproduce, dynamicdisplayinfo med stick, sleep handling,
         // can not reproduce
-        // can not destroy bushes for sticks
         // does not change display with stick
         // can not sleep properly
         // can move while sleeping
-        // can not build traps
 
     }
 
@@ -120,12 +118,13 @@ public class Monkey extends Predator {
      * @param world
      */
     public void checkTrap(World world) {
-        move(world, trapLocation);
         Object trap = world.getNonBlocking(trapLocation);
-        if (trap instanceof TrapActivated) {
-            claimTrap(world);
-        } else {
+        if (trap instanceof Trap) {
             return;
+        }
+        if (trap instanceof TrapActivated) {
+            move(world, trapLocation);
+            claimTrap(world);
         }
     }
 
@@ -135,18 +134,17 @@ public class Monkey extends Predator {
      * @param world
      */
     public void handleHunger(World world) {
-        findAndEatFood(world); // test findandeatfood
-        /*
-         * if (trapLocation != null) {
-         * checkTrap(world);
-         * } else {
-         * if (hasSticks && hasBerries) {
-         * buildTrap(world);
-         * } else {
-         * forage(world);
-         * }
-         * }
-         */
+
+        if (trapLocation != null) {
+            checkTrap(world);
+        } else {
+            if (hasSticks && hasBerries) {
+                buildTrap(world);
+            } else {
+                findAndEatFood(world);
+            }
+        }
+
     }
 
     /**
