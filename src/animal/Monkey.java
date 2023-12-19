@@ -15,7 +15,6 @@ import misc.Carcass;
 import misc.MonkeyFamily;
 import misc.Trap;
 import misc.TrapActivated;
-import plants.BerryBush;
 
 import itumulator.world.Location;
 
@@ -122,7 +121,7 @@ public class Monkey extends Predator {
      */
     public void checkTrap(World world) {
         move(world, trapLocation);
-        Trap trap = ((Trap) world.getNonBlocking(trapLocation));
+        Object trap = world.getNonBlocking(trapLocation);
         if (trap instanceof TrapActivated) {
             claimTrap(world);
         } else {
@@ -290,8 +289,8 @@ public class Monkey extends Predator {
      * @param trapLocation the location of the trap
      */
     public void claimTrap(World world) {
-        Trap trap = ((Trap) world.getNonBlocking(trapLocation));
-        ((TrapActivated) trap).claim(world);
+        TrapActivated trap = ((TrapActivated) world.getNonBlocking(trapLocation));
+        trap.claim(world);
         changeEnergy(10, world);
         trapLocation = null;
     }
