@@ -68,7 +68,7 @@ public abstract class Predator extends Animal {
 
         for (Location l : surroundingTiles) {
             Object target = world.getTile(l);
-            if (!(target instanceof Animal) || !(target instanceof Carcass)) // hvis ikke animal eller carcass
+            if (!(target instanceof Animal)) // hvis ikke animal
                 continue;
             if (!canEat(world, (Animal) target)) // hvis ikke kan spise
                 continue;
@@ -78,7 +78,8 @@ public abstract class Predator extends Animal {
     }
 
     public Carcass locateCarcass(World world, int range) {
-        if (!validateLocationExistence(world)) return null;
+        if (!validateLocationExistence(world))
+            return null;
 
         for (Location l : world.getSurroundingTiles(world.getLocation(this), range)) {
             Object target = world.getTile(l);
@@ -88,41 +89,43 @@ public abstract class Predator extends Animal {
         return null;
     }
 
-    public void alertNearbyPrey(World world){
-        if(!validateLocationExistence(world))
+    public void alertNearbyPrey(World world) {
+        if (!validateLocationExistence(world))
             return;
-    
-        for(Location l:  world.getSurroundingTiles(world.getLocation(this),4)) {
+
+        for (Location l : world.getSurroundingTiles(world.getLocation(this), 4)) {
             Object target = world.getTile(l);
-            if(target instanceof Animal) {
-                if(canEat(world,(LivingBeing) target)) {
+            if (target instanceof Animal) {
+                if (canEat(world, (LivingBeing) target)) {
                     ((Animal) target).setAlert(true);
                 }
             }
-        }   
+        }
     }
-    
+
     public void killTarget(World world) {
-        if(!validateLocationExistence(world)) return;
+        if (!validateLocationExistence(world))
+            return;
         for (Location l : world.getSurroundingTiles(world.getLocation(this))) {
             Object target = world.getTile(l);
-            if(target==null)
+            if (target == null)
                 continue;
-            if(!((LivingBeing) target).validateExistence(world))
+            if (!((LivingBeing) target).validateExistence(world))
                 continue;
-            if(canEat(world, ((LivingBeing) target))) {
+            if (canEat(world, ((LivingBeing) target))) {
                 ((LivingBeing) target).die(world);
             }
         }
-    } 
+    }
 
     public void eatTarget(World world) {
-        if(!validateLocationExistence(world)) return;
+        if (!validateLocationExistence(world))
+            return;
         for (Location l : world.getSurroundingTiles(world.getLocation(this))) {
             Object target = world.getTile(l);
-            if(target==null)
+            if (target == null)
                 continue;
-            if(target instanceof Carcass) {
+            if (target instanceof Carcass) {
                 ((Carcass) target).takeBite();
                 changeEnergy(20, world);
             }
