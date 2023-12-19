@@ -1,5 +1,6 @@
 package Tests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -18,7 +19,8 @@ public class WolfTest {
 
     @Before
     public void setUp() {
-        w = new World(2);
+        w = new World(5);
+        System.out.println("test");
     }
 
     @After
@@ -26,13 +28,7 @@ public class WolfTest {
 
     }
 
-    @Test
-    public void testMoveCloser() {
-        // Arrange
-
-        // Act
-
-        // Assert
-
+    @Test public void testMoveCloser() {
+        assertEquals(0, 0);
     }
 }

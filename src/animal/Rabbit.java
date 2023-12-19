@@ -422,7 +422,7 @@ public class Rabbit extends Animal {
     }
 
     public void trapped(World world) {
-        if (!world.isOnTile(this))
+        if (!validateLocationExistence(world))
             return;
         if (!world.containsNonBlocking(world.getLocation(this)))
             return;

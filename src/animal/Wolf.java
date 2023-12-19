@@ -413,7 +413,10 @@ public class Wolf extends Predator {
      * @param world
      */
     public void searchForPack(World world) {
-        for (Location l : world.getSurroundingTiles()) {
+        if(!validateLocationExistence(world))
+            return;
+
+        for (Location l : world.getSurroundingTiles(world.getLocation(this))) {
             Object o = world.getTile(l);
             if (o instanceof Wolf) {
                 if (((Wolf) o).hasPack()) {// if the target wolf has a pack
