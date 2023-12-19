@@ -1,6 +1,8 @@
 package animal;
 
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.Set;
 
 import abstracts.LivingBeing;
 import abstracts.Predator;
@@ -23,6 +25,7 @@ public class Monkey extends Predator {
     private Location foodLocation;
     private boolean hasSticks;
     private boolean hasBerries;
+    private Set<Location> traps;
     private Location trapLocation;
     private MonkeyFamily family;
     private int children;
@@ -30,11 +33,12 @@ public class Monkey extends Predator {
     private int bedtime;
 
     public Monkey() {
-        super(0, 100, 300, 50, 1, 10, 0, 2,
-                0.80d);
+        super(0, 100, 300, 1, 1, 10, 0, 2,
+                1.2d);
         growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
         this.foodLocation = null;
         this.trapLocation = null;
+        this.traps = new HashSet<>();
         this.hasSticks = false;
         this.hasBerries = false;
         this.family = null;
@@ -65,7 +69,6 @@ public class Monkey extends Predator {
             followAdult(world);
         }
         if (isHungry() && isAdult()) {
-            System.out.println("hungry");
             handleHunger(world);
         }
         handleSleep(world);
@@ -107,7 +110,7 @@ public class Monkey extends Predator {
         MonkeyFamily family = getFamily();
         for (Monkey m : family.getFamily()) {
             if (m.isAdult()) {
-                move(world, world.getLocation(m));
+                move(world, toAndFrom(world, world.getLocation(m), world.getLocation(this)));
                 break;
             }
         }
@@ -118,11 +121,19 @@ public class Monkey extends Predator {
      * 
      * @param world
      */
-    public void checkTrap(World world) {
-        Object trap = world.getNonBlocking(trapLocation);
-        if (trap instanceof TrapActivated) {
-            move(world, trapLocation);
-            claimTrap(world);
+    public void checkTraps(World world) {
+        for (Location l : traps) {
+            if (world.getNonBlocking(l) instanceof TrapActivated) {
+                trapLocation = l;
+                System.out.println("set traplocation");
+                move(world, toAndFrom(world, trapLocation, world.getLocation(this)));
+                System.out.println("moved to trap");
+                claimTrap(world);
+                break;
+            } else {
+                continue;
+            }
+
         }
     }
 
@@ -132,20 +143,25 @@ public class Monkey extends Predator {
      * @param world
      */
     public void handleHunger(World world) {
-        if (trapLocation != null && world.getNonBlocking(trapLocation) instanceof TrapActivated) {
-            checkTrap(world);
-            System.out.println("checked trap");
+        if (hasTrapActivated(world)) {
+            checkTraps(world);
         } else {
-            if (hasSticks && hasBerries) {
-                System.out.println("want to build trap");
+            if (hasSticks && hasBerries && traps.size() < 5) {
                 buildTrap(world);
-                System.out.println("built trap");
             } else {
                 findAndEatFood(world);
-                System.out.println("trying to find and eat food");
             }
         }
 
+    }
+
+    public boolean hasTrapActivated(World world) {
+        for (Location l : traps) {
+            if (world.getNonBlocking(l) instanceof TrapActivated) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -290,7 +306,9 @@ public class Monkey extends Predator {
         TrapActivated trap = ((TrapActivated) world.getNonBlocking(trapLocation));
         trap.claim(world);
         changeEnergy(10, world);
+        traps.remove(trapLocation);
         trapLocation = null;
+        System.out.println("claimed trap");
     }
 
     /**
@@ -311,10 +329,11 @@ public class Monkey extends Predator {
         if (world.containsNonBlocking(world.getLocation(this))) {
             return;
         }
-        world.setTile(world.getLocation(this), new Trap());
+        Trap trap = new Trap();
+        world.setTile(world.getLocation(this), trap);
         hasSticks = false;
         hasBerries = false;
-        trapLocation = world.getLocation(this);
+        traps.add(world.getLocation(trap));
     }
 
     /**
@@ -338,7 +357,6 @@ public class Monkey extends Predator {
             changeEnergy(4, world);
             hasSticks = true;
             hasBerries = true;
-            System.out.println("ate bush");
         } else if (world.getTile(foodLocation) instanceof Carcass) {
             Carcass carcass = (Carcass) world.getTile(foodLocation);
             carcass.takeBite();
