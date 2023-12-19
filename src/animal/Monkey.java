@@ -195,9 +195,9 @@ public class Monkey extends Predator {
         for (Location l : traps) {
             if (world.getNonBlocking(l) instanceof TrapActivated) {
                 trapLocation = l;
-                System.out.println("set traplocation");
+                //System.out.println("set traplocation");
                 move(world, toAndFrom(world, trapLocation, world.getLocation(this)));
-                System.out.println("moved to trap");
+                //System.out.println("moved to trap");
                 claimTrap(world);
                 break;
             } else {
@@ -216,7 +216,7 @@ public class Monkey extends Predator {
         if (hasTrapActivated(world)) {
             checkTraps(world);
         } else {
-            if (hasSticks && hasBerries && traps.size() < 5) {
+            if (hasSticks && hasBerries && traps.size() < 2) {
                 buildTrap(world);
             } else {
                 findAndEatFood(world);
@@ -302,9 +302,7 @@ public class Monkey extends Predator {
                     this.parent=true;
                     createFamily(world);
                     joinFamily(family);
-                    System.out.println("man");
                 }else{
-                    System.out.println("woman");
                     this.parent=true;
                 }
             }else
@@ -314,7 +312,6 @@ public class Monkey extends Predator {
                 
         }
         if (isAdult()&&!this.parent) {
-            System.out.println("Make your own family");
             leaveFamily();
         }
     }
@@ -341,7 +338,7 @@ public class Monkey extends Predator {
 
             if (o instanceof Monkey) {
                 if (((Monkey) o).hasFamily()&&((Monkey) o).getFamily().getSize()==1) {
-                        joinFamily(((Monkey) o).getFamily()); System.out.println("marry");
+                        joinFamily(((Monkey) o).getFamily());
                     
                 } 
             }
@@ -391,7 +388,6 @@ public class Monkey extends Predator {
         changeEnergy(10*trap.supply, world);
         traps.remove(trapLocation);
         trapLocation = null;
-        System.out.println("claimed trap");
     }
 
     /**

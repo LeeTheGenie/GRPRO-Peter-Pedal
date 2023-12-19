@@ -1,4 +1,4 @@
 10
 monkey 4
 berry 3
-rabbit 3
+rabbit 8
