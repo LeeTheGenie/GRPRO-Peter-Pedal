@@ -38,8 +38,7 @@ public class Monkey extends Predator {
     private int gender;
 
     public Monkey() {
-        super(0, 100, 300, 1, 1, 10, 0, 2,
-                1.2d);
+        super(0, 100, 300, 1, 1, 10, 0, 2, 1.2d);
         growthStates = new String[][] { { "monkey-small", "monkey-small-sleeping" }, { "monkey", "monkey-sleeping" } };
         this.foodLocation = null;
         this.trapLocation = null;
@@ -61,10 +60,7 @@ public class Monkey extends Predator {
     @Override
     public DisplayInformation getInformation() {
         int sleepPointer = (sleeping) ? 1 : 0;
-        int growthPointer = isAdult() ? 1 : 0;
-
-        if(hasSticks&&isAdult())
-            return new DisplayInformation(Color.red,"monkey-stick");
+        int growthPointer = (matureAge <= age) ? 1 : 0;
 
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
