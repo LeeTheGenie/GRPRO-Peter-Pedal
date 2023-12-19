@@ -109,6 +109,16 @@ public class Monkey extends Predator {
             findMateInFamily(world);
             makeBaby(world);
         }
+        // overvejelser:
+        // børn forlader familien når de bliver voksne,
+        // betyder at voksne som finder i familie forbliver i familie for evigt
+        // børn som vokser op kan finde i samme familie som de har forladt og ender til
+        // sdist i en kæmpe familie
+        // begge aber skal have samme mate så monke 1 har monke 2 som mate og monke 2
+        // har monke 1 som mate
+        // skal kun lave et barn
+        // skal maks kunne have to børn
+        // skal mate resettes efter hvert barn
 
     }
 
