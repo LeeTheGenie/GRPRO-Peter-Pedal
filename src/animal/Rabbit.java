@@ -94,6 +94,7 @@ public class Rabbit extends Animal {
         if (world.getNonBlocking(world.getLocation(this)) instanceof Plant) { // er det en plant
             world.delete(world.getNonBlocking(world.getLocation(this))); // slet den plant
             changeEnergy(energyIncrement, world);
+            System.out.println("plant");
         }
     }
 
@@ -243,15 +244,18 @@ public class Rabbit extends Animal {
     public void findYummyBerries(World world){
         if (validateLocationExistence(world)) {
             Location currentLocation = world.getLocation(this);
-        Set<Location> surroundingTiles =  world.getSurroundingTiles(currentLocation,3);
 
-        for (Location l : surroundingTiles) {
-            Object trap = world.getTile(l);
-            if (trap instanceof Trap){
-                this.yummyBerries=world.getLocation(trap);
-            }
-        }
-        return;
+            Set<Location> surroundingTiles =  world.getSurroundingTiles(currentLocation,3);
+
+                for (Location l : surroundingTiles) {
+                    Object trap = world.getTile(l);
+                    if (trap instanceof Trap){
+                        this.yummyBerries=world.getLocation(trap);
+                        break;
+                    }else
+                        this.yummyBerries=null;
+                    
+                }
         }
 
     }
@@ -260,7 +264,7 @@ public class Rabbit extends Animal {
 
         if (validateLocationExistence(world)) {
             if (!(yummyBerries==null)) {
-                toAndFrom(world, yummyBerries, world.getLocation(this));
+                move(world, toAndFrom(world, yummyBerries, world.getLocation(this)));
             }
     
         }
@@ -275,10 +279,9 @@ public class Rabbit extends Animal {
 
         Object objectUnderneath = world.getNonBlocking(world.getLocation(this));
 
-        if (objectUnderneath instanceof Trap) {
+        if ((objectUnderneath instanceof Trap)) {
             ((Trap)objectUnderneath).trapped();
             world.delete(this);
         }
-
     }
 }

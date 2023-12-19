@@ -15,6 +15,7 @@ import misc.Carcass;
 import misc.MonkeyFamily;
 import misc.Trap;
 import misc.TrapActivated;
+import plants.BerryBush;
 
 import itumulator.world.Location;
 
