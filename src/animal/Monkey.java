@@ -91,7 +91,17 @@ public class Monkey extends Predator {
         leaveFamily();
     }
 
+    /**
+     * Makes the monkey reproduce with another monkey. If the monkey does not have a
+     * family it will search for one, if it does it will simply search for a mate in
+     * the family.
+     * 
+     * @param world
+     */
     public void reproduce(World world) {
+        if (!isAdult()) { // ikke for børn 🫡
+            return;
+        }
         if (!hasFamily()) {
             searchForFamily(world);
         }
