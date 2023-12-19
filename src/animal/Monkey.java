@@ -66,6 +66,7 @@ public class Monkey extends Predator {
     public void act(World world) {
         if (!sleeping) {
             handleFamily(world);
+            move(world, null);
         }
         if (!isAdult()) {
             followAdult(world);
@@ -73,8 +74,11 @@ public class Monkey extends Predator {
         if (isHungry() && isAdult()) {
             handleHunger(world);
         }
+
         handleSleep(world);
-        move(world, null);
+
+
+        
 
         super.act(world);
         // TODO: reproduce, dynamicdisplayinfo med stick, sleep handling,
@@ -357,7 +361,7 @@ public class Monkey extends Predator {
     public void claimTrap(World world) {
         TrapActivated trap = ((TrapActivated) world.getNonBlocking(trapLocation));
         trap.claim(world);
-        changeEnergy(10, world);
+        changeEnergy(10*trap.supply, world);
         traps.remove(trapLocation);
         trapLocation = null;
         System.out.println("claimed trap");

@@ -1,4 +1,2 @@
 6
-monkey 1
-rabbit 5
-berry 10
+monkey 3
