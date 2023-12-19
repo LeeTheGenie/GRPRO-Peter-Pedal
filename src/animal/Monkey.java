@@ -64,7 +64,7 @@ public class Monkey extends Predator {
         if (!isAdult()) {
             followAdult(world);
         }
-        if (isHungry()) {
+        if (isHungry() && isAdult()) {
             handleHunger(world);
         }
         handleSleep(world);
