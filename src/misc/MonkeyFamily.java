@@ -8,7 +8,7 @@ import animal.Monkey;
 public class MonkeyFamily {
 
     private HashSet<Monkey> family;
-    private int heat;
+    public int heat;
 
     public MonkeyFamily() {
         this.family = new HashSet<>();

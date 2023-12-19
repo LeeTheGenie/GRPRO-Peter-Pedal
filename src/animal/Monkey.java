@@ -1,7 +1,10 @@
 package animal;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import abstracts.LivingBeing;
@@ -31,7 +34,8 @@ public class Monkey extends Predator {
     private int children;
     private int sleepyness;
     private int bedtime;
-    private Monkey mate;
+    private boolean parent;
+    private int gender;
 
     public Monkey() {
         super(0, 100, 300, 1, 1, 10, 0, 2,
@@ -46,7 +50,7 @@ public class Monkey extends Predator {
         this.children = 0;
         this.sleepyness = 0;
         this.bedtime = 30;
-        this.mate = null;
+        this.gender = 0;
     }
 
     @Override
@@ -64,23 +68,26 @@ public class Monkey extends Predator {
 
     @Override
     public void act(World world) {
+
         if (!sleeping) {
+            mature();
             handleFamily(world);
+            reproduce(world);
             move(world, null);
-        }
-        if (!isAdult()) {
-            followAdult(world);
-        }
-        if (isHungry() && isAdult()) {
-            handleHunger(world);
-        }
 
-        handleSleep(world);
+            if (!isAdult()) {
+                followAdult(world);
+            }
 
-
+            if (isHungry() && isAdult()) {
+                handleHunger(world);
+            }
+        }
         
-
+        handleSleep(world);
         super.act(world);
+
+
         // TODO: reproduce, dynamicdisplayinfo med stick, sleep handling,
         // can not reproduce
         // does not change display with stick
@@ -107,42 +114,49 @@ public class Monkey extends Predator {
             return;
         }
         if (!hasFamily()) {
-            searchForFamily(world);
+            return;
         }
-        if (hasFamily()) {
-            findMateInFamily(world);
-            makeBaby(world);
+        if (!canAfford(reproductionCost)) {
+            return;
         }
-        // overvejelser:
-        // børn forlader familien når de bliver voksne,
-        // betyder at voksne som finder i familie forbliver i familie for evigt
-        // børn som vokser op kan finde i samme familie som de har forladt og ender til
-        // sdist i en kæmpe familie
-        // begge aber skal have samme mate så monke 1 har monke 2 som mate og monke 2
-        // har monke 1 som mate
-        // skal kun lave et barn
-        // skal maks kunne have to børn
-        // skal mate resettes efter hvert barn
-
-    }
-
-    /**
-     * Finds a adult mate in the family.
-     * 
-     * @param world
-     */
-    public void findMateInFamily(World world) {
-        for (Monkey m : family.getFamily()) {
-            if (m.isAdult()) {
-                mate = m;
+        if (!validateLocationExistence(world)) {
+            return;
+        }
+        MonkeyFamily family =this.getFamily();
+        if(family.getSize()>=2){
+            int parents = 0;
+            for(Monkey m : this.family.getFamily()){
+                if(m.parent)
+                    parents=parents+1;
             }
-            break;
+            if (parents==2&&family.hasSpace()&&family.inHeat()) {
+                makeBaby(world);
+                family.postNutClarity();
+            }
+            else
+                family.getHorny();
+
         }
     }
 
-    public void makeBaby(World world) {
-        move(world, toAndFrom(world, world.getLocation(mate), world.getLocation(this)));
 
+
+    private void makeBaby(World world) {
+        if(!canAfford(reproductionCost))
+            return;
+        //System.out.println("make baby");
+
+        List<Location> list = new ArrayList<>(world.getEmptySurroundingTiles());
+        if (list.size() == 0)
+            return;
+        Location newLocation = list.get(new Random().nextInt(list.size()));
+
+
+        Monkey baby = new Monkey();
+        baby.joinFamily(this.getFamily());
+        world.setTile(newLocation,baby);
+        
+        changeEnergy(reproductionCost, world);;
     }
 
     /**
@@ -280,43 +294,56 @@ public class Monkey extends Predator {
     public void handleFamily(World world) {
         if (!validateLocationExistence(world))
             return;
-        if (!hasFamily() && isAdult()) {
-            return;
+
+        
+        if (!hasFamily()) {
+            if (isAdult()&&!this.parent) {
+                if(this.gender==1){
+                    this.parent=true;
+                    createFamily(world);
+                    joinFamily(family);
+                    System.out.println("man");
+                }else{
+                    System.out.println("woman");
+                    this.parent=true;
+                }
+            }else
+                if (isAdult()&&!(this.gender==1)) {
+                    searchForMate(world);
+                }
+                
         }
-        if (isAdult()) {
+        if (isAdult()&&!this.parent) {
+            System.out.println("Make your own family");
             leaveFamily();
         }
-        if (hasFamily()) {
-            if (getFamily().getSize() <= 1) { // if you are in a 1 size family just leave
-                getFamily().removeMonkey(this);
-                leaveFamily();
-            }
-        }
-        if (!hasFamily()) { // if you dont have a family find one
-            searchForFamily(world);
-        }
     }
+    
+    public void mature(){
+        if (this.age==matureAge) {
+            Random random = new Random();
+            this.gender= random.nextInt(2);
+        }
+
+    }
+    
 
     /**
      * Searches nearby tiles for monkeys and creates a family with them if the
      * conditions are right.
      * 
+     * Only small monkeys can search for families
      * @param world
      */
-    public void searchForFamily(World world) {
-        if (isAdult()) {
-            return;
-        }
+    public void searchForMate(World world) {
         for (Location l : world.getSurroundingTiles()) {
             Object o = world.getTile(l);
+
             if (o instanceof Monkey) {
-                if (((Monkey) o).hasFamily()) {// if the target monkey has a family
-                    if (((Monkey) o).getFamily().hasSpace()) // if there is space
-                        joinFamily(((Monkey) o).getFamily());
-                } else { // if the target monkey does not have a family
-                    createFamily(world);
-                    ((Monkey) o).joinFamily(family);
-                }
+                if (((Monkey) o).hasFamily()&&((Monkey) o).getFamily().getSize()==1) {
+                        joinFamily(((Monkey) o).getFamily()); System.out.println("marry");
+                    
+                } 
             }
         }
     }
