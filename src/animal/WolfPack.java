@@ -1,8 +1,8 @@
-package misc;
+package animal;
+import misc.WolfHole;
 import java.util.HashSet;
 
 import abstracts.LivingBeing;
-import animal.Wolf;
 
 public class WolfPack {
 

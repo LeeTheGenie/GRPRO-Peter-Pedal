@@ -25,6 +25,9 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
     // displayinformation [adult/notadult][sleeping/notsleeping]
     public String[][] growthStates;
 
+    // misc
+    protected boolean alerted;
+
 
     protected Animal(int age, int maxAge, int maxEnergy, int matureAge, int movementCost, int reproductionCost,
             int inheritedEnergy, int metabloicRate) {
@@ -78,6 +81,14 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
 
     public void setBaby() {
         currentEnergy = inheritedEnergy;
+    }
+
+    public void setAlerted(boolean alerted) {
+        this.alerted = alerted;
+    }
+
+    public boolean getAlerted(){
+        return this.alerted;
     }
 
     @Override
@@ -263,12 +274,5 @@ public abstract class Animal extends LivingBeing implements DynamicDisplayInform
         return returningObjects;
     }*/
 
-    public Integer getDistance(World world, LivingBeing o) {
-        if(!validateLocationExistence(world)||!o.validateExistence(world)) return null;
-
-        int deltaX = Math.abs(world.getLocation(this).getX()-world.getLocation(o).getX()),
-            deltaY = Math.abs(world.getLocation(this).getY()-world.getLocation(o).getY());
-
-        return Math.min(deltaX,deltaY); 
-    }
+    
 }

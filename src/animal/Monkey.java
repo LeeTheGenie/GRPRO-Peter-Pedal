@@ -437,7 +437,7 @@ public class Monkey extends Predator {
      * @return true/false
      * 
      */
-    protected boolean canEat(World world, LivingBeing livingBeing) {
+    public boolean canEat(World world, LivingBeing livingBeing) {
         if (livingBeing instanceof BerryBush) {
             return true;
         }
