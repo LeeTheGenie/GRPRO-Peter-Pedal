@@ -31,6 +31,7 @@ public class Monkey extends Predator {
     private int children;
     private int sleepyness;
     private int bedtime;
+    private Monkey mate;
 
     public Monkey() {
         super(0, 100, 300, 1, 1, 10, 0, 2,
@@ -45,6 +46,7 @@ public class Monkey extends Predator {
         this.children = 0;
         this.sleepyness = 0;
         this.bedtime = 30;
+        this.mate = null;
     }
 
     @Override
@@ -87,6 +89,36 @@ public class Monkey extends Predator {
     public void die(World world) {
         super.die(world);
         leaveFamily();
+    }
+
+    public void reproduce(World world) {
+        if (!hasFamily()) {
+            searchForFamily(world);
+        }
+        if (hasFamily()) {
+            findMateInFamily(world);
+            makeBaby(world);
+        }
+
+    }
+
+    /**
+     * Finds a adult mate in the family.
+     * 
+     * @param world
+     */
+    public void findMateInFamily(World world) {
+        for (Monkey m : family.getFamily()) {
+            if (m.isAdult()) {
+                mate = m;
+            }
+            break;
+        }
+    }
+
+    public void makeBaby(World world) {
+        move(world, toAndFrom(world, world.getLocation(mate), world.getLocation(this)));
+
     }
 
     /**
