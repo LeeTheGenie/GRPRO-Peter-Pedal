@@ -61,7 +61,10 @@ public class Monkey extends Predator {
     @Override
     public DisplayInformation getInformation() {
         int sleepPointer = (sleeping) ? 1 : 0;
-        int growthPointer = (matureAge <= age) ? 1 : 0;
+        int growthPointer = isAdult() ? 1 : 0;
+
+        if(hasSticks&&isAdult())
+            return new DisplayInformation(Color.red,"monkey-stick");
 
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
