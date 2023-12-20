@@ -46,6 +46,17 @@ public class Bear extends Predator {
         return new DisplayInformation(Color.red, growthStates[growthPointer][sleepPointer]);
     }
 
+    @Override public boolean canEat(World world,LivingBeing livingBeing) {
+        if(!validateLocationExistence(world))
+            return false; 
+
+        if(livingBeing instanceof Rabbit) {
+            return true;
+        }
+
+        return false; 
+    }
+
     @Override
     public void act(World world) {
         if (this.spawnLocation == null) {

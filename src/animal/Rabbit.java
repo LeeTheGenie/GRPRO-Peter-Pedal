@@ -232,7 +232,7 @@ public class Rabbit extends Animal {
         // Failstates
         if (currentEnergy == maxEnergy)
             return;
-        if (!world.isOnTile(this))
+        if (!validateLocationExistence(world))
             return;
         if (!world.containsNonBlocking(world.getLocation(this)))
             return;
