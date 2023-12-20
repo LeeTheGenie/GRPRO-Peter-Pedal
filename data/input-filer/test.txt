@@ -1,2 +1,5 @@
-2
-grass 1
+15
+grass 100
+wolf 6
+bear 1
+rabbit 10
