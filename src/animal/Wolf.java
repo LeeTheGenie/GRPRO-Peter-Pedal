@@ -86,6 +86,8 @@ public class Wolf extends Predator {
             }
         }
         if(livingBeing instanceof Wolf){
+            if(!((Wolf) livingBeing).hasPack())
+                return false;
             if(!((Wolf) livingBeing).getPack().equals(getPack()))
                 return true; 
         }
