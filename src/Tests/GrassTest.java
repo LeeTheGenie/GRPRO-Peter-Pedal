@@ -43,12 +43,10 @@ public class GrassTest {
         //Control test
         assertEquals(true,w.getTile(new Location(0, 0))instanceof Grass);
 
-        assertEquals(false,w.getTile(new Location(1, 0))instanceof Grass);
+        //Test
+        assertEquals(true,w.getTile(new Location(1, 0))instanceof Grass);
 
-
-        //
         for (Location location : l) {
-            
             assertEquals(true, w.getTile(location) instanceof Grass);
         }
         
