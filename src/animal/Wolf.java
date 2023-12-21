@@ -74,7 +74,7 @@ public class Wolf extends Predator {
 
         if(livingBeing instanceof Bear) {
             int wolfCount = 0;
-            for(Object o :world.getSurroundingTiles(world.getLocation(this))) {
+            for(Object o :world.getSurroundingTiles(world.getLocation(livingBeing))) {
                 if(o instanceof Wolf){
                     if(((Wolf)o).getPack().equals(this.getPack())){
                         wolfCount++;

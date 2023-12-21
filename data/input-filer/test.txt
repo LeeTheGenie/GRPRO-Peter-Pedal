@@ -1,7 +1,7 @@
-20
+25
 grass 100
 wolf 6
-bear 1
-rabbit 20
+bear 2
+rabbit 30
 monkey 6
 berry 20
